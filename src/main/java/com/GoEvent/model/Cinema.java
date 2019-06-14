@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +21,6 @@ public class Cinema {
     @Column
     public String name;
 
-    @OneToMany(mappedBy = "cinema")
-    private List<Theater> theatersList;
+    @OneToMany(mappedBy = "cinema",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Theater> theatersList =new ArrayList<>();
 }

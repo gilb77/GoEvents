@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 
 import java.util.ArrayList;
-//@EnableAutoConfiguration(exclude=ErrorMvcAutoConfiguration.class)
+
 @SpringBootApplication
 public class GoEventApplication implements CommandLineRunner {
 
@@ -29,7 +29,6 @@ public class GoEventApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Cinema cinema = new Cinema();
         cinema.setName("tel aviv");
-        cinema.setTheatersList(new ArrayList<>());
         Theater theater = new Theater();
         theater.setCinema(cinema);
         theater.setSeats(100);
@@ -37,7 +36,7 @@ public class GoEventApplication implements CommandLineRunner {
         cinema.getTheatersList().add(theater);
         cinemaRepository.save(cinema);
         Theater theaters = theaterRepository.findByName("number one");
-        System.out.println("Here = " + theater.getName());
+        System.out.println("Here = " + theaters.getName());
     }
 
 
