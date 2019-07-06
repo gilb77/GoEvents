@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <title>GoEvent</title>
+
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
 <div class="container">
+    <th:block th:include="fragments/header :: header"></th:block>
+
     <div th:if="${not #lists.isEmpty(movies)}">
         <h2>Movie List</h2>
         <table class="table table-striped">
@@ -22,8 +24,8 @@
                 <td th:text="${movie.name}">Name</td>
                 <td th:text="${movie.description}">Description</td>
                 <!--<td th:text="${product.price}">price</td>-->
-                <td><a th:href="@{/}">View</a></td>
-                <td><a th:href="@{/}">Edit</a></td>
+                <td><a th:href="${'/movie/'+movie.id}">View</a></td>
+                <td><a th:href="${'/movie/edit/'+movie.id}">Edit</a></td>
             </tr>
         </table>
 
