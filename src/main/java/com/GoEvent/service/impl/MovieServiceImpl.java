@@ -2,8 +2,11 @@ package com.GoEvent.service.impl;
 
 import com.GoEvent.dao.MovieRepository;
 import com.GoEvent.model.Movie;
+import com.GoEvent.service.MovieService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.Optional;
 
 @Log4j
 @Service
-public class MovieService implements com.GoEvent.service.MovieService {
+public class MovieServiceImpl implements MovieService {
 
     MovieRepository movieRepository;
 
@@ -32,12 +35,18 @@ public class MovieService implements com.GoEvent.service.MovieService {
 
     public Movie updateMovie(int id) {
         Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isEmpty()) {
-            log.info("the movie with the id " + id + " not found in the database.");
-            return new Movie();
-        }
+//        if (movie.isEmpty()) {
+//            log.info("the movie with the id " + id + " not found in the database.");
+//            return new Movie();
+//        }
         log.info("the movie "+movie.get().getName()+" updated.");
         return movie.get();
+    }
+
+
+    @Override
+    public  Page<Movie> findAllMoviesPageable(Pageable pageable) {
+        return movieRepository.findAll(pageable);
     }
 
 
@@ -45,6 +54,22 @@ public class MovieService implements com.GoEvent.service.MovieService {
         movieRepository.deleteById(id);
         log.info("the movie with the id " + id + " deleted in the database.");
         return "success";
+    }
+
+
+    @Override
+    public Iterable<Movie> listAllProducts() {
+        return movieRepository.findAll();
+    }
+
+    @Override
+    public Movie getProductById(Integer id) {
+        return movieRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Movie saveProduct(Movie product) {
+        return movieRepository.save(product);
     }
 
 

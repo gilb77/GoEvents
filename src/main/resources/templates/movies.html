@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>GoEvent</title>
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+<div class="container">
+    <div th:if="${not #lists.isEmpty(movies)}">
+        <h2>Movie List</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <!--<th>Price</th>-->
+                <th>View</th>
+                <th>Edit</th>
+            </tr>
+            <tr th:each="movie : ${movies}">
+                <td th:text="${movie.id}">Id</td>
+                <td th:text="${movie.name}">Name</td>
+                <td th:text="${movie.description}">Description</td>
+                <!--<td th:text="${product.price}">price</td>-->
+                <td><a th:href="@{/}">View</a></td>
+                <td><a th:href="@{/}">Edit</a></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -37,21 +37,21 @@ public class GoEventApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Cinema cinema = new Cinema();
-        cinema.setName("tel aviv");
-        Theater theater = new Theater();
-        theater.setCinema(cinema);
-        theater.setSeats(new int[30]);
-        int a[] =  theater.getSeats();
-        a[0] = 20;
-        theater.setSeats( a);
-        theater.setName("number one");
-        cinema.getTheatersList().add(theater);
-        cinemaRepository.save(cinema);
-
-        Theater theaters = theaterRepository.findByName("number one");
-        int b[]=  theaters.getSeats();
-        System.out.println("Here = " + b[0]);
+//        Cinema cinema = new Cinema();
+//        cinema.setName("tel aviv");
+//        Theater theater = new Theater();
+//        theater.setCinema(cinema);
+//        theater.setSeats(new int[30]);
+//        int a[] =  theater.getSeats();
+//        a[0] = 20;
+//        theater.setSeats( a);
+//        theater.setName("number one");
+//        cinema.getTheatersList().add(theater);
+//        cinemaRepository.save(cinema);
+//
+//        Theater theaters = theaterRepository.findByName("number one");
+//        int b[]=  theaters.getSeats();
+//        System.out.println("Here = " + b[0]);
 
     }
 

@@ -20,7 +20,8 @@ public class Movie {
     private String name;
 
     @Column
-    private int time;
+    private int length;
 
-
+    @Column
+    private String description;
 }

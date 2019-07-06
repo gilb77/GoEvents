@@ -34,10 +34,10 @@ public class CinemaService implements com.GoEvent.service.CinemaService {
 
     public Cinema updateCinema(int id) {
         Optional<Cinema> cinema = cinemaRepository.findById(id);
-        if (cinema.isEmpty()) {
-            log.info("the cinema with the id " + id + " not found in the database.");
-            return new Cinema();
-        }
+//        if (cinema.isEmpty()) {
+//            log.info("the cinema with the id " + id + " not found in the database.");
+//            return new Cinema();
+//        }
         log.info("the cinema "+cinema.get().getName()+" updated.");
         return cinema.get();
     }
