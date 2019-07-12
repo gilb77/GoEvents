@@ -3,13 +3,16 @@ package com.GoEvent.controller;
 
 import com.GoEvent.model.Cinema;
 import com.GoEvent.service.impl.CinemaService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
-@RestController
-@RequestMapping("/cinemas/")
+
+@Log4j
+@Controller
 public class CinemaController {
 
     private CinemaService cinemaService;
@@ -20,27 +23,65 @@ public class CinemaController {
         this.cinemaService = cinemaService;
     }
 
-    @PostMapping("/add")
-    public Cinema addItem(@RequestBody Cinema cinema) {
-        return cinemaService.saveCinema(cinema);
+
+
+    @RequestMapping(value = "/cinemas", method = RequestMethod.GET)
+    public String list(Model model) {
+        model.addAttribute("cinemas", cinemaService.listAllCinema());
+        log.info("Returning rcinemas:");
+        return "cinema/cinemas";
     }
 
-
-    @GetMapping("list")
-    public List<Cinema> getList() {
-        return cinemaService.cinemaList();
+    @RequestMapping("cinema/{id}")
+    public String showProduct(@PathVariable Integer id, Model model) {
+        model.addAttribute("cinema", cinemaService.getCinemaById(id));
+        return "cinema/cinemashow";
     }
 
-
-    @GetMapping("update/{id}")
-    public Cinema showUpdateForm(@PathVariable("id") int id) {
-        return cinemaService.updateCinema(id);
+    @RequestMapping("cinema/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("cinema", cinemaService.getCinemaById(id));
+        return "cinema/cinemaform";
     }
 
-
-    @GetMapping("delete/{id}")
-    public String deleteStudent(@PathVariable("id") int id) {
-        return cinemaService.deleteCinema(id);
+    @RequestMapping("cinema/new")
+    public String newProduct(Model model) {
+        model.addAttribute("cinema", new Cinema());
+        return "cinema/cinemaform";
     }
+
+    @RequestMapping(value = "cinema", method = RequestMethod.POST)
+    public String saveProduct(Cinema cinema) {
+        cinemaService.saveCinema(cinema);
+        return "redirect:/cinema/" + cinema.getId();
+    }
+    
+    
+    
+    
+    
+
+//    @PostMapping("/add")
+//    public Cinema addItem(@RequestBody Cinema cinema) {
+//        return cinemaService.saveCinema(cinema);
+//    }
+//
+//
+//    @GetMapping("list")
+//    public List<Cinema> getList() {
+//        return cinemaService.cinemaList();
+//    }
+//
+//
+//    @GetMapping("update/{id}")
+//    public Cinema showUpdateForm(@PathVariable("id") int id) {
+//        return cinemaService.updateCinema(id);
+//    }
+//
+//
+//    @GetMapping("delete/{id}")
+//    public String deleteStudent(@PathVariable("id") int id) {
+//        return cinemaService.deleteCinema(id);
+//    }
 
 }

@@ -2,8 +2,11 @@ package com.GoEvent.service.impl;
 
 import com.GoEvent.dao.CinemaRepository;
 import com.GoEvent.model.Cinema;
+import com.GoEvent.model.Movie;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,7 @@ public class CinemaService implements com.GoEvent.service.CinemaService {
         this.cinemaRepository = cinemaRepository;
     }
 
+    @Override
     public Cinema saveCinema(Cinema cinema) {
         cinemaRepository.save(cinema);
         log.info("the cinema "+cinema.getName()+" saved in the database");
@@ -48,6 +52,27 @@ public class CinemaService implements com.GoEvent.service.CinemaService {
         log.info("the cinema with the id " + id + " deleted in the database.");
         return "success";
     }
+
+
+
+
+    @Override
+    public Page<Cinema> findAllCinemasPageable(Pageable pageable){
+        return cinemaRepository.findAll(pageable);
+    }
+
+
+
+    @Override
+    public Iterable<Cinema> listAllCinema() {
+        return cinemaRepository.findAll();
+    }
+
+    @Override
+    public Cinema getCinemaById(Integer id) {
+        return cinemaRepository.findById(id).orElse(null);
+    }
+
 
 
 

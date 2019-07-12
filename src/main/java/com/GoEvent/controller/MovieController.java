@@ -28,25 +28,25 @@ public class MovieController {
     public String list(Model model) {
         model.addAttribute("movies", movieService.listAllProducts());
         log.info("Returning rmovies:");
-        return "movies";
+        return "movie/movies";
     }
 
     @RequestMapping("movie/{id}")
     public String showProduct(@PathVariable Integer id, Model model) {
         model.addAttribute("movie", movieService.getProductById(id));
-        return "movieshow";
+        return "movie/movieshow";
     }
 
     @RequestMapping("movie/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("movie", movieService.getProductById(id));
-        return "movieform";
+        return "movie/movieform";
     }
 
     @RequestMapping("movie/new")
     public String newProduct(Model model) {
         model.addAttribute("movie", new Movie());
-        return "movieform";
+        return "movie/movieform";
     }
 
     @RequestMapping(value = "movie", method = RequestMethod.POST)

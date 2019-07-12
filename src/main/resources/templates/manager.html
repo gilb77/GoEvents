@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+
+
+<body>
+<div class="container">
+    <th:block th:include="fragments/header :: header"></th:block>
+</div>
+<div class="container">
+    <div class="well well-sm">
+        <h3 >Movies</h3>
+        <div class="list-group">
+            <a href="#" th:href="@{/movie/new}" class="list-group-item">Create movie</a>
+            <a href="#" th:href="@{/movies}" class="list-group-item">List of movies</a>
+        </div>
+    </div>
+
+
+    <div class="well well-sm">
+        <h3 >Cinema</h3>
+        <div class="list-group">
+            <a href="#" th:href="@{/cinema/new}" class="list-group-item">Create Cinema</a>
+            <a href="#" th:href="@{/cinemas}" class="list-group-item">List of Cinema</a>
+        </div>
+    </div>
+
+
+    <div class="well well-sm">
+        <h3 >LiveShow</h3>
+        <div class="list-group">
+            <a href="#" th:href="@{/movie/new}" class="list-group-item">Create LiveShow</a>
+            <a href="#" th:href="@{/movies}" class="list-group-item">List of LiveShow</a>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
