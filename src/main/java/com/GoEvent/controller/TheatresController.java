@@ -38,6 +38,7 @@ public class TheatresController {
     public String showProduct(@PathVariable Integer id, Model model) {
         model.addAttribute("theater", theaterServiceImpl.getTheaterById(id));
         return "theaters/theatershow";
+
     }
 
     @RequestMapping("theater/edit/{id}")

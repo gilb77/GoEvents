@@ -40,7 +40,7 @@ public class TheaterServiceImpl implements TheaterService {
     @Override
     public Theater saveTheater(Theater theater) {
         theaterRepository.save(theater);
-        log.info("the theater " + theater.getName() + " saved in the database");
+        log.info("the theater " + theater.getId() + " saved in the database");
         return theater;
     }
 

@@ -18,6 +18,7 @@
                 <!--<th>Price</th>-->
                 <th>View</th>
                 <th>Edit</th>
+                <th>Delete</th>
             </tr>
             <tr th:each="movie : ${movies}">
                 <td th:text="${movie.id}">Id</td>
@@ -26,6 +27,7 @@
                 <!--<td th:text="${product.price}">price</td>-->
                 <td><a th:href="${'/movie/'+movie.id}">View</a></td>
                 <td><a th:href="${'/movie/edit/'+movie.id}">Edit</a></td>
+                <td><a th:href="${'/movie/delete/'+movie.id}">Delete</a></td>
             </tr>
         </table>
 

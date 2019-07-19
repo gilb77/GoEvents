@@ -21,6 +21,13 @@ public class Cinema {
     @Column
     public String name;
 
+    @Column
+    public String city;
+
+    @Column
+    public String street;
+
+
     @OneToMany(mappedBy = "cinema",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Theater> theatersList =new ArrayList<>();
 }

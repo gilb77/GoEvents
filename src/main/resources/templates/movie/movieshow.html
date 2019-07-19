@@ -8,31 +8,39 @@
 <body>
 <div class="container">
     <th:block th:include="fragments/header :: header"></th:block>
-    <div class="panel panel-default">
-        <div class="panel-heading">Movie Details</div>
-        <div class="panel-body">
-            <label class="col-sm-2 control-label">Movie Id:</label>
-            <div class="col-sm-10">
-                <p class="form-control-static" th:text="${movie.id}">Movie Id</p></div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Description:</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static" th:text="${movie.description}">description</p>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Movie Details</div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Movie Id:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${movie.id}">Movie Id</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Description:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${movie.description}">Description</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">name:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${movie.name}">Name</p>
+                        </div>
+                    </div>
+                    </form>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Price:</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static" th:text="${movie.name}">name</p>
-                </div>
-            </div>
-            <!--<div class="form-group">-->
-            <!--<label class="col-sm-2 control-label">Image Url:</label>-->
-            <!--<div class="col-sm-10">-->
-            <!--<p class="form-control-static" th:text="${product.imageUrl}">url....</p>-->
-            <!--</div>-->
-            <!--</div>-->
+        </div>
+        <div class="col-md-4">
+            <!--<a th:href="*{'data:image/jpeg;base64,'+ movie.getEncoded() }">-->
+            <img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }" class="img-thumbnail" style="width:50%"
+                 alt="Responsive image">
+            <!--</a>-->
         </div>
     </div>
 </div>

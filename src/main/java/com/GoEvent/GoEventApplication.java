@@ -6,12 +6,18 @@ import com.GoEvent.dao.MovieRepository;
 import com.GoEvent.dao.TheaterRepository;
 import com.GoEvent.model.Cinema;
 import com.GoEvent.model.Theater;
+import com.uploadcare.api.Client;
+import com.uploadcare.api.File;
+import com.uploadcare.upload.FileUploader;
+import com.uploadcare.upload.UploadFailureException;
+import com.uploadcare.upload.Uploader;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 //import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.testng.annotations.Test;
 //import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 
 import java.util.ArrayList;
@@ -54,6 +60,8 @@ public class GoEventApplication implements CommandLineRunner {
 //        System.out.println("Here = " + b[0]);
 
     }
+
+
 
 
 }

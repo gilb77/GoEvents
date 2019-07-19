@@ -2,12 +2,18 @@ package com.GoEvent.controller;
 
 import com.GoEvent.model.Movie;
 import com.GoEvent.service.impl.MovieServiceImpl;
+import com.GoEvent.util.PhotoUploader;
+import com.uploadcare.api.Client;
 import lombok.extern.log4j.Log4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Log4j
@@ -16,6 +22,7 @@ public class MovieController {
 
 
     private MovieServiceImpl movieService;
+
 
 
     @Autowired
@@ -31,9 +38,16 @@ public class MovieController {
         return "movie/movies";
     }
 
+    @RequestMapping(value="/moviesPage", method = RequestMethod.GET)
+    public String pageMovie(Model model){
+        model.addAttribute("movies",movieService.listAllProducts());
+        return "movie/movieslist";
+    }
+
     @RequestMapping("movie/{id}")
     public String showProduct(@PathVariable Integer id, Model model) {
-        model.addAttribute("movie", movieService.getProductById(id));
+        Movie movie = movieService.getProductById(id);
+        model.addAttribute("movie", movie);
         return "movie/movieshow";
     }
 
@@ -50,14 +64,21 @@ public class MovieController {
     }
 
     @RequestMapping(value = "movie", method = RequestMethod.POST)
-    public String saveProduct(Movie movie) {
-        movieService.saveProduct(movie);
+    public String saveProduct(Movie movie, @RequestParam MultipartFile fileUpload) throws IOException {
+        if (fileUpload.getContentType().equals("image/png") || fileUpload.getContentType().equals("image/jpg")
+                || fileUpload.getContentType().equals("image/jpeg") || fileUpload.getContentType().equals("image/gif")) {
+            movie.setImage(fileUpload.getBytes());
+        }
+        movieService.saveMovie(movie);
         return "redirect:/movie/" + movie.getId();
     }
 
 
-
-
+    @RequestMapping("movie/delete/{id}")
+    public String deleteStudent(@PathVariable Integer id) {
+        movieService.deleteMovie(id);
+        return "redirect:/movies";
+    }
 
     @PostMapping("/add")
     public Movie addItem(@RequestBody Movie movie) {
@@ -75,15 +96,6 @@ public class MovieController {
     public Movie showUpdateForm(@PathVariable("id") int id) {
         return movieService.updateMovie(id);
     }
-
-
-    @GetMapping("delete/{id}")
-    public String deleteStudent(@PathVariable("id") int id) {
-        return movieService.deleteMovie(id);
-    }
-
-
-
 
 
 }

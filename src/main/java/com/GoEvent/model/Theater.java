@@ -13,11 +13,11 @@ public class Theater {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column
-    private String name;
+
 
     @Column(name = "seats", columnDefinition="BLOB")
     private int[] seats;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cinema_id", nullable = false)
