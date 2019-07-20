@@ -11,8 +11,7 @@
 
     <h2>Movie Details</h2>
     <div>
-        <form class="form-horizontal" th:object="${movie}" th:action="@{/movie}" method="post"
-              enctype="multipart/form-data">
+        <form class="form-horizontal" th:object="${movie}" th:action="@{/movie}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}"/>
             <!--<input type="hidden" th:field="*{version}"/>-->
             <div class="form-group">

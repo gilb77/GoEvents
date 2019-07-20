@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+</head>
+<body>
+<!--<script  type="application/javascript" src="/eventdropdown.js"></script>-->
+<div class="container">
+    <th:block th:include="fragments/header :: header"></th:block>
+</div>
+
+
+<div class="container">
+    <form class="form-horizontal" th:object="${movie}" th:action="@{/new}" method="post" enctype="multipart/form-data">
+        <div class="row form-group col-sm-10">
+
+        <select th:field="${cinemas}" id="cinemas" class="form-control">
+            <option th:each="cinema : ${cinemas}"
+                    th:value="${cinema.id}"
+                    th:text="${cinema.name}"></option>
+        </select>
+
+
+        </div>
+        <div  class="row form-group  col-sm-10" id="theaterSelectHolder"></div>
+
+
+        <div  class="form-group col-sm-10">
+        <select th:field="${movies}" id="movies" class="form-control">
+            <option th:each="movie : ${movies}"
+                    th:value="${movie.id}"
+                    th:text="${movie.name}"></option>
+        </select>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Name:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+        //call function when page is loaded
+        fillUpTheaters();
+
+        //set on change listener
+        $("#cinemas").change(fillUpTheaters);
+
+        function fillUpTheaters() {
+            // alert("THell " );
+            $.ajax({
+                url: "http://localhost:8080/event/cinema/" + document.getElementById("cinemas").value,
+                success: function (data) {
+                    // alert(data)
+                    $("#theaterSelectHolder").html(data);
+                    $("#theaterSelect").modal("show");
+                }
+            })
+        }
+    });
+</script>
+
+</body>
+</html>

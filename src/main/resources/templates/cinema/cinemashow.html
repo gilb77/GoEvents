@@ -31,7 +31,7 @@
             <table class="table table-striped">
                 <tr>
                     <th>Id</th>
-                    <th>Name</th>
+                    <!--<th>Name</th>-->
                     <!--<th>Description</th>-->
                     <!--<th>Price</th>-->
                     <th>View</th>
@@ -39,7 +39,7 @@
                 </tr>
                 <tr th:each="theater: ${cinema.theatersList}">
                     <td th:text="${theater.id}">Id</td>
-                    <td th:text="${theater.name}">Name</td>
+                    <!--<td th:text="${theater}">Name</td>-->
                     <!--<td th:text="${cinema.description}">Description</td>-->
                     <!--<td th:text="${product.price}">price</td>-->
                     <td><a th:href="${'/theater/'+theater.id}">View</a></td>

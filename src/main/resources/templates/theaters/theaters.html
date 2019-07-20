@@ -21,7 +21,7 @@
             </tr>
             <tr th:each="theater : ${theaters}">
                 <td th:text="${theater.id}">Id</td>
-                <td th:text="${theater.name}">Name</td>
+                <!--<td th:text="${theater.name}">Name</td>-->
                 <!--<td th:text="${cinema.description}">Description</td>-->
                 <!--<td th:text="${product.price}">price</td>-->
                 <td><a th:href="${'/theater/'+theater.id}">View</a></td>
