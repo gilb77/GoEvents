@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+
+<div class="container">
+    <th:block th:include="fragments/header :: header"></th:block>
+</div>
+
+
+<div class="container">
+
+    <div th:if="${not #lists.isEmpty(movies)}">
+        <div  >
+        <div class="row">
+                <div class="col-lg-3" th:each="movie : ${movies}">
+                    <a th:href="${'/movie/'+movie.id}">
+                        <img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }"
+                             class="img-thumbnail"
+                             style="width:80%"
+                             alt="Responsive image">
+                    </a>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!--<table>-->
+        <!--<td th:each="movie : ${movies}">-->
+            <!--<a th:href="${'/movie/'+movie.id}">-->
+            <!--<img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }"-->
+            <!--class="img-thumbnail"-->
+            <!--alt="Responsive image">-->
+            <!--</a>-->
+        <!--</td>-->
+    <!--</table>-->
+
+</div>
+
+</body>
+</html>
