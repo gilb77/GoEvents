@@ -10,16 +10,16 @@
 <body>
 
 
-
-
-    <div th:fragment="theatersFragment" id="theaterSelect" >
-        <select th:field="*{theaters}"  class="form-control">
+<div th:fragment="theatersFragment" id="theaterSelect">
+    <div class="form-group">
+        <label class="control-label" for="theater">Theater</label>
+        <select class="form-control" id="theater" th:field="*{theaters}">
             <option th:each="theater : ${theaters}"
                     th:value="${theater.id}"
                     th:text="${theater.id}"/>
         </select>
     </div>
-
+</div>
 
 
 </body>

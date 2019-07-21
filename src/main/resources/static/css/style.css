@@ -1,0 +1,22 @@
+#cinemas, #movies, #theater{
+    width: 500px;
+}
+#price, #date {
+    width: 100px;
+}
+
+#eventMovieForm {
+    display: flex;
+    justify-content: center;
+}
+
+/*body { padding-top: 10px; }*/
+
+/*body {*/
+    /*!* Base64 encoded transparent gif *!*/
+    /*background: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);*/
+/*}*/
+
+/*.well {*/
+    /*background: rgb(22, 105, 173);*/
+/*}*/

@@ -5,8 +5,9 @@
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
+<th:block th:include="fragments/header :: header"></th:block>
+
 <div class="container">
-    <th:block th:include="fragments/header :: header"></th:block>
 
     <div th:if="${not #lists.isEmpty(cinemas)}">
         <h2>Cinema List</h2>
