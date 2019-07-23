@@ -1,27 +1,11 @@
-#cinemas, #movies, #theater{
-    width: 500px;
-}
-#price, #date {
-    width: 100px;
-}
-
-#eventMovieForm {
-    display: flex;
-    justify-content: center;
-}
-
 .panel > .panel-heading {
     color: #333;
-    background-color: #fdfaed;
+    /*background-color: #fdfaed;*/
     border-color: #f48e00;
 }
 
 
-.panel {
-    /*padding : 5px;*/
-    border-color: #f48e00;
-}
-/*body { padding-top: 10px; }*/
+/*body { padding-top: 10px; }*        /
 
 /*body {*/
     /*!* Base64 encoded transparent gif *!*/

@@ -1,23 +1,27 @@
 .navbar-default {
-    background-color: #f0c007;
-    border-color: #f4d700;
+    background-color: #FDB73B;
+    border-color: #f48e00;
+    min-height: 60px;
+    font: 1.5em "Times New Roman" , serif;
 }
 .navbar-default .navbar-brand {
     color: #000000;
+    font: small-caps bold 24px sans-serif;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-    color: #89858d;
+    color: #f48e00;
 }
 .navbar-default .navbar-text {
     color: #000000;
+
 }
 .navbar-default .navbar-nav > li > a {
     color: #000000;
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-    color: #89858d;
+    color: #f48e00;
 }
 .navbar-default .navbar-nav > li > .dropdown-menu {
     background-color: #f0c007;

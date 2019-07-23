@@ -4,101 +4,126 @@
     <th:block th:include="fragments/headerinc :: head"></th:block>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
-    <script  th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
 </head>
 <body>
-
-<!--<script  type="application/javascript" src="/eventdropdown.js"></script>-->
-<!--<div class="container">-->
-    <th:block th:include="fragments/header :: header"></th:block>
-<!--</div>-->
+<th:block th:include="fragments/header :: header"></th:block>
 
 
 <div class="container" id="eventMovieForm">
-  <!--/  <div class="well well-lg ">-->
-
-    <form th:object="${movie}" th:action="@{/new}" method="post" enctype="multipart/form-data">
-
-        <div class="form-group">
-            <label class="control-label " for="Cinemas">Cinema</label>
-            <select class="form-control" th:field="${cinemas}" id="cinemas">
-                <option th:each="cinema : ${cinemas}"
-                        th:value="${cinema.id}"
-                        th:text="${cinema.name}"></option>
-            </select>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Create movie event</h3>
         </div>
+        <div class="panel-body">
+            <form  th:object="${movieEvent}" th:action="@{/event/movie/new/${index}}" method="post">
 
+                <div class="form-group">
+                    <label class="control-label " for="Cinemas">Cinema</label>
+                    <select class="form-control" th:field="${cinemas}" id="cinemas">
+                        <option th:each="cinema : ${cinemas}"
+                                th:value="${cinema.id}"
+                                th:text="${cinema.name}"></option>
+                    </select>
+                </div>
+                        <div id="theaterSelectHolder">
+                        </div>
+                <div class="form-group">
+                    <label class="control-label " for="movies">Movie</label>
+                    <select class="form-control" th:field="*{movie}" id="movies">
+                        <option th:each="movie : ${movies}"
+                                th:value="${movie.id}"
+                                th:text="${movie.name}"></option>
+                    </select>
+                </div>
 
-        <div id="theaterSelectHolder">
+                <div class="form-group">
+                    <label class="control-label">Price:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input class="form-control" th:field="*{price}" type="text" placeholder="Price" id="price"/>
+                    </div>
+                </div>
+
+                 <!--<div class="form-group">-->
+                    <!--<div class='input-group date' id='datetimepicker1'>-->
+                        <!--<input type='text' class="form-control" id="datepicker"/>-->
+                        <!--<span class="input-group-addon" >-->
+                        <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                    <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="form-group">
+                    <label class="control-label"> Date:</label>
+                <div id="datepicker"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"> Time:</label>
+                    <input  type="time" id="timepicker">
+                </div>
+
+                <div class="form-group">
+                    <button id = "submit" type="submit" class="btn btn-primary" name="submit">Submit</button>
+                </div>
+
+            </form>
         </div>
-
-        <div class="form-group">
-            <label class="control-label " for="movies">Movie</label>
-            <select class="form-control" th:field="${movies}" id="movies">
-                <option th:each="movie : ${movies}"
-                        th:value="${movie.id}"
-                        th:text="${movie.name}"></option>
-            </select>
-        </div>
-
-               <!--<div class="input-group">-->
-        <!--<span class="input-group-addon">$</span>-->
-        <!--<input type="text" class="form-control" placeholder="Price"/>-->
-        <!--</div>-->
-
-        <div class="form-group">
-            <label class="control-label">Price:</label>
-            <div class="input-group">
-                <span class="input-group-addon">$</span>
-            <input class="form-control" type="text" placeholder="Price" id="price"/>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon" id="date">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-secondary" name="submit">Submit</button>
-        </div>
-
-    </form>
+    </div>
 </div>
+    <script th:inline="javascript">
 
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $(function () {
-            $('#datetimepicker1').datetimepicker();
+        // var movieEvent ="[[${index}]]";
+        $(document).ready(function () {
+            $( function() {
+                $( "#datepicker" ).datepicker();
+            } );
+
+
+
+
+
+            //call function when page is loaded
+            fillUpTheaters();
+            $("#submit").click(
+                function () {
+                    var event = {
+                        movie: document.getElementById("movies").value,
+                        theater: document.getElementById("theater").value,
+                        price: document.getElementById("price").value,
+                        date: document.getElementById("datepicker").value,
+                        time: document.getElementById("timepicker").value
+                    }
+                    alert(JSON.stringify(event));
+                    $.ajax({
+                        url: "http://localhost:8080/event/new/",
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify(event)
+                })
+                });
+            //set on change listener
+            $("#cinemas").change(fillUpTheaters);
+
+            function fillUpTheaters() {
+                // alert("THell " );
+                $.ajax({
+                    url: "http://localhost:8080/event/cinema/" +
+                    document.getElementById("cinemas").value,
+                    success: function (data) {
+                        // alert(data)
+                        $("#theaterSelectHolder").html(data);
+                        $("#theaterSelect").modal("show");
+                    }
+                })
+            }
         });
-
-
-
-        //call function when page is loaded
-        fillUpTheaters();
-
-        //set on change listener
-        $("#cinemas").change(fillUpTheaters);
-
-        function fillUpTheaters() {
-            // alert("THell " );
-            $.ajax({
-                url: "http://localhost:8080/event/cinema/" + document.getElementById("cinemas").value,
-                success: function (data) {
-                    // alert(data)
-                    $("#theaterSelectHolder").html(data);
-                    $("#theaterSelect").modal("show");
-                }
-            })
-        }
-    });
-</script>
+    </script>
 
 </body>
 </html>

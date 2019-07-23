@@ -17,8 +17,12 @@ public class MovieEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
+
     @Column
-    private String date;
+    private String price;
 
     @OneToOne(cascade = CascadeType.ALL)
     Theater theater;
@@ -26,5 +30,7 @@ public class MovieEvent {
 
     @OneToOne(cascade = CascadeType.ALL)
     Movie movie;
+
+
 
 }
