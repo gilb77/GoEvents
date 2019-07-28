@@ -1,49 +1,91 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head lang="en">
-
+    <link th:href="@{/css/movies/movieshow.css}" rel="stylesheet"/>
 
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
 <th:block th:include="fragments/header :: header"></th:block>
-<div class="container">
 
+<div class="content">
     <div class="row">
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">Movie Details</div>
-                <div class="panel-body">
-                    <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Movie Id:</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${movie.id}">Movie Id</p>
-                        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-2">
+            <div class="photo">
+                <img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }" class="img-thumbnail"
+                     style="width:100%"
+                     alt="Responsive image">
+            </div>
+        </div>
+
+        <div class="col-xs-9">
+            <div class="description">
+                <div class="panel">
+                    <div class="panel-heading" th:text="${movie.name}"></div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Description:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" th:text="${movie.description}">Description</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="invite">
+                                <button id="submit" type="submit" class="btn big-btn btn-primary pull-right"
+                                        name="submit">Invite
+                                </button>
+                            </div>
+                        </form>
+
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Description:</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${movie.description}">Description</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">name:</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${movie.name}">Name</p>
-                        </div>
-                    </div>
-                    </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <!--<a th:href="*{'data:image/jpeg;base64,'+ movie.getEncoded() }">-->
-            <img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }" class="img-thumbnail" style="width:50%"
-                 alt="Responsive image">
-            <!--</a>-->
-        </div>
     </div>
 </div>
+</div>
+
+
+<!--<div class="panel">-->
+<!--<div class="panel-heading">Cinema's Theaters</div>-->
+<!--<div th:if="${not #lists.isEmpty(events)}">-->
+<!--<table class="table table-striped">-->
+<!--<tr>-->
+<!--<th>Date</th>-->
+<!--<th>Time</th>-->
+<!--<th>Cinema</th>-->
+<!--<th>City</th>-->
+<!--<th>Price</th>-->
+<!--</tr>-->
+<!--<tr th:each="event: ${events}">-->
+<!--<td th:text="${event.formatDateString() }">Date</td>-->
+<!--<td th:text="${event.formatTimeString() }">Time</td>-->
+<!--<td th:text="${event.getTheater().getCinema().getName()}">Cinema</td>-->
+<!--<td th:text="${event.getTheater().getCinema().getCity()}">City</td>-->
+<!--<td th:text="${event.getPrice()}">price</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="row">
+    <div class="col-xs-5"></div>
+    <div class="col-xs-6">
+        <div class="video">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe width="1280" height="720" src="https://www.youtube.com/embed/Nt9L1jCKGnE" frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-1"></div>
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
+

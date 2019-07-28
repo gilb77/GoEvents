@@ -11,8 +11,8 @@
 
     <div th:if="${not #lists.isEmpty(movies)}">
         <h2>Movie List</h2>
-        <table class="table table-striped">
-            <tr>
+        <table class="table table-striped ">
+            <tr class="table-warning">
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
@@ -34,6 +34,6 @@
 
     </div>
 </div>
-
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

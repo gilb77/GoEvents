@@ -1,10 +1,13 @@
 package com.GoEvent.configuration;
 
-import com.uploadcare.api.Client;
+
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+
+
 @Configuration
 public class WebConfiguration {
     @Bean
@@ -13,5 +16,10 @@ public class WebConfiguration {
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
     }
+
+
+
+
+
 
 }

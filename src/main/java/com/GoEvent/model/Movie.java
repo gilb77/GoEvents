@@ -4,10 +4,11 @@ package com.GoEvent.model;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.Base64;
+
 
 import javax.persistence.*;
-import java.io.File;
+
 
 @Entity
 @Getter

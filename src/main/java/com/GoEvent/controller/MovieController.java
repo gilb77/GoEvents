@@ -1,18 +1,16 @@
 package com.GoEvent.controller;
 
 import com.GoEvent.model.Movie;
+import com.GoEvent.service.impl.MovieEventServiceImpl;
 import com.GoEvent.service.impl.MovieServiceImpl;
-import com.GoEvent.util.PhotoUploader;
-import com.uploadcare.api.Client;
 import lombok.extern.log4j.Log4j;
-import org.apache.tomcat.util.codec.binary.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,12 +20,13 @@ public class MovieController {
 
 
     private MovieServiceImpl movieService;
-
+    private MovieEventServiceImpl movieEventService;
 
 
     @Autowired
-    public void setProductsService(MovieServiceImpl movieService) {
+    public void setProductsService(MovieServiceImpl movieService,MovieEventServiceImpl movieEventService) {
         this.movieService = movieService;
+        this.movieEventService = movieEventService;
     }
 
 
@@ -48,6 +47,7 @@ public class MovieController {
     public String showProduct(@PathVariable Integer id, Model model) {
         Movie movie = movieService.getProductById(id);
         model.addAttribute("movie", movie);
+        model.addAttribute("events",movieEventService.listAllEventsByMovie(id));
         return "movie/movieshow";
     }
 

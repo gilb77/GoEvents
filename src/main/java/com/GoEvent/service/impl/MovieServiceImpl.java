@@ -1,6 +1,5 @@
 package com.GoEvent.service.impl;
 
-import com.GoEvent.configuration.StorageException;
 import com.GoEvent.dao.MovieRepository;
 import com.GoEvent.model.Movie;
 import com.GoEvent.service.MovieService;
@@ -9,13 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +44,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
 
-    @Override
+
     public  Page<Movie> findAllMoviesPageable(Pageable pageable) {
         return movieRepository.findAll(pageable);
     }
@@ -75,7 +68,7 @@ public class MovieServiceImpl implements MovieService {
         return movieRepository.findById(id).orElse(null);
     }
 
-    @Override
+
     public Movie saveProduct(Movie product) {
         return movieRepository.save(product);
     }

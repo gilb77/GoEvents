@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+<th:block th:include="fragments/header :: header"></th:block>
+<div class="container">
+
+
+    <div th:if="${not #lists.isEmpty(events)}">
+        <h2>Events List</h2>
+        <table class="table table-striped ">
+            <tr class="table-warning">
+                <th>Id</th>
+                <th>Cinema</th>
+                <th>theater</th>
+                <th>price</th>
+                <!--<th>Price</th>-->
+                <th>View</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="event : ${events}">
+                <td th:text="${event.id}">Id</td>
+                <td th:text="${event.theater.getCinema().getName()}">Cinema</td>
+                <td th:text="${event.theater.getId()}">theater</td>
+                <td th:text="${event.price}">price</td>
+                <!--<td th:text="${product.price}">price</td>-->
+                <td><a th:href="${'/movie/'+event.id}">View</a></td>
+                <td><a th:href="${'/movie/edit/'+event.id}">Edit</a></td>
+                <td><a th:href="${'/movie/delete/'+event.id}">Delete</a></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

@@ -119,15 +119,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.uploadcare</groupId>
-            <artifactId>uploadcare</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.14.3</version>
         </dependency>
+
     </dependencies>
 
     <build>

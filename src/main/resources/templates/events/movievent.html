@@ -3,7 +3,7 @@
 <head lang="en">
     <th:block th:include="fragments/headerinc :: head"></th:block>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styleventmovie.css}" rel="stylesheet"/>
     <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -20,7 +20,7 @@
             <h3 class="panel-title">Create movie event</h3>
         </div>
         <div class="panel-body">
-            <form  th:object="${movieEvent}" th:action="@{/event/movie/new/${index}}" method="post">
+            <form  th:object="${movieEvent}" th:action="@{/event/movies/table}" method="post">
 
                 <div class="form-group">
                     <label class="control-label " for="Cinemas">Cinema</label>
@@ -49,14 +49,6 @@
                     </div>
                 </div>
 
-                 <!--<div class="form-group">-->
-                    <!--<div class='input-group date' id='datetimepicker1'>-->
-                        <!--<input type='text' class="form-control" id="datepicker"/>-->
-                        <!--<span class="input-group-addon" >-->
-                        <!--<span class="glyphicon glyphicon-calendar"></span>-->
-                    <!--</span>-->
-                    <!--</div>-->
-                <!--</div>-->
                 <div class="form-group">
                     <label class="control-label"> Date:</label>
                 <div id="datepicker"></div>
@@ -75,6 +67,8 @@
         </div>
     </div>
 </div>
+
+
     <script th:inline="javascript">
 
         // var movieEvent ="[[${index}]]";
@@ -82,10 +76,6 @@
             $( function() {
                 $( "#datepicker" ).datepicker();
             } );
-
-
-
-
 
             //call function when page is loaded
             fillUpTheaters();
@@ -105,6 +95,7 @@
                         type: 'post',
                         contentType: 'application/json',
                         data: JSON.stringify(event)
+
                 })
                 });
             //set on change listener
@@ -124,6 +115,6 @@
             }
         });
     </script>
-
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

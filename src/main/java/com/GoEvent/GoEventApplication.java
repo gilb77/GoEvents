@@ -4,23 +4,13 @@ import com.GoEvent.dao.CinemaRepository;
 import com.GoEvent.dao.MovieEventRepository;
 import com.GoEvent.dao.MovieRepository;
 import com.GoEvent.dao.TheaterRepository;
-import com.GoEvent.model.Cinema;
-import com.GoEvent.model.Theater;
-import com.uploadcare.api.Client;
-import com.uploadcare.api.File;
-import com.uploadcare.upload.FileUploader;
-import com.uploadcare.upload.UploadFailureException;
-import com.uploadcare.upload.Uploader;
-import org.hibernate.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-//import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.testng.annotations.Test;
-//import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 
-import java.util.ArrayList;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 @SpringBootApplication
 public class GoEventApplication implements CommandLineRunner {
@@ -59,6 +49,22 @@ public class GoEventApplication implements CommandLineRunner {
 //        int b[]=  theaters.getSeats();
 //        System.out.println("Here = " + b[0]);
 
+//        List<MovieEvent> movieEvents =  movieEventRepository.findAll();
+//        List<MovieEvent> tempMovieEvents =  movieEventRepository.findAll();
+//        int index =0;
+//        List<Integer> list = new ArrayList<Integer>();
+//
+//        for(MovieEvent event: tempMovieEvents){
+//            if(event.getMovie().getId() != 37) {
+//                System.out.println("index = "+index);
+//                movieEvents.remove((index));
+//            }
+//                index++;
+//        }
+
+//        for(Integer num: list){
+//            movieEvents.remove(num);
+//        }
     }
 
 
