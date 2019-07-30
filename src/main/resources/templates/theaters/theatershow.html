@@ -3,28 +3,33 @@
 <head lang="en">
 
 
-    <th:block th:include="fragments/headerinc :: head"></th:block>
-</head>
+ </head>
 <body>
-<th:block th:include="fragments/header :: header"></th:block>
-<div class="container">
 
-    <div class="panel panel-default">
-        <div class="panel-heading">Cinema Detail</div>
-        <div class="panel-body">
-            <label class="col-sm-2 control-label">Theater Id:</label>
-            <div class="col-sm-10">
-                <p class="form-control-static" th:text="${theater.id}">Theater Id</p></div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">name:</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static" th:text="${theater.name}">name</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div th:fragment="theatersFragment" id="theaterTable">
+<div class="panel panel-default">
+    <div class="panel-heading">Cinema's Theaters</div>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Seats</th>
+                <th>View</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="theater: ${theaters}">
+                <td th:text="${theater.id}">Id</td>
+                <td th:text="${theater.getSeats()}">seats</td>
+                <td><a th:href="${'/theater/'+theater.id}">View</a></td>
+                <td><a th:href="${'/theater/edit/'+theater.id}">Edit</a></td>
+                <td><a th:href="${'/movie/delete/'+theater.id}">Delete</a></td>
+            </tr>
+        </table>
 </div>
+</div>
+
+
+
 
 </body>
 </html>

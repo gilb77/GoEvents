@@ -48,7 +48,7 @@ public class CinemaService implements com.GoEvent.service.CinemaService {
 
 
     public String deleteCinema(int id) {
-        cinemaRepository.deleteById(id);
+//        cinemaRepository.deleteById(id);
         log.info("the cinema with the id " + id + " deleted in the database.");
         return "success";
     }

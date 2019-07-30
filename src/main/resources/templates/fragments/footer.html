@@ -11,18 +11,19 @@
     <hr/>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <span sec:authorize="isAuthenticated()">
-                | Logged user: <span sec:authentication="name"></span> |
-                Roles: <span sec:authentication="principal.authorities"></span> |
-                <a th:href="@{/logout}">Sign Out</a>
-            </span>
+        <div class="footer navbar-fixed-bottom">
+            <div class="row" >
+            <!--<div class="col-sm-12 text-center">-->
+                <!--<span sec:authorize="isAuthenticated()">-->
+                <!--| Logged user: <span sec:authentication="name"></span> |-->
+                <!--Roles: <span sec:authentication="principal.authorities"></span> |-->
+                <!--<a th:href="@{/logout}">Sign Out</a>-->
+            <!--</span>-->
 
-                <div>
-                    <p class="text-center">&copy; 2019 Gil Yehuda Ben Shimon</p>
-                </div>
-
+                <!--<div>-->
+                    <!--<p class="text-center">&copy; 2019 Gil Yehuda Ben Shimon</p>-->
+                <!--</div>-->
+            </div>
             </div>
         </div>
     </div>

@@ -45,4 +45,9 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
 
+    public String deleteTheatere(int id) {
+        theaterRepository.deleteById(id);
+        log.info("the movie with the id " + id + " deleted in the database.");
+        return "success";
+    }
 }

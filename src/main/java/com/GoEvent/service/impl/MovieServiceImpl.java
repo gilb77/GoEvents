@@ -35,10 +35,10 @@ public class MovieServiceImpl implements MovieService {
 
     public Movie updateMovie(int id) {
         Optional<Movie> movie = movieRepository.findById(id);
-//        if (movie.isEmpty()) {
-//            log.info("the movie with the id " + id + " not found in the database.");
-//            return new Movie();
-//        }
+        if (movie.isPresent()) {
+            log.info("the movie with the id " + id + " not found in the database.");
+            return new Movie();
+        }
         log.info("the movie "+movie.get().getName()+" updated.");
         return movie.get();
     }

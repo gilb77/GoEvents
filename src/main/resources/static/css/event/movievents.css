@@ -1,0 +1,32 @@
+
+.panel > .panel-heading {
+    font-size: 30px;
+    border-color: #f48e00;
+    font-weight: bold;
+}
+
+
+.panel-default {
+    /*padding : 5px;*/
+    border-color: #f48e00;
+
+}
+
+
+.big-btn {
+    width: 90px;
+    height: 40px;
+}
+
+
+#cinemas, #movies, #theater{
+    width: 500px;
+}
+#price, #date {
+    width: 100px;
+}
+
+#eventMovieForm {
+    display: flex;
+    justify-content: center;
+}

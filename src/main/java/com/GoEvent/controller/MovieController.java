@@ -30,6 +30,13 @@ public class MovieController {
     }
 
 
+    @RequestMapping("movie/invite/{id}")
+    public String inviteMovie(@PathVariable Integer id, Model model) {
+        model.addAttribute("movie", movieService.getProductById(id));
+
+        return "movie/movieinvite";
+    }
+
     @RequestMapping(value = "/movies", method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("movies", movieService.listAllProducts());

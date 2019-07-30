@@ -24,5 +24,14 @@ public class Theater {
     private Cinema cinema;
 
 
+    public int getSeats(){
+        return this.seats.length;
+    }
+
+
+    public void setSeats(int length){
+        this.seats = new int[ length];
+    }
+
 
 }

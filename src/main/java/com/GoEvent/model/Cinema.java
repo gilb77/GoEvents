@@ -25,7 +25,7 @@ public class Cinema {
     public String city;
 
     @Column
-    public String street;
+    public String address;
 
 
     @OneToMany(mappedBy = "cinema",fetch = FetchType.EAGER, cascade = CascadeType.ALL)

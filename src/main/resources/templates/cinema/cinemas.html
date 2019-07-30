@@ -15,16 +15,16 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <!--<th>Description</th>-->
-                <!--<th>Price</th>-->
+                <th>City</th>
+                <th>Address</th>
                 <th>View</th>
                 <th>Edit</th>
             </tr>
             <tr th:each="cinema : ${cinemas}">
                 <td th:text="${cinema.id}">Id</td>
                 <td th:text="${cinema.name}">Name</td>
-                <!--<td th:text="${cinema.description}">Description</td>-->
-                <!--<td th:text="${product.price}">price</td>-->
+                <td th:text="${cinema.city}">City</td>
+                <td th:text="${cinema.address}">Address</td>
                 <td><a th:href="${'/cinema/'+cinema.id}">View</a></td>
                 <td><a th:href="${'/cinema/edit/'+cinema.id}">Edit</a></td>
             </tr>

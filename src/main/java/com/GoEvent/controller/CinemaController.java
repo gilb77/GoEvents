@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -55,33 +56,7 @@ public class CinemaController {
         cinemaService.saveCinema(cinema);
         return "redirect:/cinema/" + cinema.getId();
     }
-    
-    
-    
-    
-    
 
-//    @PostMapping("/add")
-//    public Cinema addItem(@RequestBody Cinema cinema) {
-//        return cinemaService.saveCinema(cinema);
-//    }
-//
-//
-//    @GetMapping("list")
-//    public List<Cinema> getList() {
-//        return cinemaService.cinemaList();
-//    }
-//
-//
-//    @GetMapping("update/{id}")
-//    public Cinema showUpdateForm(@PathVariable("id") int id) {
-//        return cinemaService.updateCinema(id);
-//    }
-//
-//
-//    @GetMapping("delete/{id}")
-//    public String deleteStudent(@PathVariable("id") int id) {
-//        return cinemaService.deleteCinema(id);
-//    }
+
 
 }

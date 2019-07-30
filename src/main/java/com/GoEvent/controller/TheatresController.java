@@ -3,14 +3,17 @@ package com.GoEvent.controller;
 
 
 import com.GoEvent.model.Theater;
+import com.GoEvent.service.impl.CinemaService;
 import com.GoEvent.service.impl.TheaterServiceImpl;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.util.Map;
 
 
 @Log4j
@@ -19,12 +22,32 @@ public class TheatresController {
 
     private TheaterServiceImpl theaterServiceImpl;
 
+    private CinemaService cinemaService;
+
 
     @Autowired
-    public void setTheaterServiceImpl(TheaterServiceImpl theaterServiceImpl) {
+    public void setServices(TheaterServiceImpl theaterServiceImpl,CinemaService cinemaService) {
         this.theaterServiceImpl = theaterServiceImpl;
+        this.cinemaService = cinemaService;
     }
 
+
+    @RequestMapping(value = "theaters/cinema/{id}")
+    public String chooseCinema(@PathVariable("id") int id, ModelMap model) {
+        model.addAttribute("theaters", cinemaService.getCinemaById(id).getTheatersList());
+        return "theaters/theatershow :: theatersFragment";
+    }
+
+
+    @RequestMapping(value = "theater/new", method = RequestMethod.POST)
+    @ResponseBody
+    public void newTheater(@RequestBody Map<String, String> json)  {
+        Theater theater = new Theater();
+        theater.setSeats(Integer.parseInt(json.get("seats")));
+        theater.setCinema(cinemaService.getCinemaById(Integer.parseInt(json.get("cinema"))));
+        theaterServiceImpl.saveTheater(theater);
+        System.out.println(theater);
+    }
 
 
     @RequestMapping(value = "/theaters", method = RequestMethod.GET)
@@ -47,11 +70,13 @@ public class TheatresController {
         return "theaters/theaterform";
     }
 
-    @RequestMapping("theater/new")
-    public String newProduct(Model model) {
-        model.addAttribute("theater", new Theater());
-        return "theaters/theaterform";
+    @RequestMapping("theater/delete/{id}")
+    public String deleteStudent(@PathVariable Integer id) {
+        theaterServiceImpl.deleteTheatere(id);
+        return "redirect:/cinema/cinemas";
     }
+
+
 
     @RequestMapping(value = "theater", method = RequestMethod.POST)
     public String saveProduct(Theater theater) {
