@@ -1,6 +1,9 @@
 package com.GoEvent.model;
 
+import com.GoEvent.util.ParseUtil;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,7 +16,18 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "movie_event")
+@AllArgsConstructor
+@NoArgsConstructor
 public class MovieEvent {
+
+
+//    public MovieEvent(int movie, String city, int cinema, Date date, Date time){
+//        this.date = date;
+//       this.time=time;
+//       this.movie = movie
+//        movieEvent.setTheater(theaterService.getTheaterById(Integer.parseInt(json.get("theater"))));
+//        movieEvent.setPrice(json.get("price"));
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +57,7 @@ public String formatDateString(){
 
     public String formatTimeString(){
         DateFormat formatter = new SimpleDateFormat("HH:mm");
-        String str = formatter.format(time);
-        System.out.println(str);
         return formatter.format(time);
     }
+
 }

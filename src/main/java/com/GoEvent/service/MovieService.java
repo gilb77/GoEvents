@@ -8,9 +8,9 @@ public interface MovieService {
 
 
 
-    Iterable<Movie> listAllProducts();
+    Iterable<Movie> listAllMovies();
 
-    Movie getProductById(Integer id);
+    Movie getMovieById(Integer id);
 
 
 }

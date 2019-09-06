@@ -3,11 +3,14 @@
 <head lang="en">
     <link th:href="@{/css/movies/movieshow.css}" rel="stylesheet"/>
 
+     <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
 <th:block th:include="fragments/header :: header"></th:block>
 
+<script th:src="@{/js/movies/movieshow.js}"></script>
 <div class="content">
     <div class="row">
         <div class="col-xs-1">
@@ -19,73 +22,64 @@
                      alt="Responsive image">
             </div>
         </div>
-
+        <!--<form th:field="*{movie.id}" th:action="@{/movie/invite}" method="post">-->
+            <!--<input type="hidden" th:name="movie" th:field="*{id}"/>-->
         <div class="col-xs-9">
             <div class="description">
                 <div class="panel">
                     <div class="panel-heading" th:text="${movie.name}"></div>
                     <div class="panel-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Description:</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static" th:text="${movie.description}">Description</p>
-                                </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Description:</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" th:text="${movie.description}">Description</p>
                             </div>
-
-                            <div class="form-group" id="invite">
-                                <button id="submit" type="submit" class="btn big-btn btn-primary pull-right"
-                                        name="submit">Invite
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="form-group" >
+                            <button id="invite" type="submit" class="btn big-btn btn-primary pull-right"
+                                    name="submit">Invite
+                            </button>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
+        <!--</form>-->
     </div>
 </div>
-</div>
 
 
-<!--<div class="panel">-->
-<!--<div class="panel-heading">Cinema's Theaters</div>-->
-<!--<div th:if="${not #lists.isEmpty(events)}">-->
-<!--<table class="table table-striped">-->
-<!--<tr>-->
-<!--<th>Date</th>-->
-<!--<th>Time</th>-->
-<!--<th>Cinema</th>-->
-<!--<th>City</th>-->
-<!--<th>Price</th>-->
-<!--</tr>-->
-<!--<tr th:each="event: ${events}">-->
-<!--<td th:text="${event.formatDateString() }">Date</td>-->
-<!--<td th:text="${event.formatTimeString() }">Time</td>-->
-<!--<td th:text="${event.getTheater().getCinema().getName()}">Cinema</td>-->
-<!--<td th:text="${event.getTheater().getCinema().getCity()}">City</td>-->
-<!--<td th:text="${event.getPrice()}">price</td>-->
-<!--</tr>-->
-<!--</table>-->
-<!--</div>-->
-<!--</div>-->
+<div class="container">
 
-<div class="row">
-    <div class="col-xs-5"></div>
-    <div class="col-xs-6">
-        <div class="video">
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe width="1280" height="720" src="https://www.youtube.com/embed/Nt9L1jCKGnE" frameborder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-            </div>
+
+    <div class="panel">
+
+        <div class="panel-body">
+            <form>
+
+                <div id="citySelectHolder">
+                </div>
+
+                <div id="cinemaSelectHolder">
+
+                </div>
+
+                <div id="dateSelectHolder">
+                </div>
+
+                <div id="timeSelectHolder">
+                </div>
+
+                <div id="seatSelectHolder">
+                </div>
+
+            </form>
         </div>
     </div>
-    <div class="col-xs-1"></div>
 </div>
 
-<div th:replace="fragments/footer :: footer"/>
+
 </body>
 </html>
 

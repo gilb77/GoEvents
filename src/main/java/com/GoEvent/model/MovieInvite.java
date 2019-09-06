@@ -1,6 +1,9 @@
 package com.GoEvent.model;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,17 +11,18 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "Payment")
-public class Payment {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "MovieInvite")
+public class MovieInvite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private MovieInvite movieInvite;
+    private MovieEvent movieEvent;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private User user;
-
+    @Column
+    private int seat;
 }

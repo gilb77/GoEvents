@@ -1,18 +1,19 @@
 package com.GoEvent.controller;
 
 import com.GoEvent.model.Movie;
-import com.GoEvent.service.impl.MovieEventServiceImpl;
 import com.GoEvent.service.impl.MovieServiceImpl;
 import lombok.extern.log4j.Log4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
+
 
 @Log4j
 @Controller
@@ -20,47 +21,38 @@ public class MovieController {
 
 
     private MovieServiceImpl movieService;
-    private MovieEventServiceImpl movieEventService;
 
 
     @Autowired
-    public void setProductsService(MovieServiceImpl movieService,MovieEventServiceImpl movieEventService) {
+    public void setProductsService(MovieServiceImpl movieService) {
         this.movieService = movieService;
-        this.movieEventService = movieEventService;
     }
 
-
-    @RequestMapping("movie/invite/{id}")
-    public String inviteMovie(@PathVariable Integer id, Model model) {
-        model.addAttribute("movie", movieService.getProductById(id));
-
-        return "movie/movieinvite";
-    }
 
     @RequestMapping(value = "/movies", method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("movies", movieService.listAllProducts());
+        model.addAttribute("movies", movieService.listAllMovies());
         log.info("Returning rmovies:");
         return "movie/movies";
     }
 
-    @RequestMapping(value="/moviesPage", method = RequestMethod.GET)
-    public String pageMovie(Model model){
-        model.addAttribute("movies",movieService.listAllProducts());
+    @RequestMapping(value = "/moviesPage", method = RequestMethod.GET)
+    public String pageMovie(Model model) {
+        model.addAttribute("movies", movieService.listAllMovies());
         return "movie/movieslist";
     }
 
     @RequestMapping("movie/{id}")
     public String showProduct(@PathVariable Integer id, Model model) {
-        Movie movie = movieService.getProductById(id);
+        Movie movie = movieService.getMovieById(id);
         model.addAttribute("movie", movie);
-        model.addAttribute("events",movieEventService.listAllEventsByMovie(id));
+
         return "movie/movieshow";
     }
 
     @RequestMapping("movie/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("movie", movieService.getProductById(id));
+        model.addAttribute("movie", movieService.getMovieById(id));
         return "movie/movieform";
     }
 
@@ -85,23 +77,6 @@ public class MovieController {
     public String deleteStudent(@PathVariable Integer id) {
         movieService.deleteMovie(id);
         return "redirect:/movies";
-    }
-
-    @PostMapping("/add")
-    public Movie addItem(@RequestBody Movie movie) {
-        return movieService.saveMovie(movie);
-    }
-
-
-    @GetMapping("list")
-    public List<Movie> getList() {
-        return movieService.movieList();
-    }
-
-
-    @GetMapping("update/{id}")
-    public Movie showUpdateForm(@PathVariable("id") int id) {
-        return movieService.updateMovie(id);
     }
 
 

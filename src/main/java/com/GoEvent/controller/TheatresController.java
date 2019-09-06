@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -70,10 +71,15 @@ public class TheatresController {
         return "theaters/theaterform";
     }
 
-    @RequestMapping("theater/delete/{id}")
-    public String deleteStudent(@PathVariable Integer id) {
-        theaterServiceImpl.deleteTheatere(id);
-        return "redirect:/cinema/cinemas";
+    @RequestMapping("theater/delete/{cinemaId}/{id}")
+    public String deleteStudent(@PathVariable Integer cinemaId,@PathVariable Integer id) {
+//        List<Theater> theatersList = cinemaService.getCinemaById(cinemaId).getTheatersList();
+//        int counter = 0;
+//        while (counter < theatersList.size() &&  theatersList.get(counter).getId() != id)
+//            counter++;
+//        cinemaService.getCinemaById(cinemaId).getTheatersList().remove(counter);
+        theaterServiceImpl.deleteTheater(cinemaId);
+        return "redirect:/cinema/"+cinemaId;
     }
 
 

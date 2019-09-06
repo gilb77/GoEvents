@@ -17,7 +17,7 @@
                 <th>Cinema</th>
                 <th>theater</th>
                 <th>price</th>
-                <!--<th>Price</th>-->
+                <th>movie</th>
                 <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -27,6 +27,7 @@
                 <td th:text="${event.theater.getCinema().getName()}">Cinema</td>
                 <td th:text="${event.theater.getId()}">theater</td>
                 <td th:text="${event.price}">price</td>
+                <td th:text="${event.getMovie().getName()}">movie</td>
                 <!--<td th:text="${product.price}">price</td>-->
                 <td><a th:href="${'/movie/'+event.id}">View</a></td>
                 <td><a th:href="${'/movie/edit/'+event.id}">Edit</a></td>

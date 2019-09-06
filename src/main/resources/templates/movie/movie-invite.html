@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <!--<script th:src="@{/js/movies/movie-invite.js}"></script>-->
+      <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+<th:block th:include="fragments/header :: header"></th:block>
+<div class="container">
+
+
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Create movie event</h3>
+        </div>
+        <div class="panel-body">
+            <form>
+
+                <div class="form-group">
+                    <label class="control-label " for="City">City</label>
+                    <select class="form-control" th:field="${eventsByMovie}" id="city">
+                        <option th:each="event : ${eventsByMovie}"
+                                th:value="${event.getTheater().getCinema().getId()}"
+                                th:text="${event.getTheater().getCinema().getCity()}"></option>
+                    </select>
+                </div>
+
+
+                <div id="cinemaSelectHolder">
+
+                </div>
+
+                <div id="dateSelectHolder">
+                </div>
+
+                <div id="timeSelectHolder">
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script th:inline="javascript">
+    $(document).ready(function($) {
+    var str = window.location.pathname.split('/');
+    var movie = str[3];
+
+
+
+
+    // $("#city").change($.loadates());
+
+    // $.loadates =  function fillUpDates() {
+    //     console.log("hi");
+        // alert("http://localhost:8080/movie/invite/" +
+        //     movie + "/" +
+        //     document.getElementById("city").value+ "/" +
+        //     document.getElementById("cinema").value);
+
+
+        // $.ajax({
+        //     url: "http://localhost:8080/movie/invite/" +
+        //     movie + "/" +
+        //     document.getElementById("city").value+ "/" +
+        //     document.getElementById("cinema").value,
+        //     success: function (data) {
+        //         $("#dateSelectHolder").html(data);
+        //         $("#dateSelect").modal("show");
+        //     }
+        // })
+    // };
+    console.log("hi");
+
+    function fillUpCinemas() {
+        $.ajax({
+            url: "http://localhost:8080/movie/invite/" +
+            movie + "/" +
+            document.getElementById("city").value,
+            success: function (data) {
+                $("#cinemaSelectHolder").html(data);
+                $("#cinemaSelect").modal("show");
+
+            }
+        })
+    }
+    });
+</script>
+
+</body>
+</html>
