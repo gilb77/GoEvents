@@ -19,15 +19,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class MovieEvent {
 
-
-//    public MovieEvent(int movie, String city, int cinema, Date date, Date time){
-//        this.date = date;
-//       this.time=time;
-//       this.movie = movie
-//        movieEvent.setTheater(theaterService.getTheaterById(Integer.parseInt(json.get("theater"))));
-//        movieEvent.setPrice(json.get("price"));
-//    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
