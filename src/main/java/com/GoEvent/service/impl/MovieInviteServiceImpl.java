@@ -20,10 +20,11 @@ public class MovieInviteServiceImpl implements MovieInviteService {
   @Autowired
   private MovieEventServiceImpl movieEventService;
 
+  @Autowired
+  private ShoppingCartServiceImpl shoppingCartService;
+
     public void newInvite(int movie, String city, int cinema, Date date, Date time,String seat) throws Exception {
-        MovieInvite movieInvite = new MovieInvite();
-        movieInvite.setMovieEvent(movieEventService.getMovieEvent( movie,city,cinema,date,time));
-        movieInvite.setSeat(Integer.parseInt(seat));
-        movieInviteRepository.save(movieInvite);
+        shoppingCartService.addMovieInvites(movieEventService.getMovieEvent( movie,city,cinema,date,time),Integer.parseInt(seat));
+//        movieInviteRepository.save(movieInvite);
     }
 }

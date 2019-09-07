@@ -1,21 +1,24 @@
 package com.GoEvent.service;
-//
-//import com.GoEvent.exception.NotEnoughEventInStockException;
-//import com.GoEvent.model.MovieEvent;
-//
-//import java.math.BigDecimal;
-//import java.util.Map;
-//
-//public interface ShoppingCartService {
-//
-//    void addEvent(MovieEvent product);
-//
-//    void removeEvent(MovieEvent product);
-//
-//    Map<MovieEvent, Integer> getEventInCart();
-//
-//    void checkout() throws NotEnoughEventInStockException;
+
+import com.GoEvent.exception.NotEnoughSeatsInStockException;
+import com.GoEvent.model.Invite;
+import com.GoEvent.model.MovieInvite;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+public interface ShoppingCartService {
+
+    void addInvite(Invite invites);
+
+    void removeInvite(Invite invites);
+
+    List<Invite> getInvitesInCart();
+    List<MovieInvite> getMovieInvitesInCart();
+
+//    void checkout() throws NotEnoughSeatsInStockException;
 //
 //    BigDecimal getTotal();
-//
-//}
+
+}
