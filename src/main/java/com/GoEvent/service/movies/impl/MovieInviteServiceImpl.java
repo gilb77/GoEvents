@@ -1,11 +1,9 @@
-package com.GoEvent.service.impl;
+package com.GoEvent.service.movies.impl;
 
 
-import com.GoEvent.dao.MovieInviteRepository;
-import com.GoEvent.dao.MovieRepository;
-import com.GoEvent.model.MovieEvent;
-import com.GoEvent.model.MovieInvite;
-import com.GoEvent.service.MovieInviteService;
+import com.GoEvent.dao.movies.MovieInviteRepository;
+import com.GoEvent.service.impl.ShoppingCartServiceImpl;
+import com.GoEvent.service.movies.MovieInviteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

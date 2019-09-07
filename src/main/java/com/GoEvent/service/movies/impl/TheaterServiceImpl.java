@@ -1,9 +1,9 @@
-package com.GoEvent.service.impl;
+package com.GoEvent.service.movies.impl;
 
 
-import com.GoEvent.dao.TheaterRepository;
-import com.GoEvent.model.Theater;
-import com.GoEvent.service.TheaterService;
+import com.GoEvent.dao.movies.TheaterRepository;
+import com.GoEvent.model.movies.Theater;
+import com.GoEvent.service.movies.TheaterService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

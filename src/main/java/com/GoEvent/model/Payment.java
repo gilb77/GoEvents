@@ -1,5 +1,6 @@
 package com.GoEvent.model;
 
+import com.GoEvent.model.movies.MovieInvite;
 import lombok.Getter;
 import lombok.Setter;
 

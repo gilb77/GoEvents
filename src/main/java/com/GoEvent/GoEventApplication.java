@@ -1,9 +1,9 @@
 package com.GoEvent;
 
-import com.GoEvent.dao.CinemaRepository;
-import com.GoEvent.dao.MovieEventRepository;
-import com.GoEvent.dao.MovieRepository;
-import com.GoEvent.dao.TheaterRepository;
+import com.GoEvent.dao.movies.CinemaRepository;
+import com.GoEvent.dao.movies.MovieEventRepository;
+import com.GoEvent.dao.movies.MovieRepository;
+import com.GoEvent.dao.movies.TheaterRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

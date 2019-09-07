@@ -1,22 +1,5 @@
 package com.GoEvent;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
-
-
-import com.GoEvent.model.Cinema;
-import com.GoEvent.model.Movie;
-import com.GoEvent.model.Theater;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.service.ServiceRegistry;
-
-
 
 public class HibernateSessionUtil {
 //

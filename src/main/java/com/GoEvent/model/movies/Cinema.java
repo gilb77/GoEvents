@@ -1,4 +1,4 @@
-package com.GoEvent.model;
+package com.GoEvent.model.movies;
 
 import lombok.Getter;
 import lombok.Setter;

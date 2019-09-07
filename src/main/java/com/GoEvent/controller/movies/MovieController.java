@@ -1,7 +1,7 @@
-package com.GoEvent.controller;
+package com.GoEvent.controller.movies;
 
-import com.GoEvent.model.Movie;
-import com.GoEvent.service.impl.MovieServiceImpl;
+import com.GoEvent.model.movies.Movie;
+import com.GoEvent.service.movies.impl.MovieServiceImpl;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

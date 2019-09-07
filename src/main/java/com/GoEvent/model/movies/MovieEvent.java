@@ -1,6 +1,5 @@
-package com.GoEvent.model;
+package com.GoEvent.model.movies;
 
-import com.GoEvent.util.ParseUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.GoEvent.service;
+package com.GoEvent.service.movies;
 
-import com.GoEvent.model.Cinema;
+import com.GoEvent.model.movies.Cinema;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

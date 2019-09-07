@@ -1,6 +1,6 @@
-package com.GoEvent.dao;
+package com.GoEvent.dao.movies;
 
-import com.GoEvent.model.Theater;
+import com.GoEvent.model.movies.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

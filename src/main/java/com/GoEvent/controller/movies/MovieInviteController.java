@@ -1,10 +1,10 @@
-package com.GoEvent.controller;
+package com.GoEvent.controller.movies;
 
 
-import com.GoEvent.model.Movie;
-import com.GoEvent.service.impl.MovieEventServiceImpl;
-import com.GoEvent.service.impl.MovieInviteServiceImpl;
-import com.GoEvent.service.impl.MovieServiceImpl;
+import com.GoEvent.model.movies.Movie;
+import com.GoEvent.service.movies.impl.MovieEventServiceImpl;
+import com.GoEvent.service.movies.impl.MovieInviteServiceImpl;
+import com.GoEvent.service.movies.impl.MovieServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

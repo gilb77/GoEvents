@@ -1,10 +1,10 @@
-package com.GoEvent.controller;
+package com.GoEvent.controller.movies;
 
-import com.GoEvent.model.MovieEvent;
-import com.GoEvent.service.impl.CinemaService;
-import com.GoEvent.service.impl.MovieEventServiceImpl;
-import com.GoEvent.service.impl.MovieServiceImpl;
-import com.GoEvent.service.impl.TheaterServiceImpl;
+import com.GoEvent.model.movies.MovieEvent;
+import com.GoEvent.service.movies.impl.CinemaService;
+import com.GoEvent.service.movies.impl.MovieEventServiceImpl;
+import com.GoEvent.service.movies.impl.MovieServiceImpl;
+import com.GoEvent.service.movies.impl.TheaterServiceImpl;
 import com.GoEvent.util.ParseUtil;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;

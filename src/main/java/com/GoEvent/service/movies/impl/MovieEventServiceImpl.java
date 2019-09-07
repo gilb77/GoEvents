@@ -1,13 +1,12 @@
-package com.GoEvent.service.impl;
+package com.GoEvent.service.movies.impl;
 
 
-import com.GoEvent.dao.MovieEventRepository;
-import com.GoEvent.model.MovieEvent;
+import com.GoEvent.dao.movies.MovieEventRepository;
+import com.GoEvent.model.movies.MovieEvent;
 import com.GoEvent.service.EventService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.testng.internal.thread.ThreadExecutionException;
 
 import java.text.ParseException;
 import java.util.Date;

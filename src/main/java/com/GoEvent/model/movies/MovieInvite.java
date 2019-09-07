@@ -1,6 +1,7 @@
-package com.GoEvent.model;
+package com.GoEvent.model.movies;
 
 
+import com.GoEvent.model.Invite;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

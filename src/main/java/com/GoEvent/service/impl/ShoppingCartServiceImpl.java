@@ -1,8 +1,7 @@
 package com.GoEvent.service.impl;
 
-import com.GoEvent.dao.MovieInviteRepository;
-import com.GoEvent.model.Invite;
-import com.GoEvent.model.MovieEvent;
+import com.GoEvent.dao.movies.MovieInviteRepository;
+import com.GoEvent.model.movies.MovieEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
-package com.GoEvent.dao;
+package com.GoEvent.dao.movies;
 
 
-import com.GoEvent.model.Movie;
+import com.GoEvent.model.movies.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

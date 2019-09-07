@@ -1,7 +1,7 @@
 package com.GoEvent.exception;
 //
 //
-//import com.GoEvent.model.MovieEvent;
+//import com.GoEvent.model.movies.MovieEvent;
 ////
 ////public class NotEnoughEventsInStockException extends Exception {
 ////

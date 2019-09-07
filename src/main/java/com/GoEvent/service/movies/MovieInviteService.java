@@ -1,4 +1,4 @@
-package com.GoEvent.service;
+package com.GoEvent.service.movies;
 
 public interface MovieInviteService {
 }

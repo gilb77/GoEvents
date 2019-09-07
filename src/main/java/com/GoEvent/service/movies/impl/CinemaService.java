@@ -1,8 +1,7 @@
-package com.GoEvent.service.impl;
+package com.GoEvent.service.movies.impl;
 
-import com.GoEvent.dao.CinemaRepository;
-import com.GoEvent.model.Cinema;
-import com.GoEvent.model.Movie;
+import com.GoEvent.dao.movies.CinemaRepository;
+import com.GoEvent.model.movies.Cinema;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 @Log4j
 @Service
-public class CinemaService implements com.GoEvent.service.CinemaService {
+public class CinemaService implements com.GoEvent.service.movies.CinemaService {
 
 
    private CinemaRepository cinemaRepository ;

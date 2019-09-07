@@ -1,10 +1,10 @@
-package com.GoEvent.controller;
+package com.GoEvent.controller.movies;
 
 
 
-import com.GoEvent.model.Theater;
-import com.GoEvent.service.impl.CinemaService;
-import com.GoEvent.service.impl.TheaterServiceImpl;
+import com.GoEvent.model.movies.Theater;
+import com.GoEvent.service.movies.impl.CinemaService;
+import com.GoEvent.service.movies.impl.TheaterServiceImpl;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 
 
