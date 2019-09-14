@@ -1,5 +1,7 @@
 package com.GoEvent.util;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,5 +29,10 @@ public class ParseUtil {
     public String parseTimeToString(Date date){
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         return formatter.format(date);
+    }
+
+
+    public static String encodePhoto(byte[] data){
+        return Base64.encodeBase64String(data) ;
     }
 }

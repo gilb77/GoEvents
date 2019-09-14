@@ -39,15 +39,4 @@ public class MovieEvent {
     @OneToOne(cascade = CascadeType.ALL)
     Movie movie;
 
-
-public String formatDateString(){
-    DateFormat formatter = new SimpleDateFormat("MM/DD/yyyy");
-    return formatter.format(date);
-}
-
-    public String formatTimeString(){
-        DateFormat formatter = new SimpleDateFormat("HH:mm");
-        return formatter.format(time);
-    }
-
 }

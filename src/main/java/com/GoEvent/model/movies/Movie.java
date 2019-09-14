@@ -34,8 +34,8 @@ public class Movie {
     @Column(name = "image", columnDefinition="BLOB")
     private byte[] image;
 
-
-    public  String encodePhoto(byte[] data){
-       return Base64.encodeBase64String(data) ;
+    public String encodePhoto(byte[] data){
+        return Base64.encodeBase64String(data) ;
     }
+
 }

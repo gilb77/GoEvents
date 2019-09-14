@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+
+<th:block th:include="fragments/header :: header"></th:block>
+
+
+
+<div class="container">
+
+    <div th:if="${not #lists.isEmpty(artists)}">
+        <div  >
+            <div class="row">
+                <div class="col-lg-3" th:each="artist : ${artists}">
+                    <a th:href="${'/artists/'+artist.id}">
+                        <img th:src="*{'data:image/jpeg;base64,'+ artist.encodePhoto(artist.getImage()) }"
+                             class="img-thumbnail"
+                             style="width:80%"
+                             alt="Responsive image">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

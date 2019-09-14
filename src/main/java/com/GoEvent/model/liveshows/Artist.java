@@ -2,6 +2,7 @@ package com.GoEvent.model.liveshows;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -25,6 +26,8 @@ public class Artist {
     @Lob
     @Column(name = "image", columnDefinition="BLOB")
     private byte[] image;
-
+    public String encodePhoto(byte[] data){
+        return Base64.encodeBase64String(data) ;
+    }
 
 }

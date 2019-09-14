@@ -10,9 +10,9 @@
 <div class="container">
 
 
-    <h2>Cinema Details</h2>
+    <h2>New Artist</h2>
     <div>
-        <form class="form-horizontal" th:object="${cinema}" th:action="@{/cinema}" method="post">
+        <form class="form-horizontal" th:object="${artist}" th:action="@{/artists/new}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Name:</label>
@@ -21,23 +21,23 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">City:</label>
+                <label class="col-sm-2 control-label">Description:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" th:field="*{city}"/>
+                    <input type="text" class="form-control" th:field="*{description}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Address:</label>
+                <label class="col-sm-2 control-label">image:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" th:field="*{address}"/>
+                    <input type="file" class="form-control" name="fileUpload"/>
                 </div>
             </div>
+
             <div class="row">
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-success">Submit</button>
             </div>
         </form>
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

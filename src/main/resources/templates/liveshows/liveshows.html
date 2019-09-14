@@ -9,29 +9,34 @@
 
 <div class="container">
 
-    <div th:if="${not #lists.isEmpty(cinemas)}">
+    <div th:if="${not #lists.isEmpty(liveShows)}">
         <h2>Cinema List</h2>
         <table class="table table-striped">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>City</th>
                 <th>Address</th>
-                <th>View</th>
+                <th>Seats Number</th>
+                <th>Stands Number</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Edit</th>
+                <th>Delete</th>
             </tr>
-            <tr th:each="cinema : ${cinemas}">
-                <td th:text="${cinema.id}">Id</td>
-                <td th:text="${cinema.name}">Name</td>
-                <td th:text="${cinema.city}">City</td>
-                <td th:text="${cinema.address}">Address</td>
-                <td><a th:href="${'/cinema/'+cinema.id}">View</a></td>
-                <td><a th:href="${'/cinema/edit/'+cinema.id}">Edit</a></td>
+            <tr th:each="liveShow : ${liveShows}">
+                <td th:text="${liveShow.id}">Id</td>
+                <td th:text="${liveShow.artist.getName()}">Name</td>
+                <td th:text="${liveShow.address}">Address</td>
+                <td th:text="${liveShow.getNumSeats()}">Seats Number</td>
+                <td th:text="${liveShow.getPlaces()}">Stands Number</td>
+                <td th:text="${liveShow.date}">Date</td>
+                <td th:text="${liveShow.time}">Time</td>
+                <td><a th:href="${'/liveshows/edit/'+liveShow.id}">Edit</a></td>
+                <td><a th:href="${'/liveshows/delete/'+liveShow.id}">Delete</a></td>
             </tr>
         </table>
 
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

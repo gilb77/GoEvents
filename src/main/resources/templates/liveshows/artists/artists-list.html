@@ -9,29 +9,32 @@
 
 <div class="container">
 
-    <div th:if="${not #lists.isEmpty(cinemas)}">
-        <h2>Cinema List</h2>
-        <table class="table table-striped">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>City</th>
-                <th>Address</th>
-                <th>View</th>
-                <th>Edit</th>
-            </tr>
-            <tr th:each="cinema : ${cinemas}">
-                <td th:text="${cinema.id}">Id</td>
-                <td th:text="${cinema.name}">Name</td>
-                <td th:text="${cinema.city}">City</td>
-                <td th:text="${cinema.address}">Address</td>
-                <td><a th:href="${'/cinema/'+cinema.id}">View</a></td>
-                <td><a th:href="${'/cinema/edit/'+cinema.id}">Edit</a></td>
-            </tr>
-        </table>
+    <div class="container">
 
+
+        <div th:if="${not #lists.isEmpty(artists)}">
+            <h2>artist List</h2>
+            <table class="table table-striped ">
+                <tr class="table-warning">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                <tr th:each="artist : ${artists}">
+                    <td th:text="${artist.id}">Id</td>
+                    <td th:text="${artist.name}">Name</td>
+                    <td th:text="${artist.description}">Description</td>
+                    <td><a th:href="${'/artists/'+artist.id}">View</a></td>
+                    <td><a th:href="${'/artists/edit/'+artist.id}">Edit</a></td>
+                    <td><a th:href="${'/artists/delete/'+artist.id}">Delete</a></td>
+                </tr>
+            </table>
+
+        </div>
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
