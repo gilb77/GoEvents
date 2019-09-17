@@ -20,13 +20,13 @@ public class ParseUtil {
         return formatter.parse(Time);
     }
 
-    public String parseDateToString(Date date){
+    public static String parseDateToString(Date date){
         DateFormat formatter = new SimpleDateFormat("MM/DD/yyyy");
         return formatter.format(date);
     }
 
 
-    public String parseTimeToString(Date date){
+    public static String parseTimeToString(Date date){
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         return formatter.format(date);
     }

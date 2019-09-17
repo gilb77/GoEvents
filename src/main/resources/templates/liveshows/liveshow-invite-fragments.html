@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <link th:href="@{/css/movies/movieshow.css}" rel="stylesheet"/>
+
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:fragment="locationFragment" id="locationSelect">
+    <div class="form-group">
+        <label class="control-label " for="location">Location</label>
+        <select class="form-control" id="location">
+            <option th:each="liveShow : ${liveshows}"
+                    th:value="${liveShow.getId()}"
+                    th:text="${liveShow.getAddress()}"></option>
+        </select>
+    </div>
+    <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>
+</div>
+
+<div th:fragment="dateFragment" id="dateSelect">
+    <div class="form-group">
+        <label class="control-label" for="date">Date</label>
+        <select class="form-control" id="date" th:field="*{eventsByLocation}">
+            <option th:each="event : ${eventsByLocation}"
+                    th:value="${event.id}"
+                    th:text="${parseUtil.parseDateToString(event.getDate())}"></option>
+        </select>
+    </div>
+    <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>
+</div>
+
+<div th:fragment="timeFragment" id="timeSelect">
+    <div class="form-group">
+        <label class="control-label" for="time">Time</label>
+        <select class="form-control" id="time" th:field="*{eventsByDate}">
+            <option th:each="event : ${eventsByDate}"
+                    th:value="${event.id}"
+                    th:text="${parseUtil.parseTimeToString(event.getTime())}"></option>
+        </select>
+    </div>
+    <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>
+</div>
+
+
+
+<div th:fragment="seatFragment" id="seatSelect">
+    <div class="form-group">
+        <label class="control-label" for="seat">Seats</label>
+        <select class="form-control" id="seat" th:field="*{eventsByTime}">
+            <option th:each="seat : ${eventsByTime}"
+                    th:value="${seat}"
+                    th:text="${seat}"></option>
+        </select>
+    </div>
+    <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>
+</div>
+
+
+</body>
+</html>
+

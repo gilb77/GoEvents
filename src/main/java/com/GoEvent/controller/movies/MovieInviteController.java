@@ -5,6 +5,7 @@ import com.GoEvent.model.movies.Movie;
 import com.GoEvent.service.movies.impl.MovieEventServiceImpl;
 import com.GoEvent.service.movies.impl.MovieInviteServiceImpl;
 import com.GoEvent.service.movies.impl.MovieServiceImpl;
+import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,7 @@ public class MovieInviteController {
     @PostMapping("/movie/invite")
     public String inviteMovie(@ModelAttribute Movie movie, Model model) {
         model.addAttribute("movie", movie);
-        model.addAttribute("eventsByMovie", movieEventService.listAllEventsByMovie(movie.getId()));
+        model.addAttribute("eventsByMovie", movieEventService.getMovieEventByFilter(movie.getId()));
         return "movie/movie-invite";
     }
 
@@ -47,13 +48,13 @@ public class MovieInviteController {
     @RequestMapping(value = "/movie/invite/{movie}")
     public String inviteMovie(@PathVariable("movie") int movie, Model model) {
         model.addAttribute("movie", movieService.getMovieById(movie));
-        model.addAttribute("eventsByMovie", movieEventService.listAllEventsByMovie(movie));
+        model.addAttribute("eventsByMovie", movieEventService.getMovieEventByFilter(movie));
         return "movie/movie-invite-fragments :: cityFragment";
     }
 
     @RequestMapping(value = "/movie/invite/{movie}/{city}")
     public String chooseCinema(@PathVariable("movie") int movie, @PathVariable("city") String city, ModelMap model) {
-        model.addAttribute("eventsByCity", movieEventService.listAllEventByCity(movie, city));
+        model.addAttribute("eventsByCity", movieEventService.getMovieEventByFilter(movie, city));
         return "movie/movie-invite-fragments :: cinemasFragment";
     }
 
@@ -63,7 +64,8 @@ public class MovieInviteController {
                              @PathVariable("city") String city,
                              @PathVariable("cinema") int cinema,
                              ModelMap model) {
-        model.addAttribute("eventsByCinema", movieEventService.listAllEventByCinema(movie, city, cinema));
+        model.addAttribute("eventsByCinema", movieEventService.getMovieEventByFilter(movie, city, cinema));
+        model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movie-invite-fragments :: dateFragment";
     }
 
@@ -71,11 +73,12 @@ public class MovieInviteController {
     public String chooseTime(@RequestBody Map<String, String> json,
                              ModelMap model) throws ParseException {
         model.addAttribute("eventsByDate",
-                movieEventService.listAllEventByDate(
+                movieEventService.getMovieEventByFilter(
                         Integer.parseInt(json.get("movie")),
                         json.get("city"),
                         Integer.parseInt(json.get("cinema")),
                         parseStringToDate(json.get("date"))));
+        model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movie-invite-fragments :: timeFragment";
     }
 

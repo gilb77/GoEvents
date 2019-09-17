@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,96 +29,68 @@ public class MovieEventServiceImpl implements EventService {
     }
 
 
-    public Iterable<MovieEvent> listAllEvents() {
+    public List<MovieEvent> listAllEvents() {
         return movieEventRepository.findAll();
     }
 
+    public List<MovieEvent> getMovieEventByFilter(int movie) {
+        return getMovieEventByFilter(movie, null, -1, null, null);
+    }
 
-    public Iterable<MovieEvent> listAllEventsByMovie(int movie) {
-        Iterable<MovieEvent> movieEvents = movieEventRepository.findAll();
-        Iterable<MovieEvent> tempMovieEvents = movieEventRepository.findAll();
-        int index = 0;
-        for (MovieEvent event : tempMovieEvents) {
-            if (event.getMovie().getId() != movie)
-                ((List<MovieEvent>) movieEvents).remove(index);
-            index++;
-        }
-        return movieEvents;
+    public List<MovieEvent> getMovieEventByFilter(int movie, String city) {
+        return getMovieEventByFilter(movie, city, -1, null, null);
+    }
+
+    public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema) {
+        return getMovieEventByFilter(movie, city, cinema, null, null);
+    }
+
+    public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema, Date date) {
+        return getMovieEventByFilter(movie, city, cinema, date, null);
     }
 
 
-    public Iterable<MovieEvent> listAllEventByCity(int movie, String city) {
-        Iterable<MovieEvent> movieEvents = movieEventRepository.findAll();
-        Iterable<MovieEvent> tempMovieEvents = movieEvents;
-        int index = 0;
-        for (MovieEvent event : tempMovieEvents) {
-            if (!StringUtils.equalsIgnoreCase(
-                    event.getTheater().getCinema().getCity(),
-                    city) &&
-                    event.getMovie().getId() != movie)
-                ((List<MovieEvent>) movieEvents).remove(index);
-            index++;
+    public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema, Date date, Date time) {
+        List<MovieEvent> movieEvents = movieEventRepository.findAll();
+        List<MovieEvent> tempMovieEvents = new ArrayList<>();
+        for (MovieEvent event : movieEvents) {
+            if (checkMovie(event, movie) && checkCity(event, city) &&
+                    checkCinema(event, cinema) && checkDate(event, date) && checkTime(event, time))
+                tempMovieEvents.add(event);
         }
-        return movieEvents;
-    }
-
-
-    public Iterable<MovieEvent> listAllEventByCinema(int movie, String city, int cinema) {
-        Iterable<MovieEvent> movieEvents = movieEventRepository.findAll();
-        Iterable<MovieEvent> tempMovieEvents = movieEvents;
-        int index = 0;
-        for (MovieEvent event : tempMovieEvents) {
-            if (!StringUtils.equalsIgnoreCase(
-                    event.getTheater().getCinema().getCity(),
-                    city) &&
-                    event.getMovie().getId() != movie &&
-                    event.getTheater().getCinema().getId() != cinema)
-                ((List<MovieEvent>) movieEvents).remove(index);
-            index++;
-        }
-        return movieEvents;
-    }
-
-
-    public Iterable<MovieEvent> listAllEventByDate(int movie, String city, int cinema, Date date) throws ParseException {
-        Iterable<MovieEvent> movieEvents = movieEventRepository.findAll();
-        Iterable<MovieEvent> tempMovieEvents = movieEvents;
-        int index = 0;
-        for (MovieEvent event : tempMovieEvents) {
-            //check if the event is different from the argument we get in the method,
-            // in case of true we remove him from the list.
-            if (!StringUtils.equalsIgnoreCase(
-                    event.getTheater().getCinema().getCity(),
-                    city) &&//check the name city
-                    event.getMovie().getId() != movie && //check movie id
-                    event.getTheater().getCinema().getId() != cinema &&// check cinema id
-                    !event.getDate().equals(date))
-                ((List<MovieEvent>) movieEvents).remove(index);
-            index++;
-        }
-        return movieEvents;
+        return tempMovieEvents;
     }
 
     public Iterable<Integer> listAllSeatsByTime(int movie, String city, int cinema, Date date, Date time) throws Exception {
-       return getMovieEvent( movie,city,cinema,date,time).getTheater().getFreeSeats();
+        return getMovieEvent(movie, city, cinema, date, time).getTheater().getFreeSeats();
     }
-
-
-
 
     public MovieEvent getMovieEvent(int movie, String city, int cinema, Date date, Date time) throws Exception {
-        Iterable<MovieEvent> movieEvents = movieEventRepository.findAll();
-        for (MovieEvent event : movieEvents) {
-            if (StringUtils.equalsIgnoreCase(
-                    event.getTheater().getCinema().getCity(), city) &&
-                    event.getMovie().getId() == movie &&
-                    event.getTheater().getCinema().getId() == cinema &&
-                    event.getDate().equals(date) &&
-                    event.getTime().compareTo(time) == 0)
-                return event;
-        }
-        throw new Exception();
+        List<MovieEvent> movieEvent = getMovieEventByFilter(movie, city, cinema, date, time);
+        if (movieEvent.isEmpty())
+            throw new Exception("The event not exists");
+        if(movieEvent.size()>1)
+            throw new Exception("The event is duplicate");
+        return movieEvent.get(0);
     }
 
+    private boolean checkMovie(MovieEvent event, int movie) {
+        return movie == -1 || (event.getMovie().getId() == movie);
+    }
 
+    private boolean checkCity(MovieEvent event, String city) {
+        return city == null || (StringUtils.equalsIgnoreCase(event.getTheater().getCinema().getCity(), city));
+    }
+
+    private boolean checkCinema(MovieEvent event, int cinema) {
+        return cinema == -1 || (event.getTheater().getCinema().getId() == cinema);
+    }
+
+    private boolean checkDate(MovieEvent event, Date date) {
+        return date == null || (event.getDate().compareTo(date) == 0);
+    }
+
+    private boolean checkTime(MovieEvent event, Date time) {
+        return time == null || (event.getTime().compareTo(time) == 0);
+    }
 }

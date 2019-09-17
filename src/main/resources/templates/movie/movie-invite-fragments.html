@@ -40,8 +40,8 @@
         <label class="control-label" for="Date">Date</label>
         <select class="form-control" id="date" th:field="*{eventsByCinema}">
             <option th:each="event : ${eventsByCinema}"
-                    th:value="${event.getId()}"
-                    th:text="${event.formatDateString()}"></option>
+                    th:value="${event.id}"
+                    th:text="${parseUtil.parseDateToString(event.getDate())}"></option>
         </select>
     </div>
     <script th:src="@{/js/movies/movieshow.js}"></script>
@@ -55,8 +55,8 @@
         <label class="control-label" for="Time">Time</label>
         <select class="form-control" id="time" th:field="*{eventsByDate}">
             <option th:each="event : ${eventsByDate}"
-                    th:value="${event.getId()}"
-                    th:text="${event.formatTimeString()}"></option>
+                    th:value="${event.id}"
+                    th:text="${parseUtil.parseTimeToString(event.getTime())}"></option>
         </select>
     </div>
     <script th:src="@{/js/movies/movieshow.js}"></script>

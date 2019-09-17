@@ -3,6 +3,7 @@ package com.GoEvent.controller.liveshows;
 import com.GoEvent.model.liveshows.Artist;
 import com.GoEvent.model.movies.Movie;
 import com.GoEvent.service.liveshows.ArtistServiceImpl;
+import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ public class ArtistController {
     @RequestMapping("/{id}")
     public String showProduct(@PathVariable Integer id, Model model) {
         model.addAttribute("artist", artistService.getArtistById(id));
+        model.addAttribute("parseUtil", new ParseUtil());
         return "liveshows/artists/artist-details";
     }
 

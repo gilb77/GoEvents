@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <link th:href="@{/css/movies/movieshow.css}" rel="stylesheet"/>
+    <link th:href="@{/css/liveshows/artists/artistDetails.css}" rel="stylesheet"/>
+
 
     <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
     <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
      <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
+<script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>
 <th:block th:include="fragments/header :: header"></th:block>
 <div class="content">
 
@@ -16,7 +18,7 @@
         </div>
         <div class="col-xs-2">
             <div class="photo">
-                <img th:src="*{'data:image/jpeg;base64,'+ artist.encodePhoto(artist.getImage()) }" class="img-thumbnail"
+                <img th:src="*{'data:image/jpeg;base64,'+ parseUtil.encodePhoto(artist.getImage()) }" class="img-thumbnail"
                      style="width:100%"
                      alt="Responsive image">
             </div>
@@ -32,6 +34,11 @@
                                 <p class="form-control-static" th:text="${artist.description}">Description</p>
                             </div>
                         </div>
+                        <div class="form-group" >
+                            <button id="invite" type="submit" class="btn big-btn btn-primary pull-right"
+                                    name="submit">Invite
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,7 +53,7 @@
         <div class="panel-body">
             <form>
 
-                <div id="AddressSelectHolder">
+                <div id="locationSelectHolder">
                 </div>
 
                 <div id="dateSelectHolder">
@@ -55,16 +62,24 @@
                 <div id="timeSelectHolder">
                 </div>
 
+                <div id="myRadio" hidden>
+                    <label class="radio-inline"><input id="standing" type="radio" name="optradio" checked>Stand</label>
+                    <label class="radio-inline"><input id="seating" type="radio" name="optradio">Seat</label>
+                </div>
                 <div id="seatSelectHolder">
                 </div>
-
-                <div id="standSelectHolder">
+                <div id="classInvite" class="form-group" hidden>
+                    <button id="submitInvite" type="button" class="btn big-btn btn-primary pull-right"
+                            name="submit">Submit
+                    </button>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
+
+
+
 
 </body>
 </html>

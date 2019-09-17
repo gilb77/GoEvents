@@ -2,6 +2,7 @@ package com.GoEvent.controller.movies;
 
 import com.GoEvent.model.movies.Movie;
 import com.GoEvent.service.movies.impl.MovieServiceImpl;
+import com.GoEvent.util.ParseUtil;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,7 @@ public class MovieController {
     public String showProduct(@PathVariable Integer id, Model model) {
         Movie movie = movieService.getMovieById(id);
         model.addAttribute("movie", movie);
+        model.addAttribute("parseUtil",new ParseUtil());
 
         return "movie/movieshow";
     }
