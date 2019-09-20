@@ -7,12 +7,14 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 
@@ -65,7 +67,19 @@ public class MovieController {
     }
 
     @RequestMapping(value = "movie", method = RequestMethod.POST)
-    public String saveProduct(Movie movie, @RequestParam MultipartFile fileUpload) throws IOException {
+    public String saveProduct(Movie movie,Model model,
+                              @RequestParam MultipartFile fileUpload) throws IOException {
+
+        if (movie.getName().isEmpty() || movie.getDescription().isEmpty() || fileUpload.isEmpty()) {
+            model.addAttribute("error", "One of the field is empty.");
+            return "movie/movieform";
+        }
+
+        if(movieService.movieNameExists(movie.getName())){
+            model.addAttribute("error", "Movie name exists.");
+            return "movie/movieform";
+        }
+
         if (fileUpload.getContentType().equals("image/png") || fileUpload.getContentType().equals("image/jpg")
                 || fileUpload.getContentType().equals("image/jpeg") || fileUpload.getContentType().equals("image/gif")) {
             movie.setImage(fileUpload.getBytes());
@@ -80,6 +94,7 @@ public class MovieController {
         movieService.deleteMovie(id);
         return "redirect:/movies";
     }
+
 
 
 }

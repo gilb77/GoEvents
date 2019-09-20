@@ -75,4 +75,13 @@ public class CinemaService implements com.GoEvent.service.movies.CinemaService {
 
 
 
+    public boolean cinemaExists(String name,String city,String address){
+        List<Cinema> cinemas = cinemaRepository.findAll();
+        for(Cinema cinema: cinemas)
+            if(cinema.getName().equals(name) &&
+                    cinema.getAddress().equals(address) &&
+                    cinema.getCity().equals(city))
+                return true;
+        return false;
+    }
 }

@@ -16,8 +16,16 @@ $(document).ready(function () {
 
     $.loadTheaters();
 
-    $("#add_row").on("click", function () {
+    $("#add_row").on("click", function (e) {
         var seats = prompt("Please enter the number of seats:", "");
+        if (seats === "") {
+            alert("You don't enter value, please try again.");
+            $.ajaxStop();
+        }
+        if (seats !== (/^[0-9.,]+$/)){
+            alert("You need to enter only numeric values (0,1,2,3,...), please try again.");
+            $.ajaxStop();
+        }
         var event = {
             seats: seats,
             cinema: id

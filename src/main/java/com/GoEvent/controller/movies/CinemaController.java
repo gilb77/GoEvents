@@ -51,7 +51,16 @@ public class CinemaController {
     }
 
     @RequestMapping(value = "cinema", method = RequestMethod.POST)
-    public String saveProduct(Cinema cinema) {
+    public String saveProduct(Cinema cinema,Model model) {
+        if (cinema.getName().isEmpty() || cinema.getAddress().isEmpty() || cinema.getCity().isEmpty()) {
+            model.addAttribute("error", "One of the fields is empty.");
+            return "cinema/cinemaform";
+        }
+
+        if (cinemaService.cinemaExists(cinema.name,cinema.city,cinema.address)) {
+            model.addAttribute("error", "The cinema exists on the data base.");
+            return "cinema/cinemaform";
+        }
         cinemaService.saveCinema(cinema);
         return "redirect:/cinema/" + cinema.getId();
     }

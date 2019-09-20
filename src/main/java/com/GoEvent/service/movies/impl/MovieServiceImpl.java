@@ -69,9 +69,14 @@ public class MovieServiceImpl implements MovieService {
     }
 
 
-//    public Movie saveMovie(Movie product) {
-//        return movieRepository.save(product);
-//    }
+    public boolean movieNameExists(String name){
+        List<Movie> movies = movieRepository.findAll();
+        for(Movie movie: movies)
+            if(movie.getName().equals(name))
+                return true;
+        return false;
+    }
+
 
 
 }
