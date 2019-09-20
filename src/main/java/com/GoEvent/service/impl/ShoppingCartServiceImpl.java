@@ -1,11 +1,15 @@
 package com.GoEvent.service.impl;
 
 import com.GoEvent.model.Event;
+import com.GoEvent.model.Invitation;
 import com.GoEvent.model.liveshows.LiveShow;
 import com.GoEvent.model.movies.MovieEvent;
+import com.GoEvent.service.movies.impl.InvitationServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -22,13 +26,16 @@ import java.util.Map;
  *
  * @author Gil
  */
-@Getter
+@Data
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
 public class ShoppingCartServiceImpl {
 
     private Map<Integer, CurrentCartEvent> invites = new HashMap<>();
+
+    @Autowired
+    private InvitationServiceImpl invitationService;
 
     @AllArgsConstructor
     @Getter
@@ -81,60 +88,37 @@ public class ShoppingCartServiceImpl {
 
     public double getTotal() {
         double sum = 0;
-        for (CurrentCartEvent cartEvent : invites.values()) {
+        for (CurrentCartEvent cartEvent : invites.values())
             if (cartEvent.event instanceof MovieEvent)
-                sum += cartEvent.seats.size() * cartEvent.getEvent().price;
-            else if (cartEvent.event instanceof LiveShow) {
-                sum += cartEvent.seats.size() * ((LiveShow) cartEvent.getEvent()).getCostSeating();
-                sum += cartEvent.standsCount * ((LiveShow) cartEvent.getEvent()).getCostStanding();
-            }
-        }
+                sum += geTotalEvent(cartEvent);
         return sum;
     }
 
     public void removeInvite(int id) {
         invites.remove(id);
     }
-//
-//    /**
-//     * @return unmodifiable copy of the map
-//     */
-//    @Override
-//    public List<Invite> getInvitesInCart() {
-//        return this.invites;
-//    }
-//
 
-//    /**
-//     * @return unmodifiable copy of the map
-//     */
-//    @Override
-//    public List<Invite> getInvitesMoviesInCart() {
-//        return  this.invites ;
-//    }
+    public double geTotalEvent(CurrentCartEvent cartEvent){
+        double sum = 0;
+        if (cartEvent.event instanceof MovieEvent)
+            sum += cartEvent.seats.size() * cartEvent.getEvent().price;
+        else if (cartEvent.event instanceof LiveShow) {
+            sum += cartEvent.seats.size() * ((LiveShow) cartEvent.getEvent()).getCostSeating();
+            sum += cartEvent.standsCount * ((LiveShow) cartEvent.getEvent()).getCostStanding();
+        }
+        return sum;
+    }
 
-//    /**
-//     * Checkout will rollback if there is not enough of some product in stock
-//     *
-//     * @throws NotEnoughSeatsInStockException
-//     */
-//    @Override
-//    public void checkout() {
-//        Invite invite;
-//        for (Map.Entry<Invite, Integer> entry : invites.entrySet()) {
-//            // Refresh quantity for every product before checking
-//            invite = productRepository.findOne(entry.getKey().getId());
-//            if (invite.getQuantity() < entry.getValue())
-//                throw new NotEnoughmovieInvitesInStockException(product);
-//            entry.getKey().setQuantity(product.getQuantity() - entry.getValue());
-//        }
-//        productRepository.save(movieInvites.keySet());
-//        productRepository.flush();
-//        movieInvites.clear();
-//MovieInvite movieInvite = new MovieInvite();
-//        movieInvite.setMovieEvent();
-//        movieInvite.setSeat();
-//    }
-//
+    public void checkout() {
+         List<Integer> idInvites = new ArrayList<>();
+         for (CurrentCartEvent invite : invites.values()) {
+             invitationService.saveInvitation(invite.getEvent().getId(),
+                     invite.getQuantity(),invite.seats,invite.standsCount,geTotalEvent(invite));
+             idInvites.add(invite.getEvent().getId());
+        }
+        for(int idInvite :idInvites)
+            removeInvite(idInvite);
+    }
+
 
 }

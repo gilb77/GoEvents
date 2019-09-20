@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -31,16 +30,9 @@ public class ShoppingCartController {
         return shoppingCart(model);
     }
 
-
-
-
-//    @GetMapping("/shoppingCart/checkout")
-//    public ModelAndView checkout() {
-//        try {
-//            shoppingCartService.checkout();
-//        } catch (NotEnoughProductsInStockException e) {
-//            return shoppingCart().addObject("outOfStockMessage", e.getMessage());
-//        }
-//        return shoppingCart();
-//    }
+    @GetMapping("/shoppingCart/checkout")
+    public String checkout(Model model) {
+        shoppingCartService.checkout();
+        return shoppingCart(model);
+    }
 }

@@ -32,6 +32,11 @@ public class ParseUtil {
     }
 
 
+    public static Date getCurrentDate(){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        return new Date(System.currentTimeMillis());
+    }
+
     public static String encodePhoto(byte[] data){
         return Base64.encodeBase64String(data) ;
     }
