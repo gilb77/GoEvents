@@ -1,6 +1,7 @@
 package com.GoEvent.controller.liveshows;
 
 
+import com.GoEvent.dao.liveshows.LocationRepository;
 import com.GoEvent.model.liveshows.LiveShow;
 import com.GoEvent.service.liveshows.ArtistServiceImpl;
 import com.GoEvent.service.liveshows.LiveShowServiceImpl;
@@ -20,6 +21,9 @@ public class LiveShowController {
     @Autowired
     private ArtistServiceImpl artistService;
 
+    @Autowired
+    private LocationRepository locationRepository;
+
     @RequestMapping(value = "/lists", method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("liveShows", liveShowService.listAllLiveShow());
@@ -38,9 +42,9 @@ public class LiveShowController {
 
     @RequestMapping("/new")
     public String newProduct(Model model) {
-        LiveShow liveShow = new LiveShow();
-        model.addAttribute("liveShow", liveShow);
+        model.addAttribute("liveShow", new LiveShow());
         model.addAttribute("artists", artistService.listAllArtist());
+        model.addAttribute("locations", locationRepository.findAll());
         return "liveshows/liveshow-form";
     }
 
@@ -54,6 +58,7 @@ public class LiveShowController {
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("liveShow", liveShowService.getLiveShowById(id));
         model.addAttribute("artists", artistService.listAllArtist());
+        model.addAttribute("locations", locationRepository.findAll());
         return "liveshows/liveshow-form";
     }
 }

@@ -28,19 +28,21 @@
                                 th:text="${artist.name}"></option>
                     </select>
                     </div>
-                    <label class="col-sm-2 control-label">Address:</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="address" th:value="${liveShow.address}"/>
+
+                    <label class="col-sm-2 control-label" for="artists">Location</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="locations">
+                            <option th:each="location: ${locations}"
+                                    th:value="${location.id}"
+                                    th:text="${location.location}"></option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-
-                </div>
-                <div class="form-group">
                     <label class="col-sm-2 control-label">Standing places:</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="places" th:value="${liveShow.places}"/>
+                        <input type="text" class="form-control" id="places" th:value="${liveShow.stand}"/>
                     </div>
                     <label class="col-sm-2 control-label">Cost:</label>
                     <div class="col-sm-2">
@@ -50,7 +52,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Seating places:</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="numSeating" th:value="${liveShow.getNumSeats()}"/>
+                        <input type="text" class="form-control" id="numSeating" th:value="${liveShow.getSeat().getNumSeats()}"/>
                     </div>
                     <label class="col-sm-2 control-label">Cost:</label>
                     <div class="col-sm-2">
@@ -59,7 +61,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" th:value="${liveShow.time}">Time:</label>
+                    <label class="col-sm-2 control-label" th:value="${liveShow.getTime()}">Time:</label>
                     <div class="col-sm-2">
                         <input type="time" class="form-control" id="time" />
                     </div>

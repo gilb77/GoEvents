@@ -12,8 +12,8 @@
         <label class="control-label " for="location">Location</label>
         <select class="form-control" id="location">
             <option th:each="liveShow : ${liveshows}"
-                    th:value="${liveShow.getId()}"
-                    th:text="${liveShow.getAddress()}"></option>
+                    th:value="${liveShow.getLocation().getId()}"
+                    th:text="${liveShow.getLocation().getLocation()}"></option>
         </select>
     </div>
     <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>

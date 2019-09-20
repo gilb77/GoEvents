@@ -2,6 +2,7 @@ package com.GoEvent.controller.liveshows;
 
 
 import com.GoEvent.model.liveshows.LiveShow;
+import com.GoEvent.service.impl.ShoppingCartServiceImpl;
 import com.GoEvent.service.liveshows.LiveShowServiceImpl;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class LiveShowInviteController {
     @Autowired
     private LiveShowServiceImpl liveShowService;
 
+    @Autowired
+    private ShoppingCartServiceImpl shoppingCartService;
+
     @RequestMapping(value = "/location/{artist}")
     public String getLocations(@PathVariable("artist") int artist,
                                Model model) {
@@ -37,8 +41,9 @@ public class LiveShowInviteController {
                            ModelMap model) {
         model.addAttribute("eventsByLocation", liveShowService.getLiveShowsByFilter(
                 Integer.parseInt(json.get("artist")),
-                json.get("location")));
-        model.addAttribute("parseUtil",new ParseUtil());
+                Integer.parseInt(json.get("location"))));
+        model.addAttribute("parseUtil", new ParseUtil());
+//                        return "liveshows/artists/artist-details";
         return "liveshows/liveshow-invite-fragments :: dateFragment";
     }
 
@@ -49,12 +54,12 @@ public class LiveShowInviteController {
         try {
             model.addAttribute("eventsByDate", liveShowService.getLiveShowsByFilter(
                     Integer.parseInt(json.get("artist")),
-                    json.get("location"), ParseUtil.parseStringToDate(json.get("date"))));
+                    Integer.parseInt(json.get("location")), ParseUtil.parseStringToDate(json.get("date"))));
         } catch (ParseException e) {
             e.printStackTrace();
             throw e;
         }
-        model.addAttribute("parseUtil",new ParseUtil());
+        model.addAttribute("parseUtil", new ParseUtil());
         return "liveshows/liveshow-invite-fragments :: timeFragment";
     }
 
@@ -65,10 +70,10 @@ public class LiveShowInviteController {
         try {
             List<LiveShow> liveShow = liveShowService.getLiveShowsByFilter(
                     Integer.parseInt(json.get("artist")),
-                    json.get("location"), ParseUtil.parseStringToDate(json.get("date")),
+                    Integer.parseInt(json.get("location")), ParseUtil.parseStringToDate(json.get("date")),
                     ParseUtil.parseStringToTime(json.get("time")));
             if (!liveShow.isEmpty())
-                model.addAttribute("eventsByTime", liveShow.get(0).getFreeSeats());
+                model.addAttribute("eventsByTime", liveShow.get(0).getSeat().getFreeSeats());
         } catch (ParseException e) {
             e.printStackTrace();
             throw e;
@@ -78,13 +83,15 @@ public class LiveShowInviteController {
 
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public void newInvation(@RequestBody Map<String, String> json) throws ParseException {
+    public void newInvation(@RequestBody Map<String, String> json) throws Exception {
         List<LiveShow> liveShow = liveShowService.getLiveShowsByFilter(
                 Integer.parseInt(json.get("artist")),
-                json.get("location"), ParseUtil.parseStringToDate(json.get("date")),
+                Integer.parseInt(json.get("location")), ParseUtil.parseStringToDate(json.get("date")),
                 ParseUtil.parseStringToTime(json.get("time")));
-//        if (!liveShow.isEmpty())
-
+        boolean stand = !json.get("iAmStand").equals("0");
+        if (liveShow.size() != 1)
+            throw new Exception("Duplicate Live show or not exists");
+        shoppingCartService.addEventInvites(liveShow.get(0), Integer.parseInt(json.get("seat")), stand);
     }
 
 

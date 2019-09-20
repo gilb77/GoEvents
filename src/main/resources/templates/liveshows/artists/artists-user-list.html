@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-lg-3" th:each="artist : ${artists}">
                     <a th:href="${'/artists/'+artist.id}">
-                        <img th:src="*{'data:image/jpeg;base64,'+ artist.encodePhoto(artist.getImage()) }"
+                        <img th:src="*{'data:image/jpeg;base64,'+ parseUtil.encodePhoto(artist.getImage()) }"
                              class="img-thumbnail"
                              style="width:80%"
                              alt="Responsive image">

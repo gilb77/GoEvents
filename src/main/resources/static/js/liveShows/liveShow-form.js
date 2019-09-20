@@ -10,7 +10,7 @@ $(document).ready(function () {
 
             var event = {
                 artist: document.getElementById("artists").value,
-                address: document.getElementById("address").value,
+                location: document.getElementById("locations").value,
                 places: document.getElementById("places").value,
                 costStanding: document.getElementById("costStanding").value,
                 numSeating: document.getElementById("numSeating").value,

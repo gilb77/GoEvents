@@ -1,9 +1,7 @@
 package com.GoEvent.model.movies;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.GoEvent.model.Event;
+import lombok.*;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -12,26 +10,12 @@ import java.util.Date;
 
 
 @Entity
-@Getter
 @Setter
-@Table(name = "movie_event")
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieEvent {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-
-    @Temporal(TemporalType.TIME)
-    private Date time;
-
-    @Column
-    private String price;
+@Table(name = "movie_event")
+public class MovieEvent extends Event {
 
     @OneToOne(cascade = CascadeType.ALL)
     Theater theater;

@@ -1,7 +1,7 @@
 package com.GoEvent.model.movies;
 
 
-import com.GoEvent.model.Invite;
+import com.GoEvent.model.Invitation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieInvite extends Invite {
+public class MovieInvite extends Invitation {
 
     @OneToOne(cascade = CascadeType.ALL)
     private MovieEvent movieEvent;

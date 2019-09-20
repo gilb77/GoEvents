@@ -8,7 +8,6 @@ $(document).ready(function () {
             url: "http://localhost:8080/theaters" +
             window.location.pathname,
             success: function (data) {
-                // alert(data)
                 $("#theaterSelectHolder").html(data);
                 $("#theaterTable").modal("show");
             }

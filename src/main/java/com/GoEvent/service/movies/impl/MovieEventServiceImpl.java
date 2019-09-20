@@ -2,6 +2,7 @@ package com.GoEvent.service.movies.impl;
 
 
 import com.GoEvent.dao.movies.MovieEventRepository;
+import com.GoEvent.model.Seat;
 import com.GoEvent.model.movies.MovieEvent;
 import com.GoEvent.service.EventService;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ public class MovieEventServiceImpl implements EventService {
     }
 
     public void saveEvent(MovieEvent movieEvent) {
+        movieEvent.getSeat().setSeats(movieEvent.getTheater().getSeats());
         this.movieEventRepository.save(movieEvent);
     }
 
@@ -62,14 +64,14 @@ public class MovieEventServiceImpl implements EventService {
     }
 
     public Iterable<Integer> listAllSeatsByTime(int movie, String city, int cinema, Date date, Date time) throws Exception {
-        return getMovieEvent(movie, city, cinema, date, time).getTheater().getFreeSeats();
+        return getMovieEvent(movie, city, cinema, date, time).getSeat().getFreeSeats();
     }
 
     public MovieEvent getMovieEvent(int movie, String city, int cinema, Date date, Date time) throws Exception {
         List<MovieEvent> movieEvent = getMovieEventByFilter(movie, city, cinema, date, time);
         if (movieEvent.isEmpty())
             throw new Exception("The event not exists");
-        if(movieEvent.size()>1)
+        if (movieEvent.size() > 1)
             throw new Exception("The event is duplicate");
         return movieEvent.get(0);
     }

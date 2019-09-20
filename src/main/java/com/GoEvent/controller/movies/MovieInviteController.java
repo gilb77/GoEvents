@@ -2,6 +2,8 @@ package com.GoEvent.controller.movies;
 
 
 import com.GoEvent.model.movies.Movie;
+import com.GoEvent.model.movies.MovieEvent;
+import com.GoEvent.service.impl.ShoppingCartServiceImpl;
 import com.GoEvent.service.movies.impl.MovieEventServiceImpl;
 import com.GoEvent.service.movies.impl.MovieInviteServiceImpl;
 import com.GoEvent.service.movies.impl.MovieServiceImpl;
@@ -26,6 +28,8 @@ public class MovieInviteController {
     private MovieServiceImpl movieService;
     private MovieEventServiceImpl movieEventService;
     private MovieInviteServiceImpl movieInviteService;
+    @Autowired
+    private ShoppingCartServiceImpl shoppingCartService;
 
     @Autowired
     public void setProductsService(MovieServiceImpl movieService,
@@ -99,13 +103,12 @@ public class MovieInviteController {
     @RequestMapping(value = "/movie/invite/new", method = RequestMethod.POST)
     public String newInvite(@RequestBody Map<String, String> json,
                             ModelMap model) throws Exception {
-        movieInviteService.newInvite(
-                Integer.parseInt(json.get("movie")),
+        MovieEvent movieEvent = movieEventService.getMovieEvent(Integer.parseInt(json.get("movie")),
                 json.get("city"),
                 Integer.parseInt(json.get("cinema")),
                 parseStringToDate(json.get("date")),
-                parseStringToTime(json.get("time")),
-                json.get("seat"));
+                parseStringToTime(json.get("time")));
+        shoppingCartService.addEventInvites(movieEvent, Integer.parseInt(json.get("seat")), false);
         return "";
     }
 }

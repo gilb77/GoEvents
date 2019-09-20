@@ -19,7 +19,7 @@ $(document).ready(function () {
     function fillUpDate() {
         var event = {
             artist: artist,
-            location: document.getElementById("location").innerText
+            location: document.getElementById("location").value
         };
         $.ajax({
             url: "http://localhost:8080/invite/liveshow/date/",
@@ -39,7 +39,7 @@ $(document).ready(function () {
     function fillUpTime() {
         var event = {
             artist: artist,
-            location: document.getElementById("location").innerText,
+            location: document.getElementById("location").value,
             date: document.getElementById("date").innerText
         };
         $.ajax({
@@ -61,7 +61,7 @@ $(document).ready(function () {
         $("#seatSelectHolder").show();
         var event = {
             artist: artist,
-            location: document.getElementById("location").innerText,
+            location: document.getElementById("location").value,
             date: document.getElementById("date").innerText,
             time: document.getElementById("time").innerText
         };
@@ -82,14 +82,14 @@ $(document).ready(function () {
     });
 
     $("#submitInvite").click(function () {
-        var iAmStand = 1, seatNum = 0;
-        if ($("#seating").is(":visible")) {
-            seatNum = document.getElementById("seat").innerText;
+        var iAmStand = 1, seatNum =-1;
+        if ($("#seatSelectHolder").is(":visible")) {
+            seatNum = document.getElementById("seat").value;
             iAmStand = 0;
         }
         var event = {
             artist: artist,
-            location: document.getElementById("location").innerText,
+            location: document.getElementById("location").value,
             date: document.getElementById("date").innerText,
             time: document.getElementById("time").innerText,
             seat: seatNum,
@@ -99,9 +99,8 @@ $(document).ready(function () {
             url: "http://localhost:8080/invite/liveshow/new/",
             type: 'post',
             contentType: 'application/json',
-            data: JSON.stringify(event),
-            success: function (response) {
-            }
+            data: JSON.stringify(event)
+
         })
     });
 });

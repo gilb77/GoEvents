@@ -83,7 +83,6 @@ $(document).ready(function () {
 
      $( "#submitInvite" ).click(sendNewInvite);
     function sendNewInvite() {
-        alert("I am here");
         var inviteJson = {
             movie: movie,
             city: document.getElementById("city").innerText,
@@ -98,7 +97,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify(inviteJson),
             success: function (response) {
-
+                window.location = "/";
             }
         })
     }

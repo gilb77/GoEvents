@@ -32,6 +32,7 @@ public class ArtistController {
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public String userList(Model model) {
         model.addAttribute("artists", artistService.listAllArtist());
+        model.addAttribute("parseUtil", new ParseUtil());
         return "liveshows/artists/artists-user-list";
     }
 

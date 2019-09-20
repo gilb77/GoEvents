@@ -1,21 +1,18 @@
 package com.GoEvent.model.liveshows;
 
 
-import com.GoEvent.util.ParseUtil;
+import com.GoEvent.model.Event;
+import com.GoEvent.model.Seat;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "live_shows")
-public class LiveShow {
+public class LiveShow extends Event {
 
 
     @Id
@@ -23,45 +20,20 @@ public class LiveShow {
     private int id;
 
     @Column
-    public int places;
-    @Column
-    public double costStanding;
+    public int stand;
 
-    @Column(name = "seats", columnDefinition = "BLOB")
-    public int[] seats;
     @Column
     public double costSeating;
 
     @Column
-    private String Address;
+    public double costStanding;
 
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    @Temporal(TemporalType.TIME)
-    private Date time;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location Location;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Artist artist;
 
-    public int getNumSeats() {
-        return seats.length;
-    }
 
-
-
-    public void setSeats(int length){
-        this.seats = new int[ length];
-        Arrays.fill(seats,0);
-    }
-
-
-    public Iterable<Integer> getFreeSeats(){
-        List<Integer> seats = new ArrayList<>();
-        setSeats(this.seats.length);
-        for (int i=0;i<this.seats.length;i++)
-            if(this.seats[i]==0)
-                seats.add(i);
-        return seats;
-    }
 }

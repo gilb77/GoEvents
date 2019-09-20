@@ -71,11 +71,6 @@ public class TheatresController {
 
     @RequestMapping("theater/delete/{cinemaId}/{id}")
     public String deleteStudent(@PathVariable Integer cinemaId,@PathVariable Integer id) {
-//        List<Theater> theatersList = cinemaService.getCinemaById(cinemaId).getTheatersList();
-//        int counter = 0;
-//        while (counter < theatersList.size() &&  theatersList.get(counter).getId() != id)
-//            counter++;
-//        cinemaService.getCinemaById(cinemaId).getTheatersList().remove(counter);
         theaterServiceImpl.deleteTheater(cinemaId);
         return "redirect:/cinema/"+cinemaId;
     }

@@ -65,7 +65,7 @@ public class MoviesEventsController {
         movieEvent.setTime(ParseUtil.parseStringToTime(json.get("time")));
         movieEvent.setMovie(movieService.getMovieById(Integer.parseInt(json.get("movie"))));
         movieEvent.setTheater(theaterService.getTheaterById(Integer.parseInt(json.get("theater"))));
-        movieEvent.setPrice(json.get("price"));
+        movieEvent.setPrice(Integer.parseInt(json.get("price")));
         movieEventService.saveEvent(movieEvent);
     }
 

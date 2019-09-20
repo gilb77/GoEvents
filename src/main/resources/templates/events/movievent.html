@@ -12,7 +12,7 @@
 </head>
 <body>
 <th:block th:include="fragments/header :: header"></th:block>
-
+<script th:src="@{/js/movies/movie-event.js}"></script>
 <div class="content">
     <div class="row">
         <div class="col-xs-3">
@@ -53,17 +53,14 @@
                                            id="price"/>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="control-label"> Date:</label>
                                 <div id="datepicker"></div>
                             </div>
-
                             <div class="form-group">
                                 <label class="control-label"> Time:</label>
                                 <input type="time" id="timepicker">
                             </div>
-
                             <div class="form-group">
                                 <button id="submit" type="submit" class="btn btn-primary" name="submit">Submit</button>
                             </div>
@@ -75,54 +72,5 @@
         </div>
     </div>
 </div>
-
-
-            <script th:inline="javascript">
-
-                // var movieEvent ="[[${index}]]";
-                $(document).ready(function () {
-                    $(function () {
-                        $("#datepicker").datepicker();
-                    });
-
-                    //call function when page is loaded
-                    fillUpTheaters();
-                    $("#submit").click(
-                        function () {
-                            var event = {
-                                movie: document.getElementById("movies").value,
-                                theater: document.getElementById("theater").value,
-                                price: document.getElementById("price").value,
-                                date: document.getElementById("datepicker").value,
-                                time: document.getElementById("timepicker").value
-                            }
-                            alert(JSON.stringify(event));
-                            $.ajax({
-                                url: "http://localhost:8080/event/new/",
-                                dataType: 'json',
-                                type: 'post',
-                                contentType: 'application/json',
-                                data: JSON.stringify(event)
-
-                            })
-                        });
-                    //set on change listener
-                    $("#cinemas").change(fillUpTheaters);
-
-                    function fillUpTheaters() {
-                        // alert("THell " );
-                        $.ajax({
-                            url: "http://localhost:8080/event/cinema/" +
-                            document.getElementById("cinemas").value,
-                            success: function (data) {
-                                // alert(data)
-                                $("#theaterSelectHolder").html(data);
-                                $("#theaterSelect").modal("show");
-                            }
-                        })
-                    }
-                });
-            </script>
-            <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

@@ -26,9 +26,9 @@
             <tr th:each="liveShow : ${liveShows}">
                 <td th:text="${liveShow.id}">Id</td>
                 <td th:text="${liveShow.artist.getName()}">Name</td>
-                <td th:text="${liveShow.address}">Address</td>
-                <td th:text="${liveShow.getNumSeats()}">Seats Number</td>
-                <td th:text="${liveShow.getPlaces()}">Stands Number</td>
+                <td th:text="${liveShow.location.getLocation()}">Location</td>
+                <td th:text="${liveShow.getSeat().getNumSeats()}">Seats Number</td>
+                <td th:text="${liveShow.stand}">Stands Number</td>
                 <td th:text="${liveShow.date}">Date</td>
                 <td th:text="${liveShow.time}">Time</td>
                 <td><a th:href="${'/liveshows/edit/'+liveShow.id}">Edit</a></td>
