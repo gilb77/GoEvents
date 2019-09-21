@@ -36,11 +36,11 @@ public class MovieEventServiceImpl implements EventService {
     }
 
     public List<MovieEvent> getMovieEventByFilter(int movie) {
-        return buildCityList(getMovieEventByFilter(movie, null, -1, null, null));
+        return getMovieEventByFilter(movie, null, -1, null, null);
     }
 
     public List<MovieEvent> getMovieEventByFilter(int movie, String city) {
-        return buildCinemaiList(getMovieEventByFilter(movie, city, -1, null, null));
+        return getMovieEventByFilter(movie, city, -1, null, null);
     }
 
     public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema) {
@@ -94,9 +94,10 @@ public class MovieEventServiceImpl implements EventService {
         return time == null || (event.getTime().compareTo(time) == 0);
     }
 
-    private List<MovieEvent> buildCityList(List<MovieEvent> movieEvents) {
+    public List<MovieEvent> buildCityList(List<MovieEvent> movieEvents) {
         List<MovieEvent> tempMovieEvents = new ArrayList<>();
         List<String> cites = new ArrayList<>();
+
         for (MovieEvent event : movieEvents)
             cites.add(event.getTheater().getCinema().city);
         cites = new ArrayList<>(new HashSet<>(cites));
@@ -109,7 +110,7 @@ public class MovieEventServiceImpl implements EventService {
     }
 
 
-    private List<MovieEvent> buildCinemaiList(List<MovieEvent> movieEvents) {
+    public List<MovieEvent> buildCinemaiList(List<MovieEvent> movieEvents) {
         List<MovieEvent> tempMovieEvents = new ArrayList<>();
         List<String> location = new ArrayList<>();
         for (MovieEvent event : movieEvents)
@@ -122,4 +123,23 @@ public class MovieEventServiceImpl implements EventService {
             }
         return tempMovieEvents;
     }
+
+
+    public List<MovieEvent> buildDateList(List<MovieEvent> movieEvents) {
+        List<MovieEvent> tempMovieEvents = new ArrayList<>();
+        List<Date> dates = new ArrayList<>();
+        for (MovieEvent event : movieEvents)
+            dates.add(event.getDate());
+        dates = new ArrayList<>(new HashSet<>(dates));
+        for (MovieEvent event : movieEvents)
+            if (dates.contains(event.getDate())){
+                tempMovieEvents.add(event);
+                dates.remove(event.getDate());
+            }
+        return tempMovieEvents;
+    }
+
+
+
+
 }

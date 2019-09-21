@@ -5,80 +5,94 @@
 
     <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
     <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
- </head>
+</head>
 <body>
 <div th:fragment="cityFragment" id="citySelect">
     <div class="form-group">
         <label class="control-label " for="City">City</label>
-        <select class="form-control" th:field="${eventsByMovie}" id="city">
+        <select class="form-control" th:field="${eventsByMovie}" id="city" >
+            <option value="option1" th:selected="selected" >
+                Choose your option
+            </option>
             <option th:each="event : ${eventsByMovie}"
                     th:value="${event.getTheater().getCinema().getId()}"
-                    th:text="${event.getTheater().getCinema().getCity()}"></option>
+                    th:text="${event.getTheater().getCinema().getCity()}" ></option>
         </select>
-    </div>
-    <script th:src="@{/js/movies/movieshow.js}"></script>
 
-</div>
-
-<div th:fragment="cinemasFragment" id="cinemaSelect">
-    <div class="form-group">
-        <label class="control-label" for="cinema">Cinma</label>
-        <select class="form-control" id="cinema" th:field="*{eventsByCity}">
-            <option th:each="event : ${eventsByCity}"
-                    th:value="${event.getTheater().getCinema().getId()}"
-                    th:text="${event.getTheater().getCinema().getName()} +', '+ ${event.getTheater().getCinema().getAddress()}"></option>
-        </select>
-    </div>
-
-    <script th:src="@{/js/movies/movieshow.js}"></script>
-
-</div>
-
-
-<div th:fragment="dateFragment" id="dateSelect">
-    <div class="form-group">
-        <label class="control-label" for="Date">Date</label>
-        <select class="form-control" id="date" th:field="*{eventsByCinema}">
-            <option th:each="event : ${eventsByCinema}"
-                    th:value="${event.id}"
-                    th:text="${parseUtil.parseDateToString(event.getDate())}"></option>
-        </select>
-    </div>
-    <script th:src="@{/js/movies/movieshow.js}"></script>
-
-</div>
-
-
-<div th:fragment="timeFragment" id="timeSelect">
-
-    <div class="form-group">
-        <label class="control-label" for="Time">Time</label>
-        <select class="form-control" id="time" th:field="*{eventsByDate}">
-            <option th:each="event : ${eventsByDate}"
-                    th:value="${event.id}"
-                    th:text="${parseUtil.parseTimeToString(event.getTime())}"></option>
-        </select>
     </div>
     <script th:src="@{/js/movies/movieshow.js}"></script>
 </div>
 
+    <div th:fragment="cinemasFragment" id="cinemaSelect">
+        <div class="form-group">
+            <label class="control-label" for="cinema">Cinma</label>
+            <select class="form-control" id="cinema" th:field="*{eventsByCity}">
+                <option value="option1" th:selected="selected" >
+                    Choose your option
+                </option>
+                <option th:each="event : ${eventsByCity}"
+                        th:value="${event.getTheater().getCinema().getId()}"
+                        th:text="${event.getTheater().getCinema().getName()} +', '+ ${event.getTheater().getCinema().getAddress()}"></option>
+            </select>
+        </div>
 
-<div th:fragment="seatFragment" id="seatSelect">
-    <div class="form-group">
-        <label class="control-label" for="Seat">Seats</label>
-        <select class="form-control" id="seat" th:field="*{freeSeats}">
-            <option th:each="seat : ${freeSeats}"
-                    th:value="${seat}"
-                    th:text="${seat}"></option>
-        </select>
+        <script th:src="@{/js/movies/movieshow.js}"></script>
+
     </div>
-    <div class="form-group">
-        <button id="submitInvite" type="button" class="btn big-btn btn-primary pull-right"
-                name="submit">Submit
-        </button>
-    </div>
-    <script th:src="@{/js/movies/movieshow.js}"></script>
-</div>
+        <div th:fragment="dateFragment" id="dateSelect">
+            <div class="form-group">
+                <label class="control-label" for="Date">Date</label>
+                <select class="form-control" id="date" th:field="*{eventsByCinema}">
+                    <option value="option1" th:selected="selected" >
+                        Choose your option
+                    </option>
+                    <option th:each="event : ${eventsByCinema}"
+                            th:value="${event.id}"
+                            th:text="${parseUtil.parseDateToString(event.getDate())}"></option>
+                </select>
+            </div>
+            <script th:src="@{/js/movies/movieshow.js}"></script>
+        </div>
+
+
+            <div th:fragment="timeFragment" id="timeSelect">
+
+                <div class="form-group">
+                    <label class="control-label" for="Time">Time</label>
+                    <select class="form-control" id="time" th:field="*{eventsByDate}">
+                        <option value="option1" th:selected="selected" >
+                            Choose your option
+                        </option>
+                        <option th:each="event : ${eventsByDate}"
+                                th:value="${event.id}"
+                                th:text="${parseUtil.parseTimeToString(event.getTime())}"></option>
+                    </select>
+                </div>
+                <script th:src="@{/js/movies/movieshow.js}"></script>
+            </div>
+            <div th:fragment="seatFragment" id="seatSelect">
+                <div class="form-group">
+                    <label class="control-label" for="Seat">Seats</label>
+                    <select class="form-control" id="seat" th:field="*{freeSeats}">
+                        <option value="option1" th:selected="selected" >
+                            Choose your option
+                        </option>
+                        <option th:each="seat : ${freeSeats}"
+                                th:value="${seat}"
+                                th:text="${seat}+1"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button id="submitInvite" type="button" class="btn big-btn btn-primary pull-right"
+                            name="submit">Submit
+                    </button>
+                </div>
+                <script th:src="@{/js/movies/movieshow.js}"></script>
+            </div>
+
+
+
+
 </body>
 </html>
 
