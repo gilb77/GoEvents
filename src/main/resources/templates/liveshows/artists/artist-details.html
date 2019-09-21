@@ -34,10 +34,15 @@
                                 <p class="form-control-static" th:text="${artist.description}">Description</p>
                             </div>
                         </div>
-                        <div class="form-group" >
-                            <button id="invite" type="submit" class="btn big-btn btn-primary pull-right"
-                                    name="submit">Invite
-                            </button>
+                        <div class="row">
+                            <div class="col-md-offset-9 col-md-2" >
+                                <div id="note" class="alert alert-danger" hidden></div>
+                            </div>
+                            <div class="form-group">
+                                <button id="invite" type="submit" class="btn big-btn btn-primary pull-right"
+                                        name="submit">Invite
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

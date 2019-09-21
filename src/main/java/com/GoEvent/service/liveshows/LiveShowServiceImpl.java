@@ -1,17 +1,13 @@
 package com.GoEvent.service.liveshows;
 
 import com.GoEvent.dao.liveshows.LiveShowRepository;
-import com.GoEvent.model.Seat;
 import com.GoEvent.model.liveshows.LiveShow;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class LiveShowServiceImpl {
@@ -73,7 +69,7 @@ public class LiveShowServiceImpl {
     }
 
     private boolean checkLocation(LiveShow liveShow, int location) {
-        return location == -1 || (liveShow.getLocation().getId()==location);
+        return location == -1 || (liveShow.getLocation().getId() == location);
     }
 
     private boolean checkDate(LiveShow liveShow, Date date) {
@@ -84,5 +80,36 @@ public class LiveShowServiceImpl {
         return date == null || (liveShow.getTime().compareTo(date) == 0);
     }
 
+
+    public List<LiveShow> buildLocationsList(List<LiveShow> liveShows) {
+        List<LiveShow> tempMovieEvents = new ArrayList<>();
+        List<String> locations = new ArrayList<>();
+
+        for (LiveShow event : liveShows)
+            locations.add(event.getLocation().getLocation());
+        locations = new ArrayList<>(new HashSet<>(locations));
+        for (LiveShow event : liveShows)
+            if (locations.contains(event.getLocation().getLocation())) {
+                tempMovieEvents.add(event);
+                locations.remove(event.getLocation().getLocation());
+            }
+        return tempMovieEvents;
+    }
+
+
+    public List<LiveShow> buildDatesList(List<LiveShow> liveShows) {
+        List<LiveShow> tempMovieEvents = new ArrayList<>();
+        List<Date> dates = new ArrayList<>();
+
+        for (LiveShow event : liveShows)
+            dates.add(event.getDate());
+        dates = new ArrayList<>(new HashSet<>(dates));
+        for (LiveShow event : liveShows)
+            if (dates.contains(event.getDate())) {
+                tempMovieEvents.add(event);
+                dates.remove(event.getDate());
+            }
+        return tempMovieEvents;
+    }
 
 }

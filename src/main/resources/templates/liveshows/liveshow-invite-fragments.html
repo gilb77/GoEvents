@@ -11,6 +11,9 @@
     <div class="form-group">
         <label class="control-label " for="location">Location</label>
         <select class="form-control" id="location">
+            <option value="option1" th:selected="selected" >
+                Choose your option
+            </option>
             <option th:each="liveShow : ${liveshows}"
                     th:value="${liveShow.getLocation().getId()}"
                     th:text="${liveShow.getLocation().getLocation()}"></option>
@@ -23,6 +26,9 @@
     <div class="form-group">
         <label class="control-label" for="date">Date</label>
         <select class="form-control" id="date" th:field="*{eventsByLocation}">
+            <option value="option1" th:selected="selected" >
+                Choose your option
+            </option>
             <option th:each="event : ${eventsByLocation}"
                     th:value="${event.id}"
                     th:text="${parseUtil.parseDateToString(event.getDate())}"></option>
@@ -35,6 +41,9 @@
     <div class="form-group">
         <label class="control-label" for="time">Time</label>
         <select class="form-control" id="time" th:field="*{eventsByDate}">
+            <option value="option1" th:selected="selected" >
+                Choose your option
+            </option>
             <option th:each="event : ${eventsByDate}"
                     th:value="${event.id}"
                     th:text="${parseUtil.parseTimeToString(event.getTime())}"></option>
@@ -49,9 +58,12 @@
     <div class="form-group">
         <label class="control-label" for="seat">Seats</label>
         <select class="form-control" id="seat" th:field="*{eventsByTime}">
+            <option value="option1" th:selected="selected" >
+                Choose your option
+            </option>
             <option th:each="seat : ${eventsByTime}"
                     th:value="${seat}"
-                    th:text="${seat}"></option>
+                    th:text="${seat}+1"></option>
         </select>
     </div>
     <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>

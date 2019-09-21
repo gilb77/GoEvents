@@ -10,7 +10,6 @@ $(document).ready(function () {
         if (loaded)
             return;
         loaded = true;
-        $("#cinemaSelect").remove();
         $.ajax({
             url: "http://localhost:8080/movie/invite/" + movie,
             async: false,
@@ -32,10 +31,10 @@ $(document).ready(function () {
         if (loaded)
             return;
         $("#city option[value='option1']").remove();
-        loaded = true;
         $("#dateSelect").remove();
         $("#timeSelect").remove();
         $("#seatSelect").remove();
+        loaded = true;
         $.ajax({
             async: false,
             url: "http://localhost:8080/movie/invite/" +

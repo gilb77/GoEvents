@@ -5,7 +5,6 @@ import com.GoEvent.model.movies.Movie;
 import com.GoEvent.model.movies.MovieEvent;
 import com.GoEvent.service.impl.ShoppingCartServiceImpl;
 import com.GoEvent.service.movies.impl.MovieEventServiceImpl;
-import com.GoEvent.service.movies.impl.MovieInviteServiceImpl;
 import com.GoEvent.service.movies.impl.MovieServiceImpl;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import java.util.Map;
 
 import static com.GoEvent.util.ParseUtil.parseStringToDate;
 import static com.GoEvent.util.ParseUtil.parseStringToTime;
+import static com.GoEvent.util.WebUtil.responseForError;
 
 
 @Controller
@@ -30,18 +30,15 @@ public class MovieInviteController {
 
     private MovieServiceImpl movieService;
     private MovieEventServiceImpl movieEventService;
-    private MovieInviteServiceImpl movieInviteService;
-    private static final String[] ATTRIBUTE = new String[]{"eventsByMovie", "eventsByCity", "eventsByCinema", "eventsByDate"};
+
     @Autowired
     private ShoppingCartServiceImpl shoppingCartService;
 
     @Autowired
     public void setProductsService(MovieServiceImpl movieService,
-                                   MovieEventServiceImpl movieEventService,
-                                   MovieInviteServiceImpl movieInviteService) {
+                                   MovieEventServiceImpl movieEventService) {
         this.movieService = movieService;
         this.movieEventService = movieEventService;
-        this.movieInviteService = movieInviteService;
     }
 
 
@@ -52,26 +49,13 @@ public class MovieInviteController {
         return "movie/movie-invite";
     }
 
-    private Model updateModels(Model model, int index, List<MovieEvent> movieEvents) {
-        for (int i = index; i < ATTRIBUTE.length; i++) {
-            if (i == 0)
-                model.addAttribute(ATTRIBUTE[i], movieEventService.buildCityList(movieEvents));
-            else if (i == 1)
-                model.addAttribute(ATTRIBUTE[i], movieEventService.buildCinemaiList(movieEvents));
-            else if (i > 1)
-                model.addAttribute(ATTRIBUTE[i], movieEventService.buildDateList(movieEvents));
-        }
-        model.addAttribute("parseUtil", new ParseUtil());
-        model.addAttribute("freeSeats", movieEvents.get(0).getSeat().getFreeSeats());
-        return model;
-    }
 
     @RequestMapping(value = "/movie/invite/{movie}")
     public String inviteMovie(@PathVariable("movie") int movie, Model model, HttpServletResponse res) throws Exception {
         model.addAttribute("movie", movieService.getMovieById(movie));
         List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(movie);
         if (movieEvents.isEmpty())
-            return responseForError(res);
+            return responseForError(res,"No events");
         model.addAttribute("eventsByMovie", movieEventService.buildCityList(movieEvents));
         return "movie/movie-invite-fragments :: cityFragment";
     }
@@ -81,7 +65,7 @@ public class MovieInviteController {
                                Model model, HttpServletResponse res) throws IOException {
         List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(movie, city);
         if (movieEvents.isEmpty())
-            return responseForError(res);
+            return responseForError(res,"No events");
         model.addAttribute("eventsByCity", movieEventService.buildCinemaiList(movieEvents));
         return "movie/movie-invite-fragments :: cinemasFragment";
     }
@@ -93,8 +77,7 @@ public class MovieInviteController {
             throws IOException {
         List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(movie, city, cinema);
         if (movieEvents.isEmpty())
-            return responseForError(res);
-        updateModels(model, 2, movieEvents);
+            return responseForError(res,"No events");
         model.addAttribute("eventsByCinema", movieEventService.buildDateList(movieEvents));
         model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movie-invite-fragments :: dateFragment";
@@ -107,7 +90,7 @@ public class MovieInviteController {
                 Integer.parseInt(json.get("movie")), json.get("city"), Integer.parseInt(json.get("cinema")),
                 parseStringToDate(json.get("date")));
         if (movieEvents.isEmpty())
-            return responseForError(res);
+            return responseForError(res,"No events");
         model.addAttribute("eventsByDate", movieEvents);
         model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movie-invite-fragments :: timeFragment";
@@ -121,7 +104,7 @@ public class MovieInviteController {
                 Integer.parseInt(json.get("cinema")), parseStringToDate(json.get("date")),
                 parseStringToTime(json.get("time")));
         if (seats.isEmpty())
-            return responseForError(res);
+            return responseForError(res,"No events");
         model.addAttribute("freeSeats", seats);
         return "movie/movie-invite-fragments :: seatFragment";
     }
@@ -133,14 +116,11 @@ public class MovieInviteController {
                 json.get("city"), Integer.parseInt(json.get("cinema")),
                 parseStringToDate(json.get("date")), parseStringToTime(json.get("time")));
         if (movieEvents == null)
-            return responseForError(res);
+            return responseForError(res,"No events");
         shoppingCartService.addEventInvites(movieEvents, Integer.parseInt(json.get("seat")), false);
         return "Success add event to the shopping cart .";
     }
 
-    private String responseForError(HttpServletResponse res) throws IOException {
-        res.getWriter().println("No events");
-        res.getWriter().close();
-        return null;
-    }
+
+
 }

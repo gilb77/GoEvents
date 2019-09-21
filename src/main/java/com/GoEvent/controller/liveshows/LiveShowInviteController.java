@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+
+import static com.GoEvent.util.WebUtil.responseForError;
 
 
 @Controller
@@ -30,54 +34,44 @@ public class LiveShowInviteController {
     private ShoppingCartServiceImpl shoppingCartService;
 
     @RequestMapping(value = "/location/{artist}")
-    public String getLocations(@PathVariable("artist") int artist,
-                               Model model) {
-        model.addAttribute("liveshows", liveShowService.getLiveShowsByFilter(artist));
+    public String getLocations(@PathVariable("artist") int artist, Model model, HttpServletResponse res) throws IOException {
+        List<LiveShow> liveShows = liveShowService.getLiveShowsByFilter(artist);
+        if (liveShows.isEmpty())
+            return responseForError(res, "No events");
+        model.addAttribute("liveshows", liveShowService.buildLocationsList(liveShows));
         return "liveshows/liveshow-invite-fragments :: locationFragment";
     }
 
     @RequestMapping(value = "/date", method = RequestMethod.POST)
-    public String getDates(@RequestBody Map<String, String> json,
-                           ModelMap model) {
-        model.addAttribute("eventsByLocation", liveShowService.getLiveShowsByFilter(
-                Integer.parseInt(json.get("artist")),
-                Integer.parseInt(json.get("location"))));
+    public String getDates(@RequestBody Map<String, String> json, ModelMap model, HttpServletResponse res) throws IOException {
+        List<LiveShow> liveShows = liveShowService.getLiveShowsByFilter(
+                Integer.parseInt(json.get("artist")), Integer.parseInt(json.get("location")));
+        if (liveShows.isEmpty())
+            return responseForError(res, "No events");
+        model.addAttribute("eventsByLocation", liveShowService.buildDatesList(liveShows));
         model.addAttribute("parseUtil", new ParseUtil());
-//                        return "liveshows/artists/artist-details";
         return "liveshows/liveshow-invite-fragments :: dateFragment";
     }
 
 
     @RequestMapping(value = "/time", method = RequestMethod.POST)
-    public String getTimes(@RequestBody Map<String, String> json,
-                           ModelMap model) throws ParseException {
-        try {
-            model.addAttribute("eventsByDate", liveShowService.getLiveShowsByFilter(
-                    Integer.parseInt(json.get("artist")),
-                    Integer.parseInt(json.get("location")), ParseUtil.parseStringToDate(json.get("date"))));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw e;
-        }
+    public String getTimes(@RequestBody Map<String, String> json,ModelMap model) throws ParseException {
+        model.addAttribute("eventsByDate", liveShowService.getLiveShowsByFilter(
+                Integer.parseInt(json.get("artist")), Integer.parseInt(json.get("location")),
+                ParseUtil.parseStringToDate(json.get("date"))));
         model.addAttribute("parseUtil", new ParseUtil());
         return "liveshows/liveshow-invite-fragments :: timeFragment";
     }
 
 
     @RequestMapping(value = "/seats", method = RequestMethod.POST)
-    public String getSeats(@RequestBody Map<String, String> json,
-                           ModelMap model) throws ParseException {
-        try {
-            List<LiveShow> liveShow = liveShowService.getLiveShowsByFilter(
-                    Integer.parseInt(json.get("artist")),
-                    Integer.parseInt(json.get("location")), ParseUtil.parseStringToDate(json.get("date")),
-                    ParseUtil.parseStringToTime(json.get("time")));
-            if (!liveShow.isEmpty())
-                model.addAttribute("eventsByTime", liveShow.get(0).getSeat().getFreeSeats());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw e;
-        }
+    public String getSeats(@RequestBody Map<String, String> json, ModelMap model, HttpServletResponse res) throws ParseException, IOException {
+        List<LiveShow> liveShow = liveShowService.getLiveShowsByFilter(
+                Integer.parseInt(json.get("artist")), Integer.parseInt(json.get("location")),
+                ParseUtil.parseStringToDate(json.get("date")), ParseUtil.parseStringToTime(json.get("time")));
+        if (liveShow.isEmpty())
+            return responseForError(res, "No events");
+            model.addAttribute("eventsByTime", liveShow.get(0).getSeat().getFreeSeats());
         return "liveshows/liveshow-invite-fragments :: seatFragment";
     }
 
