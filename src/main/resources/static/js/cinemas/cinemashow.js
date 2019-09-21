@@ -1,9 +1,8 @@
-
 $(document).ready(function () {
     var str = window.location.pathname.split('/');
     var id = str[2];
 
-    $.loadTheaters = function() {
+    $.loadTheaters = function () {
         $.ajax({
             url: "http://localhost:8080/theaters" +
             window.location.pathname,
@@ -22,7 +21,7 @@ $(document).ready(function () {
             alert("You don't enter value, please try again.");
             $.ajaxStop();
         }
-        if (seats !== (/^[0-9.,]+$/)){
+        if (isNumberKey(seats) === false) {
             alert("You need to enter only numeric values (0,1,2,3,...), please try again.");
             $.ajaxStop();
         }
@@ -32,14 +31,24 @@ $(document).ready(function () {
         };
         $.ajax({
             url: "http://localhost:8080/theater/new/",
-            dataType: 'json',
             type: 'post',
             contentType: 'application/json',
             data: JSON.stringify(event),
-            complete: $.loadTheaters()
+            complete: $.loadTheaters(),
+            success: function (data) {
+                if (data.trim() === "The theater created successfully")
+                location.reload();
+            }
         })
 
     });
 
 });
+
+function isNumberKey(evt) {
+    if (isNaN(evt) || evt < 1)
+        return false;
+
+    return true;
+}
 

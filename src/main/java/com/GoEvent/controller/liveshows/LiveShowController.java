@@ -35,7 +35,11 @@ public class LiveShowController {
 
     @RequestMapping(value = "/new/liveShow", method = RequestMethod.POST)
     @ResponseBody
-    public String newLiveShow(@RequestBody Map<String, String> json) {
+    public String newLiveShow(@RequestBody Map<String, String> json,Model model) {
+        if(Integer.parseInt(json.get("places"))==0){
+            model.addAttribute("error", "One of the field is empty.");
+            return "liveshows/liveshow-form :: errorFragment";
+        }
         liveShowService.saveLiveShow(json);
         return "redirect:liveshows/liveshows";
     }

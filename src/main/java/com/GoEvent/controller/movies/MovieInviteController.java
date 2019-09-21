@@ -14,7 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 import static com.GoEvent.util.ParseUtil.parseStringToDate;
@@ -50,38 +53,47 @@ public class MovieInviteController {
 
 
     @RequestMapping(value = "/movie/invite/{movie}")
-    public String inviteMovie(@PathVariable("movie") int movie, Model model) {
+    public String inviteMovie(@PathVariable("movie") int movie, Model model, HttpServletResponse res) throws Exception {
         model.addAttribute("movie", movieService.getMovieById(movie));
-        model.addAttribute("eventsByMovie", movieEventService.getMovieEventByFilter(movie));
+        List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(movie);
+        if (movieEvents.isEmpty())
+            return responseForError(res);
+        model.addAttribute("eventsByMovie", movieEvents);
         return "movie/movie-invite-fragments :: cityFragment";
     }
 
     @RequestMapping(value = "/movie/invite/{movie}/{city}")
-    public String chooseCinema(@PathVariable("movie") int movie, @PathVariable("city") String city, ModelMap model) {
-        model.addAttribute("eventsByCity", movieEventService.getMovieEventByFilter(movie, city));
+    public String chooseCinema(@PathVariable("movie") int movie, @PathVariable("city") String city,
+                               ModelMap model, HttpServletResponse res) throws IOException {
+        List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(movie, city);
+        if (movieEvents.isEmpty())
+            return responseForError(res);
+        model.addAttribute("eventsByCity", movieEvents);
         return "movie/movie-invite-fragments :: cinemasFragment";
     }
 
 
     @RequestMapping(value = "/movie/invite/{movie}/{city}/{cinema}")
-    public String chooseDate(@PathVariable("movie") int movie,
-                             @PathVariable("city") String city,
-                             @PathVariable("cinema") int cinema,
-                             ModelMap model) {
-        model.addAttribute("eventsByCinema", movieEventService.getMovieEventByFilter(movie, city, cinema));
+    public String chooseDate(@PathVariable("movie") int movie, @PathVariable("city") String city,
+                             @PathVariable("cinema") int cinema, ModelMap model, HttpServletResponse res)
+            throws IOException {
+        List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(movie, city, cinema);
+        if (movieEvents.isEmpty())
+            return responseForError(res);
+        model.addAttribute("eventsByCinema", movieEvents);
         model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movie-invite-fragments :: dateFragment";
     }
 
     @RequestMapping(value = "/movie/invite/fillUpTime", method = RequestMethod.POST)
-    public String chooseTime(@RequestBody Map<String, String> json,
-                             ModelMap model) throws ParseException {
-        model.addAttribute("eventsByDate",
-                movieEventService.getMovieEventByFilter(
-                        Integer.parseInt(json.get("movie")),
-                        json.get("city"),
-                        Integer.parseInt(json.get("cinema")),
-                        parseStringToDate(json.get("date"))));
+    public String chooseTime(@RequestBody Map<String, String> json, ModelMap model, HttpServletResponse res)
+            throws IOException,ParseException {
+        List<MovieEvent> movieEvents =  movieEventService.getMovieEventByFilter(
+                Integer.parseInt(json.get("movie")), json.get("city"), Integer.parseInt(json.get("cinema")),
+                parseStringToDate(json.get("date")));
+        if (movieEvents.isEmpty())
+            return responseForError(res);
+        model.addAttribute("eventsByDate",movieEvents);
         model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movie-invite-fragments :: timeFragment";
     }
@@ -89,26 +101,31 @@ public class MovieInviteController {
 
     @RequestMapping(value = "movie/invite/fillUpSeats", method = RequestMethod.POST)
     public String chooseSeat(@RequestBody Map<String, String> json,
-                             ModelMap model) throws Exception {
-        model.addAttribute("freeSeats",
-                movieEventService.listAllSeatsByTime(
-                        Integer.parseInt(json.get("movie")),
-                        json.get("city"),
-                        Integer.parseInt(json.get("cinema")),
-                        parseStringToDate(json.get("date")),
-                        parseStringToTime(json.get("time"))));
+                             ModelMap model, HttpServletResponse res) throws Exception {
+        List<Integer> seats =  movieEventService.listAllSeatsByTime(Integer.parseInt(json.get("movie")), json.get("city"),
+                Integer.parseInt(json.get("cinema")), parseStringToDate(json.get("date")),
+                parseStringToTime(json.get("time")));
+        if (seats.isEmpty())
+            return responseForError(res);
+        model.addAttribute("freeSeats",seats);
         return "movie/movie-invite-fragments :: seatFragment";
     }
 
     @RequestMapping(value = "/movie/invite/new", method = RequestMethod.POST)
     public String newInvite(@RequestBody Map<String, String> json,
-                            ModelMap model) throws Exception {
-        MovieEvent movieEvent = movieEventService.getMovieEvent(Integer.parseInt(json.get("movie")),
-                json.get("city"),
-                Integer.parseInt(json.get("cinema")),
-                parseStringToDate(json.get("date")),
-                parseStringToTime(json.get("time")));
-        shoppingCartService.addEventInvites(movieEvent, Integer.parseInt(json.get("seat")), false);
-        return "";
+                            ModelMap model, HttpServletResponse res) throws Exception {
+        MovieEvent movieEvents = movieEventService.getMovieEvent(Integer.parseInt(json.get("movie")),
+                json.get("city"), Integer.parseInt(json.get("cinema")),
+                parseStringToDate(json.get("date")), parseStringToTime(json.get("time")));
+        if (movieEvents==null)
+            return responseForError(res);
+        shoppingCartService.addEventInvites(movieEvents, Integer.parseInt(json.get("seat")), false);
+        return "Success add event to the shopping cart .";
+    }
+
+    private String responseForError(HttpServletResponse res) throws IOException {
+        res.getWriter().println("No events");
+        res.getWriter().close();
+        return null;
     }
 }

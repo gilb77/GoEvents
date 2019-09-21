@@ -26,7 +26,7 @@
         <select class="form-control" id="cinema" th:field="*{eventsByCity}">
             <option th:each="event : ${eventsByCity}"
                     th:value="${event.getTheater().getCinema().getId()}"
-                    th:text="${event.getTheater().getCinema().getName()}"></option>
+                    th:text="${event.getTheater().getCinema().getName()} +', '+ ${event.getTheater().getCinema().getAddress()}"></option>
         </select>
     </div>
 

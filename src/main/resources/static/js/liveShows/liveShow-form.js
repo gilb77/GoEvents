@@ -25,7 +25,7 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 data: JSON.stringify(event),
                 success: function (data) {
-                    // window.location.href = "http://localhost:8080/liveshows/lists"
+                    $("#response").html(data);
                   }
                 })
         });

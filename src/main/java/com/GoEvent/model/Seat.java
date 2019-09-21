@@ -28,7 +28,7 @@ public class Seat {
         Arrays.fill(seats, 0);
     }
 
-    public Iterable<Integer> getFreeSeats() {
+    public List<Integer> getFreeSeats() {
         List<Integer> seats = new ArrayList<>();
         setSeats(this.seats.length);
         for (int i = 0; i < this.seats.length; i++)

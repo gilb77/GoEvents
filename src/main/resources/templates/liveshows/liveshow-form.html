@@ -4,6 +4,7 @@
     <th:block th:include="fragments/headerinc :: head"></th:block>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
     <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <link th:href="@{/css/form.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
@@ -12,7 +13,7 @@
 
 <th:block th:include="fragments/header :: header"></th:block>
 <div class="container">
-    <div class="panel panel-warning">
+    <div class="panel">
         <div class="panel-heading">
             <h2>Create Live Show</h2>
         </div>
@@ -74,7 +75,12 @@
 
 
                 <div class="form-group">
-                    <div class="col-sm-offset-8 col-sm-12">
+                    <div id="response" class="col-sm-8">
+                        <div th:fragment="errorFragment" id="error">
+                            <div class="alert alert-danger" th:if="${error}" th:utext="${error}"></div>
+                        </div>
+                    </div>
+                    <div>
                     <button id="submit" type="submit" class="btn btn-primary" name="submit">Submit</button>
                     </div>
                 </div>

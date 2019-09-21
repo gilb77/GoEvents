@@ -57,10 +57,21 @@ public class ArtistController {
 
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String saveArtist(Artist artist, @RequestParam MultipartFile fileUpload) throws IOException {
+    public String saveArtist(Artist artist,Model model, @RequestParam MultipartFile fileUpload) throws IOException {
+
+        if (artist.getName().isEmpty() || artist.getDescription().isEmpty() || fileUpload.isEmpty()) {
+            model.addAttribute("error", "One of the field is empty.");
+            return "liveshows/artists/artist-form";
+        }
+
         if (fileUpload.getContentType().equals("image/png") || fileUpload.getContentType().equals("image/jpg")
                 || fileUpload.getContentType().equals("image/jpeg") || fileUpload.getContentType().equals("image/gif")) {
             artist.setImage(fileUpload.getBytes());
+        }
+
+        if(artistService.artistNameExists(artist.getName())){
+            model.addAttribute("error", "Artist name already exists.");
+            return "liveshows/artists/artist-form";
         }
         artistService.saveArtist(artist);
         return "redirect:/artists/" + artist.getId();

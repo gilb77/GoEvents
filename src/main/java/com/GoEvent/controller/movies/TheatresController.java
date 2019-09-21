@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -40,12 +42,13 @@ public class TheatresController {
 
     @RequestMapping(value = "theater/new", method = RequestMethod.POST)
     @ResponseBody
-    public void newTheater(@RequestBody Map<String, String> json)  {
+    public void newTheater(@RequestBody Map<String, String> json, HttpServletResponse res) throws IOException {
         Theater theater = new Theater();
         theater.setSeats(Integer.parseInt(json.get("seats")));
         theater.setCinema(cinemaService.getCinemaById(Integer.parseInt(json.get("cinema"))));
         theaterServiceImpl.saveTheater(theater);
-        System.out.println(theater);
+        res.getWriter().println("The theater created successfully");
+        res.getWriter().close();
     }
 
 

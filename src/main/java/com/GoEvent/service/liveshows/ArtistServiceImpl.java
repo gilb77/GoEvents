@@ -36,4 +36,13 @@ public class ArtistServiceImpl {
     }
 
 
+    public boolean artistNameExists(String name){
+        List<Artist> artists = artistRepository.findAll();
+        for(Artist artist: artists)
+            if(artist.getName().equals(name))
+                return true;
+        return false;
+    }
+
+
 }

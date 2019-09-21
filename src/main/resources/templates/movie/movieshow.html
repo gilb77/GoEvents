@@ -3,7 +3,7 @@
 <head lang="en">
     <link th:href="@{/css/movies/movieshow.css}" rel="stylesheet"/>
 
-     <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
     <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
@@ -17,7 +17,8 @@
         </div>
         <div class="col-xs-2">
             <div class="photo">
-                <img th:src="*{'data:image/jpeg;base64,'+parseUtil.encodePhoto(movie.getImage()) }" class="img-thumbnail"
+                <img th:src="*{'data:image/jpeg;base64,'+parseUtil.encodePhoto(movie.getImage()) }"
+                     class="img-thumbnail"
                      style="width:100%"
                      alt="Responsive image">
             </div>
@@ -34,17 +35,24 @@
                                 <p class="form-control-static" th:text="${movie.description}">Description</p>
                             </div>
                         </div>
-                        <div class="form-group" >
-                            <button id="invite" type="submit" class="btn big-btn btn-primary pull-right"
-                                    name="submit">Invite
-                            </button>
+                        <div class="row">
+                            <div class="col-md-offset-9 col-md-2" >
+                                <div id="note" class="alert alert-danger" hidden></div>
+                            </div>
+                            <div class="form-group">
+                                <button id="invite" type="submit" class="btn big-btn btn-primary pull-right"
+                                        name="submit">Invite
+                                </button>
+                            </div>
                         </div>
-
                     </div>
+
+
                 </div>
             </div>
         </div>
-     </div>
+    </div>
+</div>
 </div>
 
 

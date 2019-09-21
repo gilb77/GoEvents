@@ -2,7 +2,6 @@ package com.GoEvent.service.movies.impl;
 
 
 import com.GoEvent.dao.movies.MovieEventRepository;
-import com.GoEvent.model.Seat;
 import com.GoEvent.model.movies.MovieEvent;
 import com.GoEvent.service.EventService;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -36,11 +36,11 @@ public class MovieEventServiceImpl implements EventService {
     }
 
     public List<MovieEvent> getMovieEventByFilter(int movie) {
-        return getMovieEventByFilter(movie, null, -1, null, null);
+        return buildCityList(getMovieEventByFilter(movie, null, -1, null, null));
     }
 
     public List<MovieEvent> getMovieEventByFilter(int movie, String city) {
-        return getMovieEventByFilter(movie, city, -1, null, null);
+        return buildCinemaiList(getMovieEventByFilter(movie, city, -1, null, null));
     }
 
     public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema) {
@@ -63,16 +63,14 @@ public class MovieEventServiceImpl implements EventService {
         return tempMovieEvents;
     }
 
-    public Iterable<Integer> listAllSeatsByTime(int movie, String city, int cinema, Date date, Date time) throws Exception {
+    public List<Integer> listAllSeatsByTime(int movie, String city, int cinema, Date date, Date time) throws Exception {
         return getMovieEvent(movie, city, cinema, date, time).getSeat().getFreeSeats();
     }
 
-    public MovieEvent getMovieEvent(int movie, String city, int cinema, Date date, Date time) throws Exception {
+    public MovieEvent getMovieEvent(int movie, String city, int cinema, Date date, Date time) {
         List<MovieEvent> movieEvent = getMovieEventByFilter(movie, city, cinema, date, time);
-        if (movieEvent.isEmpty())
-            throw new Exception("The event not exists");
-        if (movieEvent.size() > 1)
-            throw new Exception("The event is duplicate");
+        if (movieEvent.isEmpty() || movieEvent.size() > 1)
+            return null;
         return movieEvent.get(0);
     }
 
@@ -94,5 +92,34 @@ public class MovieEventServiceImpl implements EventService {
 
     private boolean checkTime(MovieEvent event, Date time) {
         return time == null || (event.getTime().compareTo(time) == 0);
+    }
+
+    private List<MovieEvent> buildCityList(List<MovieEvent> movieEvents) {
+        List<MovieEvent> tempMovieEvents = new ArrayList<>();
+        List<String> cites = new ArrayList<>();
+        for (MovieEvent event : movieEvents)
+            cites.add(event.getTheater().getCinema().city);
+        cites = new ArrayList<>(new HashSet<>(cites));
+        for (MovieEvent event : movieEvents)
+            if (cites.contains(event.getTheater().getCinema().city)){
+                tempMovieEvents.add(event);
+                cites.remove(event.getTheater().getCinema().city);
+            }
+        return tempMovieEvents;
+    }
+
+
+    private List<MovieEvent> buildCinemaiList(List<MovieEvent> movieEvents) {
+        List<MovieEvent> tempMovieEvents = new ArrayList<>();
+        List<String> location = new ArrayList<>();
+        for (MovieEvent event : movieEvents)
+            location.add(event.getTheater().getCinema().name + " " +event.getTheater().getCinema().address);
+        location = new ArrayList<>(new HashSet<>(location));
+        for (MovieEvent event : movieEvents)
+            if (location.contains(event.getTheater().getCinema().name + " " +event.getTheater().getCinema().address)){
+                tempMovieEvents.add(event);
+                location.remove(event.getTheater().getCinema().name + " " +event.getTheater().getCinema().address);
+            }
+        return tempMovieEvents;
     }
 }

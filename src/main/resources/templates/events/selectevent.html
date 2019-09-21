@@ -16,7 +16,7 @@
         <select class="form-control" id="theater" th:field="*{theaters}">
             <option th:each="theater : ${theaters}"
                     th:value="${theater.id}"
-                    th:text="${theater.id}"/>
+                    th:text="${theater.seats}"/>
         </select>
     </div>
 
