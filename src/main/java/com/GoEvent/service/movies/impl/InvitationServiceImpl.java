@@ -29,6 +29,10 @@ public class InvitationServiceImpl {
     }
 
 
+    public List<Invitation> getAllIvitations(){
+        return invitationRepository.findAll();
+    }
+
     private void saveSeats(Invitation invitation,List<Integer> seats){
         int i=0;
         for(int seat: seats){

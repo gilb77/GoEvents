@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-
+     <link th:href="@{/css/movies/movieslist.css}" rel="stylesheet"/>
 
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
@@ -18,10 +18,9 @@
         <div class="row">
                 <div class="col-lg-3" th:each="movie : ${movies}">
                     <a th:href="${'/movie/'+movie.id}">
-                        <img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }"
+                        <img  th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }"
                              class="img-thumbnail"
-                             style="width:80%"
-                             alt="Responsive image">
+                              alt="Responsive image">
                     </a>
                     </div>
                 </div>
@@ -29,17 +28,7 @@
     </div>
 
 
-    <!--<table>-->
-        <!--<td th:each="movie : ${movies}">-->
-            <!--<a th:href="${'/movie/'+movie.id}">-->
-            <!--<img th:src="*{'data:image/jpeg;base64,'+ movie.encodePhoto(movie.getImage()) }"-->
-            <!--class="img-thumbnail"-->
-            <!--alt="Responsive image">-->
-            <!--</a>-->
-        <!--</td>-->
-    <!--</table>-->
 
 </div>
-     <div th:replace="fragments/footer :: footer"/>
-</body>
+ </body>
 </html>

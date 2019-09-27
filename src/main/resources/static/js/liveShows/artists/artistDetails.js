@@ -22,6 +22,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     });
 
     $("#location").change(fillUpDate);
@@ -53,6 +54,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     }
 
 
@@ -87,6 +89,7 @@ $(document).ready(function () {
             }
         })
         loaded = false;
+        $.ajaxStop();
     }
 
     $("#seating").click(fillUpSeats);
@@ -120,6 +123,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     }
 
     $("#standing").click(function () {
@@ -139,7 +143,7 @@ $(document).ready(function () {
             artist: artist,
             location: document.getElementById("location").value,
             date: document.getElementById("date").innerText,
-            time: document.getElementById("time").innerText,
+            time: document.getElementById("time").value,
             seat: seatNum,
             iAmStand: iAmStand
         };
@@ -148,10 +152,15 @@ $(document).ready(function () {
             url: "http://localhost:8080/invite/liveshow/new/",
             type: 'post',
             contentType: 'application/json',
-            data: JSON.stringify(event)
+            data: JSON.stringify(event),
+            success: function (resp) {
+
+                    $.ajaxStop();
+            }
 
         });
-        loaded=false
+        loaded = false;
+        $.ajaxStop();
     });
 
 });

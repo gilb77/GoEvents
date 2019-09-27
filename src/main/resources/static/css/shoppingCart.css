@@ -1,0 +1,40 @@
+.jumbotron {
+
+    padding: 2rem 1rem;
+
+    margin-bottom: 2rem;
+
+    border-radius: 0.3rem;
+
+
+
+    background: #FDB73B;  /* old browsers fallback color*/
+
+    background: -webkit-linear-gradient(to right, #FDB73B, #ffffff);
+
+    background: linear-gradient(to right, #FDB73B, #ffffff);
+
+
+
+
+
+}
+
+.hd1{
+
+    color:#fff;
+
+}
+
+.panel > .panel-heading {
+    font-size: 30px;
+    border-color: #f48e00;
+    font-weight: bold;
+}
+
+
+.panel-default {
+    padding : 5px;
+    border-color: #f48e00;
+
+}

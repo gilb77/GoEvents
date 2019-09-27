@@ -1,10 +1,11 @@
 package com.GoEvent.service.impl;
 
 import com.GoEvent.model.Event;
-import com.GoEvent.model.Invitation;
 import com.GoEvent.model.liveshows.LiveShow;
 import com.GoEvent.model.movies.MovieEvent;
+import com.GoEvent.service.liveshows.LiveShowServiceImpl;
 import com.GoEvent.service.movies.impl.InvitationServiceImpl;
+import com.GoEvent.service.movies.impl.MovieEventServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -37,6 +38,12 @@ public class ShoppingCartServiceImpl {
     @Autowired
     private InvitationServiceImpl invitationService;
 
+    @Autowired
+    private MovieEventServiceImpl movieEventService;
+
+    @Autowired
+    private LiveShowServiceImpl liveShowService;
+
     @AllArgsConstructor
     @Getter
     @Setter
@@ -44,7 +51,11 @@ public class ShoppingCartServiceImpl {
         Event event;
         int quantity;
         List<Integer> seats;
-        int standsCount;
+        int standsQuantity;
+
+        public void addStandCount() {
+            this.standsQuantity++;
+        }
     }
 
 
@@ -62,63 +73,105 @@ public class ShoppingCartServiceImpl {
         for (Integer s : invites.get(event.getId()).seats)
             if (s == seat)
                 throw new Exception("The Seat was selected.");
+
     }
 
     private void updateCartEvent(Event event, int seat, boolean stand) {
         CurrentCartEvent currentCartEvent = invites.get(event.getId());
         if (stand)
-            currentCartEvent.standsCount++;
-        else {
-            currentCartEvent.quantity++;
+            currentCartEvent.standsQuantity++;
+        else
             currentCartEvent.seats.add(seat);
-        }
+        currentCartEvent.quantity++;
         invites.replace(event.getId(), currentCartEvent);
     }
 
+
     private void newEventCart(Event event, int seat, boolean stand) {
-        List<Integer> seats = new ArrayList<>();
-        int standCount = 0;
+        CurrentCartEvent currentCartEvent = new CurrentCartEvent(event, 1, new ArrayList<>(), 0);
         if (stand)
-            standCount++;
+            currentCartEvent.addStandCount();
         else
-            seats.add(seat);
-        invites.put(event.getId(), new CurrentCartEvent(event, 1, seats, standCount));
+            currentCartEvent.seats.add(seat);
+        invites.put(event.getId(), currentCartEvent);
     }
 
 
     public double getTotal() {
         double sum = 0;
         for (CurrentCartEvent cartEvent : invites.values())
-            if (cartEvent.event instanceof MovieEvent)
-                sum += geTotalEvent(cartEvent);
+            sum += geTotalEvent(cartEvent);
         return sum;
     }
 
     public void removeInvite(int id) {
+        removeSeats(id);
         invites.remove(id);
     }
 
-    public double geTotalEvent(CurrentCartEvent cartEvent){
+
+    private void removeSeats(int index) {
+        for (int seat : invites.get(index).seats)
+            invites.get(index).event.getSeat().cancelSeats(seat);
+    }
+
+    private void saveEvent(Event event) {
+        if (event instanceof MovieEvent)
+            movieEventService.saveEvent((MovieEvent) event);
+        else if (event instanceof LiveShow)
+            liveShowService.saveLiveShow((LiveShow) event);
+    }
+
+    public double geTotalEvent(CurrentCartEvent cartEvent) {
         double sum = 0;
         if (cartEvent.event instanceof MovieEvent)
             sum += cartEvent.seats.size() * cartEvent.getEvent().price;
         else if (cartEvent.event instanceof LiveShow) {
-            sum += cartEvent.seats.size() * ((LiveShow) cartEvent.getEvent()).getCostSeating();
-            sum += cartEvent.standsCount * ((LiveShow) cartEvent.getEvent()).getCostStanding();
+            sum += cartEvent.getSeats().size() * ((LiveShow) cartEvent.getEvent()).getCostSeating();
+            sum += cartEvent.standsQuantity * ((LiveShow) cartEvent.getEvent()).getCostStanding();
         }
         return sum;
     }
 
-    public void checkout() {
-         List<Integer> idInvites = new ArrayList<>();
-         for (CurrentCartEvent invite : invites.values()) {
-             invitationService.saveInvitation(invite.getEvent().getId(),
-                     invite.getQuantity(),invite.seats,invite.standsCount,geTotalEvent(invite));
-             idInvites.add(invite.getEvent().getId());
+    public boolean checkout() {
+        List<Integer> idInvites = new ArrayList<>();
+        for (CurrentCartEvent invite : invites.values()) {
+            if (!saveSeats(invite) || !saveStands(invite))
+                return false;
+            invitationService.saveInvitation(invite.getEvent().getId(),
+                    invite.getQuantity(), invite.seats, invite.standsQuantity, geTotalEvent(invite));
+            idInvites.add(invite.getEvent().getId());
         }
-        for(int idInvite :idInvites)
+        for (int idInvite : idInvites)
             removeInvite(idInvite);
+        return true;
     }
 
+    private boolean saveSeats(CurrentCartEvent currentCartEvent) {
+        Event event = currentCartEvent.event;
+        for (Integer seat : currentCartEvent.seats) {
+            if (!checkSeat(event, seat))
+                return false;
+            event.getSeat().saveSeats(seat);
+            saveEvent(event);
+        }
+        return true;
+    }
+
+    private boolean saveStands(CurrentCartEvent currentCartEvent) {
+        LiveShow event = (LiveShow) currentCartEvent.event;
+        if (!event.saveStandPlace())
+            return false;
+        saveEvent(event);
+        return true;
+    }
+
+    public boolean checkSeat(Event event, int seat) {
+        if (event instanceof MovieEvent)
+            return movieEventService.findMovieEventById(event.getId()).getSeat().checkSeat(seat);
+        else if (event instanceof LiveShow)
+            return liveShowService.findLiveShowById(event.getId()).getSeat().checkSeat(seat);
+        return false;
+    }
 
 }

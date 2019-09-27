@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -36,4 +37,10 @@ public class LiveShow extends Event {
     private Artist artist;
 
 
+     public boolean  saveStandPlace() {
+         if (stand<1)
+             return false;
+         this.stand--;
+         return true;
+    }
 }

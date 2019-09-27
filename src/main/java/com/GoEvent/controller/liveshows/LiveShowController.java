@@ -65,4 +65,13 @@ public class LiveShowController {
         model.addAttribute("locations", locationRepository.findAll());
         return "liveshows/liveshow-form";
     }
+
+
+    @RequestMapping(value = "restseats/{id}", method = RequestMethod.GET)
+    public String restSeats(@PathVariable Integer id) {
+        LiveShow liveShow = liveShowService.getLiveShowById(id);
+        liveShow.getSeat().setSeats(liveShow.getSeat().getNumSeats());
+         liveShowService.saveLiveShow(liveShow);
+        return "redirect:/liveshows/lists";
+    }
 }

@@ -1,0 +1,25 @@
+table.table-bordered{
+    border:1px solid blue;
+    margin-top:20px;
+}
+table.table-bordered > thead > tr > th{
+    border:1px solid blue;
+}
+table.table-bordered > tbody > tr > td{
+    border:1px solid blue;
+}
+
+.tab {
+    font-size:1em;
+    color:black;
+    font-family: monospace;
+    margin-top:60px;
+    text-align:center;
+    float:left;
+    width:30%;
+    overflow:hidden;
+}
+.table {
+    border-top: 1px solid black;
+}
+

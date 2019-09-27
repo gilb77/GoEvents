@@ -3,69 +3,107 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head lang="en">
 
-
+    <link th:href="@{/css/shoppingCart.css}" rel="stylesheet"/>
     <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
 <th:block th:include="fragments/header :: header"></th:block>
 <div class="container">
-    <h1 class="jumbotron">
-        <span sec:authentication="name"></span>'s Shopping Cart
-    </h1>
-    <div class="panel-default well" th:each="invite : ${invites.values()}">
 
 
-        <div th:if="${invite.getEvent().getMovieEvent() != null}">
-            <div class="panel-heading">
-                <h1><a th:text="${invite.getEvent().getMovieEvent().getMovie().getName()}"
-                       th:href="@{'/movie/' + ${invite.getEvent().getMovieEvent().getMovie().id}}">Title</a></h1>
-                <h3 th:text="${invite.getEvent().getMovieEvent().getMovie().description}">Description</h3>
+    <div class="panel">
+        <h1 class="panel-heading">
+            <span sec:authentication="name"></span>'s Shopping Cart
+        </h1>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-lg-4" th:each="invite : ${invites.values()}">
+
+            <div th:if="${invite.getEvent().getMovieEvent() != null}">
+
+                <div class="card">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="photo">
+                                <img th:src="*{'data:image/jpeg;base64,'+parseUtil.encodePhoto(invite.getEvent().getMovieEvent().getMovie().getImage()) }"
+                                     class="img-thumbnail"
+                                     style="width:100%"
+                                     alt="Responsive image"
+                                     th:href="@{'/movie/' + ${invite.getEvent().getMovieEvent().getId()}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card-block">
+                    <div class="col-xs-offset-2">
+
+                        <h4 th:inline="text">Price:
+                            [[${invite.getEvent().getMovieEvent().getPrice()}]] $
+                        </h4>
+
+                        <h4 th:inline="text">Quantity: [[${invite.getQuantity()}]]</h4>
+                        <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${invite.getEvent().getId()})}">
+                            <button type="button" class="btn btn-danger" th:text="Remove">Remove</button>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="row panel-body">
-                <div th:inline="text" class="col-md-2">Price: [[${invite.getEvent().getMovieEvent().getPrice()}]] $</div>
-                <div th:inline="text" class="col-md-9">Quantity: [[${invite.getQuantity()}]]</div>
-                <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${invite.getEvent().getId()})}" class="col-md-1">
-                    <button type="button" class="btn btn-danger" th:text="Remove">Remove</button>
-                </a>
+
+
+            <div th:if="${invite.getEvent().getLiveShow() != null}">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="photo">
+                                <img th:src="*{'data:image/jpeg;base64,'+parseUtil.encodePhoto(invite.getEvent().getLiveShow().getArtist().getImage()) }"
+                                     class="img-thumbnail"
+                                     style="width:100%"
+                                     alt="Responsive image"
+                                     th:href="@{'/movie/' + ${invite.getEvent().getLiveShow().getId()}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card-block">
+                    <!--<div class="col-xs-offset-1">-->
+                        <h4 th:inline="text">Price Of Seating:
+                            [[${invite.getEvent().getLiveShow().getCostSeating()}]]$
+                        </h4>
+                        <h4 th:inline="text">Price Of Standing:
+                            [[${invite.getEvent().getLiveShow().getCostStanding()}]]$
+                        </h4>
+                    <div class="col-xs-offset-2">
+                        <h4 th:inline="text">Quantity: [[${invite.getQuantity()}]]</h4>
+                        <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${invite.getEvent().getId()})}">
+                            <button type="button" class="btn btn-danger" th:text="Remove">Remove</button>
+                        </a>
+                    </div>
+                    <br>
+                </div>
             </div>
             <br>
-        </div>
 
-
-        <div th:if="${invite.getEvent().getLiveShow() != null}">
-            <div class="panel-heading">
-                <h1><a th:text="${invite.getEvent().getLiveShow().getArtist().getName()}"
-                       th:href="@{'/movie/' + ${invite.getEvent().getLiveShow().getId()}}">Title</a></h1>
-                <h3 th:text="${invite.getEvent().getLiveShow().getArtist().getDescription()}">Description</h3>
-            </div>
-            <div class="row panel-body">
-                <div th:inline="text" class="col-md-2">Price Of Seating: [[${invite.getEvent().getLiveShow().getCostSeating()}]]$ </div>
-                <div th:inline="text" class="col-md-2">Price Of Seating: [[${invite.getEvent().getLiveShow().getCostStanding()}]]$</div>
-                <div th:inline="text" class="col-md-9">Quantity: [[${invite.getQuantity()}]]</div>
-                <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${invite.getEvent().getId()})}" class="col-md-1">
-                    <button type="button" class="btn btn-danger" th:text="Remove">Remove</button>
-                </a>
-            </div>
             <br>
+
         </div>
+        <div class="row panel-body">
+            <h2 class="col-md-11" th:inline="text">Total: [[${total}]]</h2>
+            <a th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
+                <button type="button" class="btn btn-primary" th:text="Checkout">Checkout</button>
+            </a>
 
-
-
+        </div>
+        <div class="row">
+            <div class="col-md-offset-9 alert alert-danger" th:if="${error}" th:utext="${error}"></div>
+        </div>
+        </div>
     </div>
 
-
-
-
-    <div class="row panel-body">
-    <h2 class="col-md-11" th:inline="text">Total: [[${total}]]</h2>
-    <a th:href="@{'/shoppingCart/checkout'}" class="col-md-1">
-    <button type="button" class="btn btn-primary" th:text="Checkout">Checkout</button>
-    </a>
-    </div>
 </div>
-
-
-
 
 </body>
 </html>

@@ -13,8 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
+
+import static com.GoEvent.util.WebUtil.responseForError;
 
 
 @Log4j
@@ -59,16 +64,42 @@ public class MoviesEventsController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
-    public void getNewEvent(@RequestBody Map<String, String> json) throws ParseException {
+    public String getNewEvent(@RequestBody Map<String, String> json, HttpServletResponse res) throws ParseException, IOException {
+        if (json.get("theater").isEmpty())
+            return responseForError(res, "No events");
+        if (!checkMovieEventNotHappenAtSameTime(json))
+            return responseForError(res, "Events exists");
         MovieEvent movieEvent = new MovieEvent();
         movieEvent.setDate(ParseUtil.parseStringToDate(json.get("date")));
         movieEvent.setTime(ParseUtil.parseStringToTime(json.get("time")));
         movieEvent.setMovie(movieService.getMovieById(Integer.parseInt(json.get("movie"))));
         movieEvent.setTheater(theaterService.getTheaterById(Integer.parseInt(json.get("theater"))));
         movieEvent.setPrice(Integer.parseInt(json.get("price")));
+        movieEvent.getSeat().setSeats(movieEvent.getTheater().getSeats());
         movieEventService.saveEvent(movieEvent);
+        return "events/movieseventstable";
     }
 
+    @RequestMapping(value = "restseats/{id}", method = RequestMethod.GET)
+    public String restSeats(@PathVariable Integer id) {
+        MovieEvent movieEvent = movieEventService.findMovieEventById(id);
+        movieEvent.getSeat().setSeats(movieEvent.getTheater().getSeats());
+        movieEventService.saveEvent(movieEvent);
+        return "redirect:/event/movies/table";
+    }
+
+    private boolean checkMovieEventNotHappenAtSameTime(Map<String, String> json) throws ParseException {
+        List<MovieEvent> movieEvents = movieEventService.getMovieEventByFilter(Integer.parseInt(json.get("movie")),
+                theaterService.getTheaterById(Integer.parseInt(json.get("theater"))).getCinema().getId(),
+                ParseUtil.parseStringToDate(json.get("date")),
+                ParseUtil.parseStringToTime(json.get("time")));
+        if (movieEvents.isEmpty())
+            return true;
+        for (MovieEvent movieEvent : movieEvents)
+            if (movieEvent.getTheater().getId() == Integer.parseInt(json.get("theater")))
+                return false;
+        return true;
+    }
 
     @RequestMapping(value = "/movies/table", method = RequestMethod.POST)
     public String GetEvents(Model model) {

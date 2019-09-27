@@ -23,4 +23,6 @@ public class MovieEvent extends Event {
     @OneToOne(cascade = CascadeType.ALL)
     Movie movie;
 
+
+
 }

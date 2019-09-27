@@ -2,6 +2,7 @@ package com.GoEvent.service.liveshows;
 
 import com.GoEvent.dao.liveshows.LiveShowRepository;
 import com.GoEvent.model.liveshows.LiveShow;
+import com.GoEvent.model.movies.MovieEvent;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,16 @@ public class LiveShowServiceImpl {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+      return saveLiveShow(liveShow);
+    }
+
+    public LiveShow saveLiveShow(LiveShow liveShow){
         liveShowRepository.save(liveShow);
         return liveShow;
+    }
+
+    public LiveShow findLiveShowById(int id) {
+        return liveShowRepository.findById(id).get();
     }
 
 

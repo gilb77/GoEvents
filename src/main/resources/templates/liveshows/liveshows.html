@@ -10,8 +10,8 @@
 <div class="container">
 
     <div th:if="${not #lists.isEmpty(liveShows)}">
-        <h2>Cinema List</h2>
-        <table class="table table-striped">
+        <h2>Live Shows List</h2>
+        <table class="table table-hover">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
@@ -20,6 +20,7 @@
                 <th>Stands Number</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Rest</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -27,10 +28,11 @@
                 <td th:text="${liveShow.id}">Id</td>
                 <td th:text="${liveShow.artist.getName()}">Name</td>
                 <td th:text="${liveShow.location.getLocation()}">Location</td>
-                <td th:text="${liveShow.getSeat().getNumSeats()}">Seats Number</td>
+                <td th:text="${liveShow.getSeat().getNumFreeSeats()}">Seats Number</td>
                 <td th:text="${liveShow.stand}">Stands Number</td>
                 <td th:text="${liveShow.date}">Date</td>
                 <td th:text="${liveShow.time}">Time</td>
+                <td><a th:href="${'/liveshows/restseats/'+liveShow.id}"></a></td>
                 <td><a th:href="${'/liveshows/edit/'+liveShow.id}">Edit</a></td>
                 <td><a th:href="${'/liveshows/delete/'+liveShow.id}">Delete</a></td>
             </tr>

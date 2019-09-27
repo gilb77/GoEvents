@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 
 @EnableWebSecurity
 @Configuration
-//@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccessDeniedHandler accessDeniedHandler;

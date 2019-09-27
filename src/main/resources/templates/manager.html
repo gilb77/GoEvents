@@ -18,7 +18,7 @@
         <div class="col-md-5">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Movies</h3>
+                    <div class="panel-title">Movies</div>
                 </div>
                 <ul class="panel-body">
                     <li class="list-group-item"><a th:href="@{/movie/new}">Create Movie</a></li>
@@ -31,7 +31,7 @@
         <div class="col-md-5">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Cinema</h3>
+                    <div class="panel-title">Cinema</div>
                 </div>
                 <ul class="panel-body">
                     <li class="list-group-item"><a th:href="@{/cinema/new}">Create Cinema</a></li>
@@ -46,7 +46,7 @@
         <div class="col-md-5">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Artists</h3>
+                    <div class="panel-title">Artists</div>
                 </div>
                 <ul class="panel-body">
                     <li class="list-group-item"><a th:href="@{/artists/new}">Create Artists</a></li>
@@ -57,11 +57,24 @@
         <div class="col-md-5">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">LiveShow</h3>
+                    <div class="panel-title">LiveShow</div>
                 </div>
                 <ul class="panel-body">
                     <li class="list-group-item"><a th:href="@{/liveshows/new}">Create Live Show</a></li>
                     <li class="list-group-item"><a th:href="@{/liveshows/lists}">List Of Live Show</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-3 col-md-5">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Manager</div>
+                </div>
+                <ul class="panel-body">
+                    <li class="list-group-item"><a th:href="@{/invitations}">List of the invitations</a></li>
+                    <li class="list-group-item"><a th:href="@{/users}">List Of the users</a></li>
                 </ul>
             </div>
         </div>

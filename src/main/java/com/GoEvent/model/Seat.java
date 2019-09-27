@@ -30,11 +30,14 @@ public class Seat {
 
     public List<Integer> getFreeSeats() {
         List<Integer> seats = new ArrayList<>();
-        setSeats(this.seats.length);
         for (int i = 0; i < this.seats.length; i++)
             if (this.seats[i] == 0)
                 seats.add(i);
         return seats;
+    }
+
+    public int getNumFreeSeats() {
+        return getFreeSeats().size();
     }
 
 
@@ -49,6 +52,10 @@ public class Seat {
 
     public void cancelSeats(int num) {
         this.seats[num] = 0;
+    }
+
+    public boolean checkSeat(int seat){
+        return this.seats[seat] ==0;
     }
 
 

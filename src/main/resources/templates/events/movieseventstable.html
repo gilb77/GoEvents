@@ -11,25 +11,30 @@
 
     <div th:if="${not #lists.isEmpty(events)}">
         <h2>Events List</h2>
-        <table class="table table-striped ">
+        <table class="table table-hover">
             <tr class="table-warning">
                 <th>Id</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Cinema</th>
                 <th>theater</th>
                 <th>price</th>
                 <th>movie</th>
-                <th>View</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Free seats</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
             <tr th:each="event : ${events}">
                 <td th:text="${event.id}">Id</td>
+                <td th:text="${event.getDate()}">Date</td>
+                <td th:text="${event.getTime()}">Time</td>
+                <td th:text="${event.getMovie().getName()}">movie</td>
                 <td th:text="${event.theater.getCinema().getName()}">Cinema</td>
                 <td th:text="${event.theater.getId()}">theater</td>
                 <td th:text="${event.price}">price</td>
-                <td th:text="${event.getMovie().getName()}">movie</td>
-                <!--<td th:text="${product.price}">price</td>-->
-                <td><a th:href="${'/movie/'+event.id}">View</a></td>
+                <td th:text="${event.getSeat().getNumFreeSeats()}">Number of free seats</td>
+                <td><a th:href="${'/event/restseats/'+event.id}">Rest seat</a></td>
                 <td><a th:href="${'/movie/edit/'+event.id}">Edit</a></td>
                 <td><a th:href="${'/movie/delete/'+event.id}">Delete</a></td>
             </tr>

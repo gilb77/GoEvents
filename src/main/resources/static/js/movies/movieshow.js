@@ -23,6 +23,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     });
 
     $("#city").change(fillUpCinemas);
@@ -50,6 +51,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     }
 
     $("#cinema").change(fillUpDates);
@@ -78,6 +80,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     }
 
     $("#date").change(fillUpTime);
@@ -110,6 +113,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     }
 
     $("#time").change(fillUpSeats);
@@ -143,6 +147,7 @@ $(document).ready(function () {
             }
         });
         loaded = false;
+        $.ajaxStop();
     }
 
     $("#submitInvite").click(sendNewInvite);
@@ -176,6 +181,6 @@ $(document).ready(function () {
             }
         })
     }
-
     loaded = false;
+    $.ajaxStop();
 });

@@ -2,6 +2,7 @@ package com.GoEvent.controller;
 
 
 import com.GoEvent.service.impl.ShoppingCartServiceImpl;
+import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class ShoppingCartController {
     public String shoppingCart(Model model) {
         model.addAttribute("invites", shoppingCartService.getInvites());
         model.addAttribute("total", shoppingCartService.getTotal());
+        model.addAttribute("parseUtil", new ParseUtil());
         return "shoppingCart";
     }
 
@@ -32,7 +34,8 @@ public class ShoppingCartController {
 
     @GetMapping("/shoppingCart/checkout")
     public String checkout(Model model) {
-        shoppingCartService.checkout();
+        if(!shoppingCartService.checkout())
+            model.addAttribute("error","The seats you want are save");
         return shoppingCart(model);
     }
 }

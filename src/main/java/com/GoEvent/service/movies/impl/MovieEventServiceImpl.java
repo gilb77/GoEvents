@@ -17,19 +17,17 @@ import java.util.List;
 @Service
 public class MovieEventServiceImpl implements EventService {
 
+    @Autowired
     private MovieEventRepository movieEventRepository;
 
 
-    @Autowired
-    public void setMovieEventRepository(MovieEventRepository movieEventRepository) {
-        this.movieEventRepository = movieEventRepository;
-    }
-
     public void saveEvent(MovieEvent movieEvent) {
-        movieEvent.getSeat().setSeats(movieEvent.getTheater().getSeats());
         this.movieEventRepository.save(movieEvent);
     }
 
+    public MovieEvent findMovieEventById(int id) {
+        return movieEventRepository.findById(id).get();
+    }
 
     public List<MovieEvent> listAllEvents() {
         return movieEventRepository.findAll();
@@ -49,6 +47,10 @@ public class MovieEventServiceImpl implements EventService {
 
     public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema, Date date) {
         return getMovieEventByFilter(movie, city, cinema, date, null);
+    }
+
+    public List<MovieEvent> getMovieEventByFilter(int movie, int cinema, Date date, Date time) {
+        return getMovieEventByFilter(movie, null, cinema, date, time);
     }
 
 
@@ -102,7 +104,7 @@ public class MovieEventServiceImpl implements EventService {
             cites.add(event.getTheater().getCinema().city);
         cites = new ArrayList<>(new HashSet<>(cites));
         for (MovieEvent event : movieEvents)
-            if (cites.contains(event.getTheater().getCinema().city)){
+            if (cites.contains(event.getTheater().getCinema().city)) {
                 tempMovieEvents.add(event);
                 cites.remove(event.getTheater().getCinema().city);
             }
@@ -114,12 +116,12 @@ public class MovieEventServiceImpl implements EventService {
         List<MovieEvent> tempMovieEvents = new ArrayList<>();
         List<String> location = new ArrayList<>();
         for (MovieEvent event : movieEvents)
-            location.add(event.getTheater().getCinema().name + " " +event.getTheater().getCinema().address);
+            location.add(event.getTheater().getCinema().name + " " + event.getTheater().getCinema().address);
         location = new ArrayList<>(new HashSet<>(location));
         for (MovieEvent event : movieEvents)
-            if (location.contains(event.getTheater().getCinema().name + " " +event.getTheater().getCinema().address)){
+            if (location.contains(event.getTheater().getCinema().name + " " + event.getTheater().getCinema().address)) {
                 tempMovieEvents.add(event);
-                location.remove(event.getTheater().getCinema().name + " " +event.getTheater().getCinema().address);
+                location.remove(event.getTheater().getCinema().name + " " + event.getTheater().getCinema().address);
             }
         return tempMovieEvents;
     }
@@ -132,14 +134,12 @@ public class MovieEventServiceImpl implements EventService {
             dates.add(event.getDate());
         dates = new ArrayList<>(new HashSet<>(dates));
         for (MovieEvent event : movieEvents)
-            if (dates.contains(event.getDate())){
+            if (dates.contains(event.getDate())) {
                 tempMovieEvents.add(event);
                 dates.remove(event.getDate());
             }
         return tempMovieEvents;
     }
-
-
 
 
 }

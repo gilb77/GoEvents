@@ -1,10 +1,12 @@
 .panel > .panel-heading {
-    background-color: #FDB73B;
-    border-color: #FDB73B;
-
+    font-size: 30px;
+    border-color: #f48e00;
+    font-weight: bold;
 }
 
-.panel > .panel-body {
-    padding: 5px;
-    justify-content: center;
+
+.panel-default {
+    padding : 5px;
+    border-color: #f48e00;
+
 }

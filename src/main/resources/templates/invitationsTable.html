@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+<th:block th:include="fragments/header :: header"></th:block>
+
+<div class="container">
+
+    <div th:if="${not #lists.isEmpty(invitations)}">
+        <h2>Invitations List</h2>
+        <table class="table table-hover">
+            <tr class="table-warning">
+                <th>Id</th>
+                <th>Date</th>
+                <th>Event Id</th>
+                <th>Total Cost</th>
+                <th>User</th>
+             </tr>
+            <tr th:each="invitation : ${invitations}">
+                <td th:text="${invitation.id}">Id</td>
+                <td th:text="${invitation.getDate()}">Date</td>
+                <td th:text="${invitation.getEventId()}">Event Id</td>
+                <td th:text="${invitation.getTotalCost()}">Total Cost</td>
+                <td th:text="${invitation.getUser()}">User</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>
