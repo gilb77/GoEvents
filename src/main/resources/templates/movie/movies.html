@@ -12,11 +12,10 @@
     <div th:if="${not #lists.isEmpty(movies)}">
         <h2>Movie List</h2>
         <table class="table table-hover">
-        <tr class="table-warning">
+            <tr class="table-warning">
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
-                <!--<th>Price</th>-->
                 <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -25,7 +24,6 @@
                 <td th:text="${movie.id}">Id</td>
                 <td th:text="${movie.name}">Name</td>
                 <td th:text="${movie.description}">Description</td>
-                <!--<td th:text="${product.price}">price</td>-->
                 <td><a th:href="${'/movie/'+movie.id}">View</a></td>
                 <td><a th:href="${'/movie/edit/'+movie.id}">Edit</a></td>
                 <td><a th:href="${'/movie/delete/'+movie.id}">Delete</a></td>
@@ -34,6 +32,8 @@
 
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"/>
+<div class="col-md-offset-9 col-xs-2">
+    <div style="text-align: center;" class="alert alert-danger" th:if="${error}" th:utext="${error}"></div>
+</div>
 </body>
 </html>

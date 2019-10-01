@@ -17,8 +17,7 @@
                 <th>Name</th>
                 <th>City</th>
                 <th>Address</th>
-                <th>View</th>
-                <th>Edit</th>
+                <th></th>
             </tr>
             <tr th:each="cinema : ${cinemas}">
                 <td th:text="${cinema.id}">Id</td>
@@ -26,7 +25,6 @@
                 <td th:text="${cinema.city}">City</td>
                 <td th:text="${cinema.address}">Address</td>
                 <td><a th:href="${'/cinema/'+cinema.id}">View</a></td>
-                <td><a th:href="${'/cinema/edit/'+cinema.id}">Edit</a></td>
             </tr>
         </table>
 

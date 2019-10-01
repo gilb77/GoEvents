@@ -14,7 +14,7 @@
 
         <div th:if="${not #lists.isEmpty(artists)}">
             <div>
-            <h2>Artist List</h2>
+            <h2>Artists List</h2>
             </div>
             <table class="table table-hover">
                 <tr class="table-warning">
@@ -37,6 +37,9 @@
 
         </div>
     </div>
+</div>
+<div class="col-md-offset-9 col-xs-2">
+    <div style="text-align: center;" class="alert alert-danger" th:if="${error}" th:utext="${error}"></div>
 </div>
 </body>
 </html>

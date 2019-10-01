@@ -26,12 +26,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     final DataSource dataSource;
 
-    @Value("${spring.admin.username}")
-    private String adminUsername;
-
-    @Value("${spring.admin.username}")
-    private String adminPassword;
-
     @Value("${spring.queries.users-query}")
     private String usersQuery;
 
@@ -54,10 +48,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/home","/", "/registration", "/error", "/h2-console/**").permitAll()
+                .antMatchers("/home","/", "/registration", "/error","/console/**").permitAll()
+                .antMatchers("/manager/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -88,9 +82,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .dataSource(dataSource)
                 .passwordEncoder(passwordEncoder());
 
-        // In memory authentication
-        auth.inMemoryAuthentication()
-                .withUser(adminUsername).password(adminPassword).roles("ADMIN");
     }
 
     /**

@@ -2,16 +2,18 @@ package com.GoEvent.service.movies.impl;
 
 
 import com.GoEvent.dao.movies.MovieEventRepository;
+import com.GoEvent.model.Invitation;
 import com.GoEvent.model.movies.MovieEvent;
 import com.GoEvent.service.EventService;
+import com.GoEvent.util.ParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 @Service
@@ -19,10 +21,77 @@ public class MovieEventServiceImpl implements EventService {
 
     @Autowired
     private MovieEventRepository movieEventRepository;
+    @Autowired
+    private InvitationServiceImpl invitationService;
 
+    @Autowired
+    private TheaterServiceImpl theaterService;
+
+    @Autowired
+    private MovieServiceImpl movieService;
+
+    public static Lock lockRepository = new ReentrantLock();
+
+    public synchronized boolean deleteMovieEventById(int id) {
+        InvitationServiceImpl.globalLockRepository.lock();
+        lockRepository.lock();
+        try {
+            for (Invitation invitation : invitationService.getAllIvitations())
+                if (invitation.getEventId() == id && movieEventRepository.findById(id).get().getDate().after(new Date())) {
+                    lockRepository.unlock();
+                    InvitationServiceImpl.globalLockRepository.unlock();
+                    return false;
+                }
+            movieEventRepository.deleteById(id);
+        } finally {
+            lockRepository.unlock();
+            InvitationServiceImpl.globalLockRepository.unlock();
+        }
+        return true;
+    }
 
     public void saveEvent(MovieEvent movieEvent) {
+        lockRepository.lock();
         this.movieEventRepository.save(movieEvent);
+        lockRepository.unlock();
+    }
+
+    public boolean saveMovieEvent(Map<String, String> json) throws ParseException {
+        if (checkMovieEventNotHappenAtSameTime(json))
+            return false;
+        MovieEvent movieEvent = new MovieEvent();
+        movieEvent.setDate(ParseUtil.parseStringToDate(json.get("date")));
+        movieEvent.setTime(ParseUtil.parseStringToTime(json.get("time")));
+        movieEvent.setMovie(movieService.getMovieById(Integer.parseInt(json.get("movie"))));
+        movieEvent.setTheater(theaterService.getTheaterById(Integer.parseInt(json.get("theater"))));
+        movieEvent.setPrice(Integer.parseInt(json.get("price")));
+        movieEvent.getSeat().setSeats(movieEvent.getTheater().getSeats());
+        saveEvent(movieEvent);
+        return true;
+    }
+
+
+    private boolean checkMovieEventNotHappenAtSameTime(Map<String, String> json) {
+        lockRepository.lock();
+        try {
+            List<MovieEvent> movieEvents = getMovieEventByFilter(Integer.parseInt(json.get("movie")),
+                    theaterService.getTheaterById(Integer.parseInt(json.get("theater"))).getCinema().getId(),
+                    ParseUtil.parseStringToDate(json.get("date")),
+                    ParseUtil.parseStringToTime(json.get("time")));
+            if (movieEvents.isEmpty()) {
+                lockRepository.unlock();
+                return true;
+            }
+            for (MovieEvent movieEvent : movieEvents)
+                if (movieEvent.getTheater().getId() == Integer.parseInt(json.get("theater"))) {
+                    lockRepository.unlock();
+                    return false;
+                }
+        } finally {
+            lockRepository.unlock();
+            return true;
+        }
+
     }
 
     public MovieEvent findMovieEventById(int id) {
@@ -55,12 +124,18 @@ public class MovieEventServiceImpl implements EventService {
 
 
     public List<MovieEvent> getMovieEventByFilter(int movie, String city, int cinema, Date date, Date time) {
-        List<MovieEvent> movieEvents = movieEventRepository.findAll();
-        List<MovieEvent> tempMovieEvents = new ArrayList<>();
-        for (MovieEvent event : movieEvents) {
-            if (checkMovie(event, movie) && checkCity(event, city) &&
-                    checkCinema(event, cinema) && checkDate(event, date) && checkTime(event, time))
-                tempMovieEvents.add(event);
+        lockRepository.lock();
+        List<MovieEvent> movieEvents, tempMovieEvents;
+        try {
+            movieEvents = movieEventRepository.findAll();
+            tempMovieEvents = new ArrayList<>();
+            for (MovieEvent event : movieEvents) {
+                if (checkMovie(event, movie) && checkCity(event, city) &&
+                        checkCinema(event, cinema) && checkDate(event, date) && checkTime(event, time))
+                    tempMovieEvents.add(event);
+            }
+        } finally {
+            lockRepository.unlock();
         }
         return tempMovieEvents;
     }
@@ -142,4 +217,25 @@ public class MovieEventServiceImpl implements EventService {
     }
 
 
+    public boolean checkEventOntheFuture(int id) {
+        lockRepository.lock();
+        try {
+
+            for (MovieEvent movieEvent : getMovieEventByFilter(id))
+                for (Invitation invitation : invitationService.getAllIvitations())
+                    if (invitation.getEventId() == movieEvent.getId() && movieEvent.getDate().after(new Date()))
+                        return true;
+        } finally {
+            lockRepository.unlock();
+        }
+        return false;
+    }
+
+
+    public boolean deleteEventByMovieId(int id) {
+        for (MovieEvent movieEvent : getMovieEventByFilter(id))
+            if (deleteMovieEventById(movieEvent.getId()))
+                return false;
+        return true;
+    }
 }

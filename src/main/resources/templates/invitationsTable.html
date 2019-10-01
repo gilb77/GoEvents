@@ -25,7 +25,7 @@
                 <td th:text="${invitation.getDate()}">Date</td>
                 <td th:text="${invitation.getEventId()}">Event Id</td>
                 <td th:text="${invitation.getTotalCost()}">Total Cost</td>
-                <td th:text="${invitation.getUser()}">User</td>
+                <td th:text="${invitation.getUser().getUsername()}">User</td>
             </tr>
         </table>
 

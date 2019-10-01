@@ -7,22 +7,20 @@
 <body>
 
 <div th:fragment="theatersFragment" id="theaterTable">
-<div class="panel panel-default">
+<div class="panel panel-warning">
 
 
 
 
     <div class="panel-heading">Cinema's Theaters</div>
-        <table class="table table-striped">
+        <table class="table table-hover">
             <tr>
                 <th>Id</th>
                 <th>Seats</th>
-                <th>Delete</th>
             </tr>
             <tr th:each="theater: ${theaters}">
                 <td th:text="${theater.id}">Id</td>
                 <td th:text="${theater.getSeats()}">seats</td>
-                <td><a th:href="${'/theater/delete/'+theater.getCinema().getId()+'/'+theater.id}">Delete</a></td>
             </tr>
         </table>
 </div>

@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -17,8 +18,6 @@ public class ManagerController {
     @Autowired
     InvitationServiceImpl invitationService;
 
-    @Autowired
-    UserRepository userRepository;
 
     @RequestMapping(value = "/manager")
     public String manager() {
@@ -29,12 +28,6 @@ public class ManagerController {
     public String invitation(Model model) {
         model.addAttribute("invitations",invitationService.getAllIvitations());
         return "invitationsTable";
-    }
-
-    @RequestMapping(value = "/users")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users",userRepository.findAll());
-        return "usersTable";
     }
 
 

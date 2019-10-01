@@ -32,7 +32,7 @@ public class Invitation {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     private User user;
 
     public void setSeats(int length) {

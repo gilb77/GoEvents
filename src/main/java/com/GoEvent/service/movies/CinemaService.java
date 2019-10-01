@@ -8,7 +8,7 @@ public interface CinemaService {
 
 
 
-    Page<Cinema> findAllCinemasPageable(Pageable pageable);
+
 
 
     Iterable<Cinema> listAllCinema();

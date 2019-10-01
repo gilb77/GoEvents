@@ -6,6 +6,7 @@ $(document).ready(function () {
     var loaded = false;
 
     $("#invite").click(function () {
+
         if (loaded)
             return;
         loaded = true;
@@ -19,6 +20,7 @@ $(document).ready(function () {
                 }
                 $("#locationSelectHolder").html(data);
                 $("#invite").hide();
+                $(".mediaGroup").hide();
             }
         });
         loaded = false;
@@ -155,11 +157,10 @@ $(document).ready(function () {
             data: JSON.stringify(event),
             success: function (resp) {
 
-                    $.ajaxStop();
-            }
-
-        });
+             }
+         });
         loaded = false;
+        window.location.replace("/shoppingCart");
         $.ajaxStop();
     });
 

@@ -32,6 +32,6 @@ public class Cinema {
     public String address;
 
 
-    @OneToMany(mappedBy = "cinema",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cinema",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
      private List<Theater> theatersList =new ArrayList<>();
 }

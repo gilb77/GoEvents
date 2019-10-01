@@ -52,7 +52,6 @@ public class ShoppingCartServiceImpl {
         int quantity;
         List<Integer> seats;
         int standsQuantity;
-
         public void addStandCount() {
             this.standsQuantity++;
         }
@@ -60,7 +59,7 @@ public class ShoppingCartServiceImpl {
 
 
     public void addEventInvites(Event event, int seat, boolean stand) throws Exception {
-        if (invites.containsKey(event.getId())) {
+        if (invites.containsKey(getIdMap(event))) {
             if (!stand)
                 checkFreePlace(event, seat);
             updateCartEvent(event, seat, stand);
@@ -70,20 +69,20 @@ public class ShoppingCartServiceImpl {
 
 
     private void checkFreePlace(Event event, int seat) throws Exception {
-        for (Integer s : invites.get(event.getId()).seats)
+        for (Integer s : invites.get(getIdMap(event)).seats)
             if (s == seat)
                 throw new Exception("The Seat was selected.");
 
     }
 
     private void updateCartEvent(Event event, int seat, boolean stand) {
-        CurrentCartEvent currentCartEvent = invites.get(event.getId());
+        CurrentCartEvent currentCartEvent = invites.get(getIdMap(event));
         if (stand)
             currentCartEvent.standsQuantity++;
         else
             currentCartEvent.seats.add(seat);
         currentCartEvent.quantity++;
-        invites.replace(event.getId(), currentCartEvent);
+        invites.replace(getIdMap(event), currentCartEvent);
     }
 
 
@@ -93,7 +92,11 @@ public class ShoppingCartServiceImpl {
             currentCartEvent.addStandCount();
         else
             currentCartEvent.seats.add(seat);
-        invites.put(event.getId(), currentCartEvent);
+        invites.put(getIdMap(event), currentCartEvent);
+    }
+
+    private int getIdMap(Event event) {
+        return (event instanceof MovieEvent) ? event.getId() : -1 * event.getId();
     }
 
 
@@ -107,6 +110,12 @@ public class ShoppingCartServiceImpl {
     public void removeInvite(int id) {
         removeSeats(id);
         invites.remove(id);
+    }
+
+    public void removeAllEvents() {
+        for (Integer key : invites.keySet())
+            removeInvite(key);
+
     }
 
 
@@ -133,17 +142,18 @@ public class ShoppingCartServiceImpl {
         return sum;
     }
 
-    public boolean checkout() {
-        List<Integer> idInvites = new ArrayList<>();
-        for (CurrentCartEvent invite : invites.values()) {
-            if (!saveSeats(invite) || !saveStands(invite))
+    public boolean checkout(String userName) {
+        List<Event> events = new ArrayList<>();
+         for (Map.Entry order : invites.entrySet()) {
+            CurrentCartEvent cart = (CurrentCartEvent) order.getValue();
+            if (!saveSeats(cart) || !saveStands(cart))
                 return false;
-            invitationService.saveInvitation(invite.getEvent().getId(),
-                    invite.getQuantity(), invite.seats, invite.standsQuantity, geTotalEvent(invite));
-            idInvites.add(invite.getEvent().getId());
+            invitationService.saveInvitation(cart.getEvent().getId(),
+                    cart.getQuantity(), cart.seats, cart.standsQuantity, geTotalEvent(cart), userName);
+            events.add(cart.getEvent());
         }
-        for (int idInvite : idInvites)
-            removeInvite(idInvite);
+        for (Event event : events)
+            removeInvite(getIdMap(event));
         return true;
     }
 
@@ -153,14 +163,16 @@ public class ShoppingCartServiceImpl {
             if (!checkSeat(event, seat))
                 return false;
             event.getSeat().saveSeats(seat);
-            saveEvent(event);
         }
+        saveEvent(event);
         return true;
     }
 
     private boolean saveStands(CurrentCartEvent currentCartEvent) {
-        LiveShow event = (LiveShow) currentCartEvent.event;
-        if (!event.saveStandPlace())
+        if (currentCartEvent.event instanceof MovieEvent)
+            return true;
+        LiveShow event = liveShowService.findLiveShowById(currentCartEvent.event.getId());
+        if (!event.saveStandPlace(currentCartEvent.standsQuantity))
             return false;
         saveEvent(event);
         return true;

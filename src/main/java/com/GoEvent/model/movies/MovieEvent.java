@@ -17,12 +17,10 @@ import java.util.Date;
 @Table(name = "movie_event")
 public class MovieEvent extends Event {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     Theater theater;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     Movie movie;
-
-
 
 }

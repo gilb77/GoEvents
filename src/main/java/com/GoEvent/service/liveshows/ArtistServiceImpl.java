@@ -1,45 +1,84 @@
 package com.GoEvent.service.liveshows;
 
 import com.GoEvent.dao.liveshows.ArtistRepository;
- import com.GoEvent.model.liveshows.Artist;
+import com.GoEvent.model.liveshows.Artist;
+import com.GoEvent.model.liveshows.LiveShow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class ArtistServiceImpl {
 
-
     @Autowired
     private ArtistRepository artistRepository;
 
+    @Autowired
+    private LiveShowServiceImpl liveShowService;
+
+    private static Lock lockRepository = new ReentrantLock();
 
     public List<Artist> listAllArtist() {
-        return artistRepository.findAll();
+        lockRepository.lock();
+        List<Artist> artists;
+        try {
+            artists = artistRepository.findAll();
+        } finally {
+            lockRepository.unlock();
+        }
+        return artists;
     }
 
-    public Artist saveArtist(Artist artist) {
-        artistRepository.save(artist);
+    public boolean saveArtist(Artist artist) {
+        lockRepository.lock();
+        try {
+            if (artistNameExists(artist.getName()) && artist.getId() == 0) {
+                lockRepository.unlock();
+                return false;
+            }
+            artistRepository.save(artist);
+        } finally {
+            lockRepository.unlock();
+        }
+        return true;
+    }
+
+    public Artist getArtistById(Integer id) {
+        lockRepository.lock();
+        Artist artist;
+        try {
+            artist = artistRepository.findById(id).orElse(null);
+        } finally {
+            lockRepository.unlock();
+        }
         return artist;
     }
 
 
-    public Artist getArtistById(Integer id) {
-        return artistRepository.findById(id).orElse(null);
+    public synchronized boolean deleteArtist(int id) {
+        lockRepository.lock();
+        try {
+            if (liveShowService.checkInviationOfArtist(id)) {
+                lockRepository.unlock();
+                return false;
+            }
+            for (LiveShow liveShow : liveShowService.getLiveShowsByFilter(id))
+                liveShowService.deleteLiveShow(liveShow.getId());
+            artistRepository.deleteById(id);
+        } finally {
+            lockRepository.unlock();
+        }
+        return true;
     }
 
 
-    public String deleteArtist(int id) {
-        artistRepository.deleteById(id);
-        return "success";
-    }
-
-
-    public boolean artistNameExists(String name){
+    private boolean artistNameExists(String name) {
         List<Artist> artists = artistRepository.findAll();
-        for(Artist artist: artists)
-            if(artist.getName().equals(name))
+        for (Artist artist : artists)
+            if (artist.getName().equals(name))
                 return true;
         return false;
     }

@@ -4,6 +4,7 @@ package com.GoEvent.controller;
 import com.GoEvent.service.impl.ShoppingCartServiceImpl;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +34,12 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/shoppingCart/checkout")
-    public String checkout(Model model) {
-        if(!shoppingCartService.checkout())
-            model.addAttribute("error","The seats you want are save");
+    public String checkout(Model model,Authentication authentication) {
+        if(!shoppingCartService.checkout(authentication.getName())) {
+            model.addAttribute("error", "The places you want are save");
+            shoppingCartService.removeAllEvents();
+            return "shoppingCart";
+        }
         return shoppingCart(model);
     }
 }

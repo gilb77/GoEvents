@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
     $(function () {
         $("#datepicker").datepicker();
@@ -25,9 +23,13 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 data: JSON.stringify(event),
                 success: function (data) {
-                    $("#response").html(data);
-                  }
-                });
+                    if (data.trim() === "success")
+                        window.location.replace("/liveshows/lists");
+                    else
+                        $("#note").text(data.trim()).show();
+
+                }
+            });
             $.ajaxStop();
         });
 

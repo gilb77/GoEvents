@@ -15,7 +15,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#" th:href="@{/home}">GoEvent</a>
+                <a class="navbar-brand" href="#" th:href="@{/home}">GoEvents</a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="#" th:href="@{/moviesPage}">Movies</a></li>
@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav navbar-right">
 
                 <!--<ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_ADMIN')">-->
-                <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">
+                <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_ADMIN')">
                     <li><a href="#" th:href="@{/manager}"><span class="glyphicon glyphicon-briefcase"></span> Admin
                         Panel</a></li>
                 </ul>
@@ -39,7 +39,7 @@
                         Cart</a></li>
                 </ul>
                 <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">
-                    <li><a th:href="@{/logout}" class="glyphicon glyphicon-user" sec:authentication="name">name</a></li>
+                    <li><a th:href="@{/users/detail}" class="glyphicon glyphicon-user" sec:authentication="name">name</a></li>
                 </ul>
                 <!-- show sign out only if user is authenticated -->
                 <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">

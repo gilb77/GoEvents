@@ -20,7 +20,6 @@
                 <th>Stands Number</th>
                 <th>Date</th>
                 <th>Time</th>
-                <th>Rest</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -32,13 +31,15 @@
                 <td th:text="${liveShow.stand}">Stands Number</td>
                 <td th:text="${liveShow.date}">Date</td>
                 <td th:text="${liveShow.time}">Time</td>
-                <td><a th:href="${'/liveshows/restseats/'+liveShow.id}"></a></td>
                 <td><a th:href="${'/liveshows/edit/'+liveShow.id}">Edit</a></td>
                 <td><a th:href="${'/liveshows/delete/'+liveShow.id}">Delete</a></td>
             </tr>
         </table>
 
     </div>
+</div>
+<div class="col-md-offset-9 col-xs-2">
+    <div style="text-align: center;" class="alert alert-danger" th:if="${error}" th:utext="${error}"></div>
 </div>
 </body>
 </html>

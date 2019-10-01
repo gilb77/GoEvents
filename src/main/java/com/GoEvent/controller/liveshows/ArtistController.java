@@ -1,7 +1,6 @@
 package com.GoEvent.controller.liveshows;
 
 import com.GoEvent.model.liveshows.Artist;
-import com.GoEvent.model.movies.Movie;
 import com.GoEvent.service.liveshows.ArtistServiceImpl;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class ArtistController {
 
     @RequestMapping("/new")
     public String newProduct(Model model) {
-        model.addAttribute("artist", new Movie());
+        model.addAttribute("artist", new Artist());
         return "liveshows/artists/artist-form";
     }
 
@@ -57,9 +56,10 @@ public class ArtistController {
 
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String saveArtist(Artist artist,Model model, @RequestParam MultipartFile fileUpload) throws IOException {
+    public String saveArtist(Artist artist, Model model, @RequestParam MultipartFile fileUpload) throws IOException, InterruptedException {
 
-        if (artist.getName().isEmpty() || artist.getDescription().isEmpty() || fileUpload.isEmpty()) {
+        if (artist.getName().isEmpty() || artist.getDescription().isEmpty() || fileUpload.isEmpty()
+                || artist.getReview().isEmpty() || artist.getVideo().isEmpty()) {
             model.addAttribute("error", "One of the field is empty.");
             return "liveshows/artists/artist-form";
         }
@@ -69,19 +69,22 @@ public class ArtistController {
             artist.setImage(fileUpload.getBytes());
         }
 
-        if(artistService.artistNameExists(artist.getName())){
+        if (!artistService.saveArtist(artist)) {
             model.addAttribute("error", "Artist name already exists.");
             return "liveshows/artists/artist-form";
         }
-        artistService.saveArtist(artist);
+
         return "redirect:/artists/" + artist.getId();
     }
 
 
     @RequestMapping("/delete/{id}")
-    public String deleteStudent(@PathVariable Integer id) {
-        artistService.deleteArtist(id);
-        return "redirect:/artists/artists-list";
+    public String deleteStudent(@PathVariable Integer id, Model model) {
+        if (!artistService.deleteArtist(id))
+            model.addAttribute("error", "The artist's live show was invited by users");
+        model.addAttribute("artists", artistService.listAllArtist());
+        return "liveshows/artists/artists-list";
+
     }
 
 

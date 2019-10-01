@@ -1,14 +1,17 @@
 package com.GoEvent.service.liveshows;
 
 import com.GoEvent.dao.liveshows.LiveShowRepository;
+import com.GoEvent.model.Invitation;
 import com.GoEvent.model.liveshows.LiveShow;
-import com.GoEvent.model.movies.MovieEvent;
+import com.GoEvent.service.movies.impl.InvitationServiceImpl;
 import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class LiveShowServiceImpl {
@@ -20,34 +23,48 @@ public class LiveShowServiceImpl {
     @Autowired
     private LocationServiceImpl locationService;
 
+    @Autowired
+    private InvitationServiceImpl invitationService;
+
+    public static Lock lockRepository = new ReentrantLock();
+
+
     public List<LiveShow> listAllLiveShow() {
         return liveShowRepository.findAll();
     }
 
-    public LiveShow saveLiveShow(Map<String, String> json) {
+    public synchronized boolean saveLiveShow(Map<String, String> json) {
         LiveShow liveShow = new LiveShow();
-        liveShow.setLocation(locationService.getLocationByid(Integer.parseInt(json.get("location"))));
-        liveShow.setArtist(artistService.getArtistById(Integer.parseInt(json.get("artist"))));
-        liveShow.setStand(Integer.parseInt(json.get("places")));
-        liveShow.setCostStanding(Integer.parseInt(json.get("costStanding")));
-        liveShow.getSeat().setSeats(Integer.parseInt(json.get("numSeating")));
-        liveShow.setCostSeating(Integer.parseInt(json.get("costSeating")));
         try {
-            liveShow.setDate(ParseUtil.parseStringToDate(json.get("date")));
-            liveShow.setTime(ParseUtil.parseStringToTime(json.get("time")));
+            if (checkLiveShowNotHappenAtSameTimeMap(json))
+                return false;
+            parseJsonToLiveShow(liveShow, json);
+            saveLiveShow(liveShow);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-      return saveLiveShow(liveShow);
+        return true;
     }
 
-    public LiveShow saveLiveShow(LiveShow liveShow){
-        liveShowRepository.save(liveShow);
+    public LiveShow saveLiveShow(LiveShow liveShow) {
+        lockRepository.lock();
+        try {
+            liveShowRepository.save(liveShow);
+        } finally {
+            lockRepository.unlock();
+        }
         return liveShow;
     }
 
     public LiveShow findLiveShowById(int id) {
-        return liveShowRepository.findById(id).get();
+        LiveShow liveShow;
+        lockRepository.lock();
+        try {
+            liveShow = liveShowRepository.findById(id).orElse(null);
+        } finally {
+            lockRepository.unlock();
+        }
+        return liveShow;
     }
 
 
@@ -64,17 +81,23 @@ public class LiveShowServiceImpl {
     }
 
     public List<LiveShow> getLiveShowsByFilter(int artistId, int location, Date date, Date time) {
-        List<LiveShow> listLiveShows = liveShowRepository.findAll();
-        List<LiveShow> liveShowsByArtist = new ArrayList<>();
-        for (LiveShow liveShow : listLiveShows)
-            if (liveShow.getArtist().getId() == artistId && checkLocation(liveShow, location) &&
-                    checkDate(liveShow, date) && checkTime(liveShow, time))
-                liveShowsByArtist.add(liveShow);
+        lockRepository.lock();
+        List<LiveShow> listLiveShows, liveShowsByArtist;
+        try {
+            listLiveShows = liveShowRepository.findAll();
+            liveShowsByArtist = new ArrayList<>();
+            for (LiveShow liveShow : listLiveShows)
+                if (checkArtist(liveShow, artistId) && checkLocation(liveShow, location) &&
+                        checkDate(liveShow, date) && checkTime(liveShow, time))
+                    liveShowsByArtist.add(liveShow);
+        } finally {
+            lockRepository.unlock();
+        }
         return liveShowsByArtist;
     }
 
-    public LiveShow getLiveShowById(Integer id) {
-        return liveShowRepository.findById(id).orElse(null);
+    private boolean checkArtist(LiveShow liveShow, int id) {
+        return id == -1 || liveShow.getArtist().getId() == id;
     }
 
     private boolean checkLocation(LiveShow liveShow, int location) {
@@ -121,4 +144,62 @@ public class LiveShowServiceImpl {
         return tempMovieEvents;
     }
 
+    public boolean checkInviationOfArtist(int artistId) {
+        lockRepository.lock();
+        try {
+
+            for (LiveShow liveShow : getLiveShowsByFilter(artistId))
+                for (Invitation invitation : invitationService.getAllIvitations())
+                    if (invitation.getEventId() == liveShow.getId()) {
+                        lockRepository.unlock();
+                        return true;
+                    }
+        } finally {
+            lockRepository.unlock();
+        }
+        return false;
+    }
+
+    private boolean checkInviation(int eventId) {
+        for (Invitation invitation : invitationService.getAllIvitations())
+            if (invitation.getEventId() == eventId)
+                return true;
+        return false;
+    }
+
+    public synchronized boolean deleteLiveShow(int id) {
+        InvitationServiceImpl.globalLockRepository.lock();
+        try {
+            if (checkInviation(id)) {
+                return false;
+            }
+            liveShowRepository.deleteById(id);
+        } finally {
+            InvitationServiceImpl.globalLockRepository.unlock();
+        }
+        return true;
+    }
+
+
+    private boolean checkLiveShowNotHappenAtSameTimeMap(Map<String, String> json) throws ParseException {
+        List<LiveShow> liveShows;
+        liveShows = getLiveShowsByFilter(-1,
+                Integer.parseInt(json.get("location")),
+                ParseUtil.parseStringToDate(json.get("date")),
+                ParseUtil.parseStringToTime(json.get("time")));
+        return !liveShows.isEmpty();
+    }
+
+
+    private LiveShow parseJsonToLiveShow(LiveShow liveShow, Map<String, String> json) throws ParseException {
+        liveShow.setLocation(locationService.getLocationByid(Integer.parseInt(json.get("location"))));
+        liveShow.setArtist(artistService.getArtistById(Integer.parseInt(json.get("artist"))));
+        liveShow.setStand(Integer.parseInt(json.get("places")));
+        liveShow.setCostStanding(Integer.parseInt(json.get("costStanding")));
+        liveShow.getSeat().setSeats(Integer.parseInt(json.get("numSeating")));
+        liveShow.setCostSeating(Integer.parseInt(json.get("costSeating")));
+        liveShow.setDate(ParseUtil.parseStringToDate(json.get("date")));
+        liveShow.setTime(ParseUtil.parseStringToTime(json.get("time")));
+        return liveShow;
+    }
 }

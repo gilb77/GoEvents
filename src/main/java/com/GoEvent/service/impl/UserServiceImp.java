@@ -6,25 +6,25 @@ import com.GoEvent.dao.UserRepository;
 import com.GoEvent.model.User;
 import com.GoEvent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 @Service
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
     private static final String USER_ROLE = "ROLE_USER";
+
+    private static Lock lockRepository = new ReentrantLock();
 
     @Autowired
     public UserServiceImp(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -45,11 +45,47 @@ public class UserServiceImp implements UserService{
 
     @Override
     public User saveUser(User user) {
-        // Encode plaintext password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(1);
-        // Set Role to ROLE_USER
-        user.setRoles(Collections.singletonList(roleRepository.findByRole(USER_ROLE)));
-        return userRepository.saveAndFlush(user);
+        lockRepository.lock();
+        User user1;
+        try {
+            user1 = userRepository.saveAndFlush(user);
+            // Encode plaintext password
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setActive(1);
+            // Set Role to ROLE_USER
+            user.setRoles(Collections.singletonList(roleRepository.findByRole(USER_ROLE)));
+        } finally {
+            lockRepository.unlock();
+        }
+        return user1;
+    }
+
+    public void saveOnlyUser(User user) {
+        lockRepository.lock();
+        try {
+            userRepository.save(user);
+        } finally {
+            lockRepository.unlock();
+        }
+    }
+
+    public List<User> findAllUsers() {
+        List<User> users;
+        lockRepository.lock();
+        try {
+            users = userRepository.findAll();
+        } finally {
+            lockRepository.unlock();
+        }
+        return users;
+    }
+
+    public void deleteById(long id) {
+        lockRepository.lock();
+        try {
+            userRepository.deleteById(id);
+        } finally {
+            lockRepository.unlock();
+        }
     }
 }

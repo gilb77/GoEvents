@@ -74,7 +74,7 @@ public class TheatresController {
 
     @RequestMapping("theater/delete/{cinemaId}/{id}")
     public String deleteStudent(@PathVariable Integer cinemaId,@PathVariable Integer id) {
-        theaterServiceImpl.deleteTheater(cinemaId);
+        theaterServiceImpl.deleteTheater(cinemaId,id);
         return "redirect:/cinema/"+cinemaId;
     }
 
@@ -86,32 +86,5 @@ public class TheatresController {
         return "redirect:/theaters/" + theater.getId();
     }
     
-    
-    
-    
-    
-
-//    @PostMapping("/add")
-//    public Cinema addItem(@RequestBody Cinema cinema) {
-//        return TheaterService.saveCinema(cinema);
-//    }
-//
-//
-//    @GetMapping("list")
-//    public List<Cinema> getList() {
-//        return TheaterService.cinemaList();
-//    }
-//
-//
-//    @GetMapping("update/{id}")
-//    public Cinema showUpdateForm(@PathVariable("id") int id) {
-//        return TheaterService.updateCinema(id);
-//    }
-//
-//
-//    @GetMapping("delete/{id}")
-//    public String deleteStudent(@PathVariable("id") int id) {
-//        return TheaterService.deleteCinema(id);
-//    }
 
 }

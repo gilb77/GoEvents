@@ -7,14 +7,12 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 
 
@@ -49,8 +47,7 @@ public class MovieController {
     public String showProduct(@PathVariable Integer id, Model model) {
         Movie movie = movieService.getMovieById(id);
         model.addAttribute("movie", movie);
-        model.addAttribute("parseUtil",new ParseUtil());
-
+        model.addAttribute("parseUtil", new ParseUtil());
         return "movie/movieshow";
     }
 
@@ -67,16 +64,12 @@ public class MovieController {
     }
 
     @RequestMapping(value = "movie", method = RequestMethod.POST)
-    public String saveProduct(Movie movie,Model model,
+    public String saveProduct(Movie movie, Model model,
                               @RequestParam MultipartFile fileUpload) throws IOException {
 
-        if (movie.getName().isEmpty() || movie.getDescription().isEmpty() || fileUpload.isEmpty()) {
+        if (movie.getName().isEmpty() || movie.getDescription().isEmpty() || fileUpload.isEmpty() || movie.getReview().isEmpty()
+                || movie.getVedio().isEmpty()) {
             model.addAttribute("error", "One of the field is empty.");
-            return "movie/movieform";
-        }
-
-        if(movieService.movieNameExists(movie.getName())){
-            model.addAttribute("error", "Movie name exists.");
             return "movie/movieform";
         }
 
@@ -84,17 +77,24 @@ public class MovieController {
                 || fileUpload.getContentType().equals("image/jpeg") || fileUpload.getContentType().equals("image/gif")) {
             movie.setImage(fileUpload.getBytes());
         }
-        movieService.saveMovie(movie);
+
+        if (!movieService.saveMovie(movie)) {
+            model.addAttribute("error", "Movie name exists.");
+            return "movie/movieform";
+        }
         return "redirect:/movie/" + movie.getId();
     }
 
 
     @RequestMapping("movie/delete/{id}")
-    public String deleteStudent(@PathVariable Integer id) {
-        movieService.deleteMovie(id);
+    public String deleteMovie(@PathVariable Integer id, Model model) {
+        if (!movieService.deleteMovie(id)) {
+            model.addAttribute("error", "The movie was invited by users");
+            model.addAttribute("movies", movieService.listAllMovies());
+            return "movie/movies";
+        }
         return "redirect:/movies";
     }
-
 
 
 }

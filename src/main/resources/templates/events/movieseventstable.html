@@ -16,6 +16,9 @@
                 <th>Id</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>Street</th>
                 <th>Cinema</th>
                 <th>theater</th>
                 <th>price</th>
@@ -30,18 +33,20 @@
                 <td th:text="${event.getDate()}">Date</td>
                 <td th:text="${event.getTime()}">Time</td>
                 <td th:text="${event.getMovie().getName()}">movie</td>
+                <td th:text="${event.theater.getCinema().getCity()}">City</td>
+                <td th:text="${event.theater.getCinema().getAddress()}">Street</td>
                 <td th:text="${event.theater.getCinema().getName()}">Cinema</td>
                 <td th:text="${event.theater.getId()}">theater</td>
                 <td th:text="${event.price}">price</td>
                 <td th:text="${event.getSeat().getNumFreeSeats()}">Number of free seats</td>
-                <td><a th:href="${'/event/restseats/'+event.id}">Rest seat</a></td>
-                <td><a th:href="${'/movie/edit/'+event.id}">Edit</a></td>
-                <td><a th:href="${'/movie/delete/'+event.id}">Delete</a></td>
+                <td><a th:href="${'/event/delete/'+event.id}">Delete</a></td>
             </tr>
         </table>
 
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"/>
+<div class="col-md-offset-9 col-xs-2">
+    <div style="text-align: center;" class="alert alert-danger" th:if="${error}" th:utext="${error}"></div>
+</div>
 </body>
 </html>

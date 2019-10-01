@@ -10,7 +10,7 @@
 <div class="container">
 
     <div th:if="${not #lists.isEmpty(users)}">
-        <h2>Invitations List</h2>
+        <h2>Users List</h2>
         <table class="table table-hover">
             <tr class="table-warning">
                 <th>Id</th>
@@ -18,14 +18,16 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>User Name</th>
-            </tr>
+                <th></th>
+             </tr>
             <tr th:each="user : ${users}">
                 <td th:text="${user.id}">Id</td>
                 <td th:text="${user.getName()}">Name</td>
                 <td th:text="${user.getLastName()}">Last Name</td>
                 <td th:text="${user.getEmail()}">Email</td>
                 <td th:text="${user.getUsername()}">User Name</td>
-            </tr>
+                <td><a th:href="${'/users/delete/'+user.id}">Delete</a></td>
+             </tr>
         </table>
 
     </div>

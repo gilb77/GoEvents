@@ -36,7 +36,7 @@ public class RegistrationController {
     public String createNewUser(@Valid User user, BindingResult bindingResult,Model model) {
         ModelAndView modelAndView = new ModelAndView();
 
-        if (userService.findByEmail(user.getEmail()).isPresent()) {
+         if (userService.findByEmail(user.getEmail()).isPresent()) {
             bindingResult
                     .rejectValue("email", "error.user",
                             "There is already a user registered with the email provided");

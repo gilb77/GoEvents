@@ -29,18 +29,18 @@ public class LiveShow extends Event {
     @Column
     public double costStanding;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "location_id", nullable = false)
     private Location Location;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     private Artist artist;
 
 
-     public boolean  saveStandPlace() {
-         if (stand<1)
+     public boolean  saveStandPlace(int num) {
+         if (stand<num)
              return false;
-         this.stand--;
+         this.stand-=num;
          return true;
     }
 }

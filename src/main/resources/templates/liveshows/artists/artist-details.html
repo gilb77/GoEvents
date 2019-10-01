@@ -6,7 +6,7 @@
 
     <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
     <script th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-     <th:block th:include="fragments/headerinc :: head"></th:block>
+    <th:block th:include="fragments/headerinc :: head"></th:block>
 </head>
 <body>
 <script th:src="@{/js/liveshows/artists/artistDetails.js}"></script>
@@ -18,7 +18,8 @@
         </div>
         <div class="col-xs-2">
             <div class="photo">
-                <img th:src="*{'data:image/jpeg;base64,'+ parseUtil.encodePhoto(artist.getImage()) }" class="img-thumbnail"
+                <img th:src="*{'data:image/jpeg;base64,'+ parseUtil.encodePhoto(artist.getImage()) }"
+                     class="img-thumbnail"
                      style="width:100%"
                      alt="Responsive image">
             </div>
@@ -29,13 +30,10 @@
                     <div class="panel-heading" th:text="${artist.name}"></div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Description:</label>
-                            <div class="col-sm-10">
                                 <p class="form-control-static" th:text="${artist.description}">Description</p>
-                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-offset-9 col-md-2" >
+                            <div class="col-md-offset-9 col-md-2">
                                 <div id="note" class="alert alert-danger" hidden></div>
                             </div>
                             <div class="form-group">
@@ -49,15 +47,25 @@
             </div>
         </div>
     </div>
-</div>
-<div class="container">
+    <br>
 
 
-    <div class="panel">
+    <div class="row">
 
-        <div class="panel-body">
-            <form>
-
+        <div class="col-xs-1"></div>
+        <div class="">
+            <div class="col-xs-5 panel-warning">
+                <div class="panel-heading">
+                    Review
+                </div>
+                <div class="panel-body">
+                    <div th:text="${artist.review}"></div>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div class="mediaGroup embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" th:src="${artist.video}" allowfullscreen></iframe>
+                </div>
                 <div id="locationSelectHolder">
                 </div>
 
@@ -68,7 +76,8 @@
                 </div>
 
                 <div id="myRadio" hidden>
-                    <label class="radio-inline"><input id="standing" type="radio" name="optradio" checked>Stand</label>
+                    <label class="radio-inline"><input id="standing" type="radio" name="optradio"
+                                                       checked>Stand</label>
                     <label class="radio-inline"><input id="seating" type="radio" name="optradio">Seat</label>
                 </div>
                 <div id="seatSelectHolder" hidden>
@@ -78,13 +87,11 @@
                             name="submit">Submit
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
+
+
     </div>
 </div>
-
-
-
-
 </body>
 </html>

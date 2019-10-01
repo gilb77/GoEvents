@@ -10,10 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface TheaterRepository extends JpaRepository<Theater, Integer> {
-    Optional<Theater> findById(int id);
 
-    @Modifying
-    @Query("DELETE FROM Theater t WHERE t.cinema.id = ?1")
-    void deleteByCinemaId(int categoryId);
 
 }

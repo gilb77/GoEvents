@@ -20,6 +20,7 @@ $(document).ready(function () {
                 }
                 $("#citySelectHolder").html(data);
                 $("#invite").hide();
+                $(".mediaGroup").hide();
             }
         });
         loaded = false;
@@ -175,12 +176,14 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.trim() === "No events") {
                     $("#note").text("No events :(").show();
-                    $.ajaxStop();
+
                 }
-                window.location = "/";
             }
-        })
+        });
+        window.location.replace("/shoppingCart");
+        loaded = false;
+        $.ajaxStop();
     }
-    loaded = false;
-    $.ajaxStop();
+
+
 });

@@ -10,7 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
+
+import static com.GoEvent.util.WebUtil.responseForError;
 
 @Controller
 @RequestMapping(value = "/liveshows")
@@ -30,18 +35,20 @@ public class LiveShowController {
         return "liveshows/liveshows";
     }
 
-
-
+    private boolean checkFieldsEmpty(Map<String, String> json) {
+        return Integer.parseInt(json.get("places")) == 0 || Integer.parseInt(json.get("costStanding")) == 0 ||
+                Integer.parseInt(json.get("costSeating")) == 0 || Integer.parseInt(json.get("numSeating")) == 0 ||
+                json.get("costSeating").isEmpty() || json.get("artist").isEmpty() || json.get("location").isEmpty();
+    }
 
     @RequestMapping(value = "/new/liveShow", method = RequestMethod.POST)
     @ResponseBody
-    public String newLiveShow(@RequestBody Map<String, String> json,Model model) {
-        if(Integer.parseInt(json.get("places"))==0){
-            model.addAttribute("error", "One of the field is empty.");
-            return "liveshows/liveshow-form :: errorFragment";
-        }
-        liveShowService.saveLiveShow(json);
-        return "redirect:liveshows/liveshows";
+    public String newLiveShow(@RequestBody Map<String, String> json, Model model, HttpServletResponse res) throws IOException, ParseException, InterruptedException {
+        if (checkFieldsEmpty(json))
+            return responseForError(res, "Fields Empty");
+        if (!liveShowService.saveLiveShow(json))
+            return responseForError(res, "There is live show on the same time.");
+        return "success";
     }
 
     @RequestMapping("/new")
@@ -54,24 +61,26 @@ public class LiveShowController {
 
     @RequestMapping("/{id}")
     public String showProduct(@PathVariable Integer id, Model model) {
-        model.addAttribute("liveShow", liveShowService.getLiveShowById(id));
+        model.addAttribute("liveShow", liveShowService.findLiveShowById(id));
         return "liveshows/cinemashow";
     }
 
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("liveShow", liveShowService.getLiveShowById(id));
+        model.addAttribute("liveShow", liveShowService.findLiveShowById(id));
         model.addAttribute("artists", artistService.listAllArtist());
         model.addAttribute("locations", locationRepository.findAll());
         return "liveshows/liveshow-form";
     }
 
 
-    @RequestMapping(value = "restseats/{id}", method = RequestMethod.GET)
-    public String restSeats(@PathVariable Integer id) {
-        LiveShow liveShow = liveShowService.getLiveShowById(id);
-        liveShow.getSeat().setSeats(liveShow.getSeat().getNumSeats());
-         liveShowService.saveLiveShow(liveShow);
-        return "redirect:/liveshows/lists";
+
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteEvent(@PathVariable("id") int id, Model model) {
+        if (!liveShowService.deleteLiveShow(id))
+            model.addAttribute("error", "The event was invited by users");
+        model.addAttribute("liveShows", liveShowService.listAllLiveShow());
+        return "liveshows/liveshows";
     }
 }

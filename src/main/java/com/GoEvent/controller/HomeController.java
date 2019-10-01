@@ -1,38 +1,34 @@
 package com.GoEvent.controller;
 
 
-import com.GoEvent.configuration.SpringSecurityConfig;
+import com.GoEvent.service.liveshows.ArtistServiceImpl;
 import com.GoEvent.service.movies.impl.MovieServiceImpl;
+import com.GoEvent.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Controller
 public class HomeController {
 
     @Autowired
+    private ArtistServiceImpl artistService;
+
+    @Autowired
     private MovieServiceImpl movieService;
+
     @RequestMapping("/")
-    String index(){
-        return "index";
+    public String index(Model model) {
+        return home(model);
     }
 
     @RequestMapping("/home")
-    public String home(Model model){
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Set<String> roles = authentication.getAuthorities().stream()
-                .map(r -> r.getAuthority()).collect(Collectors.toSet());
-        model.addAttribute("movies",movieService.listAllMovies());
-        System.out.println("-----------------------------");
+    public String home(Model model) {
+        model.addAttribute("movies", movieService.listAllMovies());
+        model.addAttribute("artists", artistService.listAllArtist());
+        model.addAttribute("parseUtil", new ParseUtil());
         return "index";
     }
 

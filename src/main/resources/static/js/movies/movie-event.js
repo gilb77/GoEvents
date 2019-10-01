@@ -14,24 +14,24 @@ $(document).ready(function () {
                 time: document.getElementById("timepicker").value
             };
             $.ajax({
+                async: false,
                 url: "http://localhost:8080/event/new/",
-                dataType: 'json',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify(event),
                 success: function (data) {
-                    if (data.trim() === "No events") {
+                    if (data.trim() === "No events")
                         $("#note").text("Please fill up all the fields").show();
-                        $.ajaxStop();
-                    }
-                 else   if (data.trim() === "Events exists") {
-                        $("#note").text("There is event on theater theater on the same time.").show();
-                        $.ajaxStop();
-                    }
+                    else if (data.trim() === "Events exists")
+                        $("#note").text("There is event on theater at the same time.").show();
+                    else
+                        window.location.replace("/event/movies/table");
+                    $.ajaxStop();
                 }
+
             });
-            $.ajaxStop();
-        });
+
+         });
     $("#cinemas").change(fillUpTheaters);
 
     function fillUpTheaters() {
@@ -40,7 +40,7 @@ $(document).ready(function () {
             document.getElementById("cinemas").value,
             success: function (data) {
                 $("#theaterSelectHolder").html(data);
-                $("#theaterSelect").modal("show");
+                $.ajaxStop();
             }
         })
     }

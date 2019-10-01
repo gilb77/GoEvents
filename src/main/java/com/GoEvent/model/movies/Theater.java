@@ -1,6 +1,5 @@
 package com.GoEvent.model.movies;
 
-import com.GoEvent.model.Seat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,7 @@ public class Theater {
     @Column
     int seats;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 

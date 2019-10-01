@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Data
-@Table(name = "movie")
+@Table(name = "MOVIES")
 public class Movie {
 
     @Id
@@ -27,8 +27,16 @@ public class Movie {
     @Column
     private int length;
 
-    @Column
+    @Lob
+    @Column(columnDefinition="Text")
     private String description;
+
+    @Lob
+    @Column(columnDefinition="Text")
+    private String review;
+
+    @Column
+    private String vedio;
 
     @Lob
     @Column(name = "image", columnDefinition="BLOB")

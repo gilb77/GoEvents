@@ -10,7 +10,7 @@ import java.sql.Time;
 @Entity
 @Getter
 @Setter
-@Table(name = "ARTIST")
+@Table(name = "ARTISTS")
 public class Artist {
 
     @Id
@@ -20,8 +20,17 @@ public class Artist {
     @Column
     private String name;
 
-    @Column
+    @Lob
+    @Column(columnDefinition="Text")
     private String description;
+
+    @Lob
+    @Column(columnDefinition="Text")
+    private String review;
+
+    @Column
+    private String video;
+
 
     @Lob
     @Column(name = "image", columnDefinition="BLOB")
