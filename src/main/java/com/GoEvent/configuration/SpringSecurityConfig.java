@@ -73,7 +73,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
         // Database authentication
         auth.
                 jdbcAuthentication()
@@ -81,7 +80,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(rolesQuery)
                 .dataSource(dataSource)
                 .passwordEncoder(passwordEncoder());
-
     }
 
     /**

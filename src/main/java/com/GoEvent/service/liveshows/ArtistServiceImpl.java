@@ -35,10 +35,9 @@ public class ArtistServiceImpl {
     public boolean saveArtist(Artist artist) {
         lockRepository.lock();
         try {
-            if (artistNameExists(artist.getName()) && artist.getId() == 0) {
-                lockRepository.unlock();
+            if (artistNameExists(artist.getName()) && artist.getId() == 0)
                 return false;
-            }
+
             artistRepository.save(artist);
         } finally {
             lockRepository.unlock();
@@ -61,12 +60,11 @@ public class ArtistServiceImpl {
     public synchronized boolean deleteArtist(int id) {
         lockRepository.lock();
         try {
-            if (liveShowService.checkInviationOfArtist(id)) {
-                lockRepository.unlock();
+            if (!liveShowService.checkInviationOfArtist(id))
                 return false;
-            }
             for (LiveShow liveShow : liveShowService.getLiveShowsByFilter(id))
-                liveShowService.deleteLiveShow(liveShow.getId());
+                if (!liveShowService.deleteLiveShow(liveShow.getId()))
+                    return false;
             artistRepository.deleteById(id);
         } finally {
             lockRepository.unlock();

@@ -1,7 +1,7 @@
 package com.GoEvent.controller;
 
 
-import com.GoEvent.dao.UserRepository;
+
 import com.GoEvent.model.User;
 import com.GoEvent.service.impl.UserServiceImp;
 import com.GoEvent.service.movies.impl.InvitationServiceImpl;

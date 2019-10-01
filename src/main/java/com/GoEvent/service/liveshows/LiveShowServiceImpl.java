@@ -150,14 +150,12 @@ public class LiveShowServiceImpl {
 
             for (LiveShow liveShow : getLiveShowsByFilter(artistId))
                 for (Invitation invitation : invitationService.getAllIvitations())
-                    if (invitation.getEventId() == liveShow.getId()) {
-                        lockRepository.unlock();
-                        return true;
-                    }
+                    if (invitation.getEventId() == liveShow.getId())
+                        return false;
         } finally {
             lockRepository.unlock();
         }
-        return false;
+        return true;
     }
 
     private boolean checkInviation(int eventId) {

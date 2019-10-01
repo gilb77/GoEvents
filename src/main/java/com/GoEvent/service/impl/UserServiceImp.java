@@ -48,12 +48,12 @@ public class UserServiceImp implements UserService {
         lockRepository.lock();
         User user1;
         try {
-            user1 = userRepository.saveAndFlush(user);
             // Encode plaintext password
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(1);
             // Set Role to ROLE_USER
             user.setRoles(Collections.singletonList(roleRepository.findByRole(USER_ROLE)));
+            user1 = userRepository.saveAndFlush(user);
         } finally {
             lockRepository.unlock();
         }

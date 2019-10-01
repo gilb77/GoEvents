@@ -37,11 +37,8 @@ public class MovieEventServiceImpl implements EventService {
         lockRepository.lock();
         try {
             for (Invitation invitation : invitationService.getAllIvitations())
-                if (invitation.getEventId() == id && movieEventRepository.findById(id).get().getDate().after(new Date())) {
-                    lockRepository.unlock();
-                    InvitationServiceImpl.globalLockRepository.unlock();
+                if (invitation.getEventId() == id && movieEventRepository.findById(id).get().getDate().after(new Date()))
                     return false;
-                }
             movieEventRepository.deleteById(id);
         } finally {
             lockRepository.unlock();
@@ -57,7 +54,7 @@ public class MovieEventServiceImpl implements EventService {
     }
 
     public boolean saveMovieEvent(Map<String, String> json) throws ParseException {
-        if (checkMovieEventNotHappenAtSameTime(json))
+        if (!checkMovieEventNotHappenAtSameTime(json))
             return false;
         MovieEvent movieEvent = new MovieEvent();
         movieEvent.setDate(ParseUtil.parseStringToDate(json.get("date")));
@@ -71,27 +68,23 @@ public class MovieEventServiceImpl implements EventService {
     }
 
 
-    private boolean checkMovieEventNotHappenAtSameTime(Map<String, String> json) {
+    private boolean checkMovieEventNotHappenAtSameTime(Map<String, String> json) throws ParseException {
         lockRepository.lock();
         try {
             List<MovieEvent> movieEvents = getMovieEventByFilter(Integer.parseInt(json.get("movie")),
                     theaterService.getTheaterById(Integer.parseInt(json.get("theater"))).getCinema().getId(),
                     ParseUtil.parseStringToDate(json.get("date")),
                     ParseUtil.parseStringToTime(json.get("time")));
-            if (movieEvents.isEmpty()) {
-                lockRepository.unlock();
+            if (movieEvents.isEmpty())
                 return true;
-            }
+
             for (MovieEvent movieEvent : movieEvents)
-                if (movieEvent.getTheater().getId() == Integer.parseInt(json.get("theater"))) {
-                    lockRepository.unlock();
+                if (movieEvent.getTheater().getId() == Integer.parseInt(json.get("theater")))
                     return false;
-                }
         } finally {
             lockRepository.unlock();
-            return true;
         }
-
+        return true;
     }
 
     public MovieEvent findMovieEventById(int id) {
@@ -234,7 +227,7 @@ public class MovieEventServiceImpl implements EventService {
 
     public boolean deleteEventByMovieId(int id) {
         for (MovieEvent movieEvent : getMovieEventByFilter(id))
-            if (deleteMovieEventById(movieEvent.getId()))
+            if (!deleteMovieEventById(movieEvent.getId()))
                 return false;
         return true;
     }

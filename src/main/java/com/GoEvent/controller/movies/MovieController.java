@@ -93,7 +93,7 @@ public class MovieController {
             model.addAttribute("movies", movieService.listAllMovies());
             return "movie/movies";
         }
-        return "redirect:/movies";
+            return "redirect:/movies";
     }
 
 

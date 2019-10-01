@@ -23,10 +23,8 @@ public class MovieServiceImpl implements MovieService {
     public boolean saveMovie(Movie movie) {
         lockRepository.lock();
         try {
-            if (movieNameExists(movie.getName()) && movie.getId() == 0) {
-                lockRepository.unlock();
+            if (movieNameExists(movie.getName()) && movie.getId() == 0)
                 return false;
-            }
             movieRepository.save(movie);
         } finally {
             lockRepository.unlock();
@@ -38,10 +36,8 @@ public class MovieServiceImpl implements MovieService {
     public boolean deleteMovie(int id) {
         lockRepository.lock();
         try {
-            if (!movieEventService.deleteEventByMovieId(id)) {
-                lockRepository.unlock();
+            if (!movieEventService.deleteEventByMovieId(id))
                 return false;
-            }
             movieRepository.deleteById(id);
         } finally {
             lockRepository.unlock();
