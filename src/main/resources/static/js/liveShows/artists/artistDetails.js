@@ -72,7 +72,7 @@ $(document).ready(function () {
         var event = {
             artist: artist,
             location: document.getElementById("location").value,
-            date: document.getElementById("date").innerText
+            date: document.getElementById("date").value
         };
         $.ajax({
             async: false,
@@ -106,8 +106,8 @@ $(document).ready(function () {
         var event = {
             artist: artist,
             location: document.getElementById("location").value,
-            date: document.getElementById("date").innerText,
-            time: document.getElementById("time").innerText
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value
         };
 
         $.ajax({
@@ -144,7 +144,7 @@ $(document).ready(function () {
         var event = {
             artist: artist,
             location: document.getElementById("location").value,
-            date: document.getElementById("date").innerText,
+            date: document.getElementById("date").value,
             time: document.getElementById("time").value,
             seat: seatNum,
             iAmStand: iAmStand

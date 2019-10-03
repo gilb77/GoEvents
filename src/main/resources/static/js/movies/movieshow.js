@@ -97,7 +97,7 @@ $(document).ready(function () {
             movie: movie,
             city: document.getElementById("city").options[document.getElementById("city").selectedIndex].text,
             cinema: document.getElementById("cinema").value,
-            date: document.getElementById("date").innerText
+            date: document.getElementById("date").value
         };
         $.ajax({
             async: false,
@@ -129,8 +129,8 @@ $(document).ready(function () {
             movie: movie,
             city: document.getElementById("city").options[document.getElementById("city").selectedIndex].text,
             cinema: document.getElementById("cinema").value,
-            date: document.getElementById("date").innerText,
-            time: document.getElementById("time").innerText
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value
         };
 
         $.ajax({
@@ -163,8 +163,8 @@ $(document).ready(function () {
             movie: movie,
             city: document.getElementById("city").options[document.getElementById("city").selectedIndex].text - 1,
             cinema: document.getElementById("cinema").value,
-            date: document.getElementById("date").innerText,
-            time: document.getElementById("time").innerText,
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value,
             seat: document.getElementById("seat").value
         };
         $.ajax({

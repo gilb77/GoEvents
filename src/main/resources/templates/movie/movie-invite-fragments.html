@@ -47,7 +47,7 @@
                         Choose your option
                     </option>
                     <option th:each="event : ${eventsByCinema}"
-                            th:value="${event.id}"
+                            th:value="${parseUtil.parseDateToString(event.getDate())}"
                             th:text="${parseUtil.parseDateToString(event.getDate())}"></option>
                 </select>
             </div>
@@ -64,7 +64,7 @@
                             Choose your option
                         </option>
                         <option th:each="event : ${eventsByDate}"
-                                th:value="${event.id}"
+                                th:value="${parseUtil.parseTimeToString(event.getTime())}"
                                 th:text="${parseUtil.parseTimeToString(event.getTime())}"></option>
                     </select>
                 </div>
