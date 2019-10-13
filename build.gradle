@@ -1,0 +1,50 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    }
+
+
+group = 'com.GoEvent'
+version = '0.0.1-SNAPSHOT'
+description = 'GoEvent'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter:2.1.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web:2.1.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat:2.1.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf:2.1.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:2.1.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-devtools:2.1.1.RELEASE'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.4.RELEASE'
+    compile 'com.h2database:h2:1.4.192'
+    compile 'colt:colt:1.2.0'
+    compile 'log4j:log4j:1.2.17'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compile 'org.webjars:bootstrap:3.3.7'
+    compile 'org.webjars:jquery:3.4.1'
+    compile 'org.webjars:jquery-ui:1.12.1'
+    compile 'org.webjars:bootstrap-datepicker:1.0.1'
+    compile 'org.apache.commons:commons-lang3:3.9'
+    compile 'org.testng:testng:6.14.3'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:2.1.1.RELEASE'
+}
+
+springBoot {
+	mainClassName = 'com.GoEvent.GoEventApplication'
+}
+
