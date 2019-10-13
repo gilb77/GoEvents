@@ -48,3 +48,6 @@ springBoot {
 	mainClassName = 'com.GoEvent.GoEventApplication'
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '5.6'
+}

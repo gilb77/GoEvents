@@ -5,6 +5,9 @@ os: linux
 dist: trusty
 jdk: oraclejdk8
 
+cache:
+  directories:
+  - $HOME/.gradle
+
 script:
   - ./gradlew build --scan -s
-  - gradle bootRun
