@@ -1,3 +1,10 @@
 language: java
 sudo: false
-script: mvn clean verify
+
+before_install:
+  - chmod +x mvnw
+  
+install:
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+script: mvn clean install
