@@ -1,4 +1,5 @@
 Name: Gil
+Company: Gil-Tech
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed arcu ligula. Mauris tristique egestas fermentum. Quisque ultrices consectetur nisi id feugiat.
  Suspendisse potenti. Phasellus dolor massa, tristique sit amet ornare id, egestas nec magna. Duis quis vulputate metus. Etiam tincidunt sit amet nisl vel consectetur.
