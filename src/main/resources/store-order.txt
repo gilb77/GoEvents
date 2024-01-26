@@ -6,9 +6,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed arcu ligula.
   Curabitur libero libero, rhoncus a leo eget, iaculis ultrices arcu.
 
   Morbi tincidunt sapien ac justo euismod efficitur. Suspendisse ac dui a dolor dictum faucibus. Proin laoreet lectus ut convallis tincidunt. 
-  Donec at tempor lacus, sed eleifend libero. Aliquam ultricies sollicitudin risus nec venenatis. Mauris et aliquam nisi. Ut cursus enim et leo egestas pretium.
-  In sodales, massa et placerat bibendum, tortor arcu porta magna, quis semper nunc lorem eget est. Pellentesque quis turpis a nulla tincidunt consequat eu et eros.
-  Sed posuere leo non tortor fringilla faucibus. Nulla sollicitudin tincidunt pulvinar.
   Pellentesque elementum vel neque nec malesuada. Donec luctus ipsum nibh, suscipit efficitur orci semper sit amet. Praesent ac pellentesque arcu.
 
 Aenean at quam vel est efficitur vehicula in id est. Curabitur a mi mollis, consectetur diam a, aliquam sapien. Aenean vel neque quis est commodo facilisis quis vel eros. Morbi dui elit,
