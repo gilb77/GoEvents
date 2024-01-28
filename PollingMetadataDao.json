@@ -1,0 +1,32 @@
+{
+    _id: ObjectId('6491af74cf539c34dc55b0d9'),
+    lastAlertDate: {
+        dateTime: ISODate('2023-09-05T10:20:03.043Z'),
+        offset: 'Z',
+        nano: 43333300
+    },
+    lastPolling: {
+        dateTime: ISODate('2023-09-18T14:06:14.824Z'),
+        offset: 'Z',
+        nano: 824555000
+    },
+    enable: true,
+    continuePolling: false,
+    accountId: 48158,
+    connectorId: ObjectId('6491af1818016c1341e807f4'),
+    status: {
+        status: 'FAILURE',
+        comment: 'com.microsoft.aad.msal4j.MsalServiceException: AADSTS700027: The certificate with identifier used to sign the client assertion is expired on application. [Reason - The key used is expired., Found key \'Start=06/19/2023 13:52:27, End=09/18/2023 13:52:27\', Please visit the Azure Portal, Graph Explorer or directly use MS Graph to see configured keys for app Id \'a625de17-bb47-4513-b290-aab2d4905cc4\'. Review the documentation at https://docs.microsoft.com/en-us/graph/deployments to determine the corresponding service endpoint and https://docs.microsoft.com/en-us/graph/api/application-get?view=graph-rest-1.0&tabs=http to build a query request URL, such as \'https://graph.microsoft.com/beta/applications/a625de17-bb47-4513-b290-aab2d4905cc4\'].\r\nTrace ID: e8f9de68-a4aa-45aa-b547-3d89b619b600\r\nCorrelation ID: c8cb119c-83d4-4ff3-a8fe-52c6d1f9730d\r\nTimestamp: 2023-09-18 14:06:14Z',
+        responseCode: 0
+    },
+    retryFix: {
+        enableFix: true,
+        numberOfRetries: 5
+    },
+    lastModifiedDate: {
+        dateTime: ISODate('2023-09-18T14:06:14.869Z'),
+        offset: 'Z',
+        nano: 869689000
+    },
+    _class: 'defender-polling-metadata'
+}
